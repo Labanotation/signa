@@ -1,0 +1,23 @@
+{
+  "name": "signa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "argon2": "^0.26.2",
+    "dotenv": "^8.2.0",
+    "nano": "^8.2.2",
+    "next": "9.3.4",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.34",
+    "typescript": "^3.8.3"
+  }
+}
