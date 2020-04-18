@@ -1,9 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import Layout from '../components/layout'
 import { GetServerSideProps } from 'next'
 import dotenv from 'dotenv';
-import { DbInterface, PersistentObjectUtils, Requests } from '../utils/persistent-object-utils';
+import withSession from '../lib/session'
+import { DbInterface, PersistentObjectUtils, Requests } from '../utils/persistent-object-utils'
 
 const AboutPage = ({ allProps }) => (
   <Layout title="About | Next.js + TypeScript Example">
@@ -14,27 +15,32 @@ const AboutPage = ({ allProps }) => (
         <a>Go home {allProps.done} {allProps.valid}</a>
       </Link>
     </p>
+    <style jsx>{`
+      h1 {
+        color: ${allProps.color};
+      }
+    `}</style>
   </Layout>
 )
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  dotenv.config();
-  await DbInterface.init();
+export const getServerSideProps: GetServerSideProps = withSession(async context => {
+  dotenv.config()
+  await DbInterface.init()
 
-  const user = await PersistentObjectUtils.LoadOne(Requests.UsersByLogin, 'LePhasme');
+  const user = await PersistentObjectUtils.LoadOne(Requests.UsersByLogin, 'LePhasme')
 
-  const valid = await user.verifyPassword(process.env.DB_PASS);
+  const valid = await user.verifyPassword(process.env.DB_PASS)
 
-  console.log('plop', typeof user, typeof context);
   const allProps = {
     done: user.name,
-    valid: valid ? 'ok' : 'not ok'
+    valid: valid ? 'ok' : 'not ok',
+    color: 'green'
   };
   return {
     props: {
       allProps
     }
   }
-}
+})
 
 export default AboutPage

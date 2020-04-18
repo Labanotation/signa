@@ -1,43 +1,46 @@
 import * as React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import Header from './header'
 
 type Props = {
   title?: string
 }
 
-const Layout: React.FunctionComponent<Props> = ({
+const Layout = ({
   children,
-  title = 'This is the default title',
+  title = 'This is the default title'
 }) => (
-  <div>
+  <>
     <Head>
-      <title>{title}</title>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <title>With Iron Session</title>
     </Head>
-    <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/about">
-          <a>About</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/users">
-          <a>Users List</a>
-        </Link>{' '}
-        | <a href="/api/users">Users API</a>
-      </nav>
-    </header>
-    {children}
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
-    </footer>
-  </div>
+    <style jsx global>{`
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: #333;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, Noto Sans, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      }
+      .container {
+        max-width: 65rem;
+        margin: 1.5rem auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    `}</style>
+    <Header />
+
+    <main>
+      <div className="container">{children}</div>
+    </main>
+  </>
 )
 
 export default Layout

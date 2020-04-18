@@ -2,8 +2,8 @@ import Nano from 'nano';
 import { v4 as uuidv4 } from 'uuid';
 import * as Models from '../interfaces';
 
-export declare function emit (val: any);
-export declare function emit (key: any, value: any);
+export declare function emit(val: any);
+export declare function emit(key: any, value: any);
 
 export enum Requests {
     Objects = 'objects/all',
@@ -48,114 +48,114 @@ export class DbInterface {
                 _id: '_design/objects',
                 'views': {
                     'all': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf) emit(doc._id);
                         }
                     },
                     'byName': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.name) emit(doc.name, doc._id);
                         }
                     },
                     'byClass': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf) emit(doc.instanceOf, doc._id);
                         }
                     },
                     'byNameAndClass': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.name && doc.instanceOf) emit([doc.name, doc.instanceOf], doc._id);
                         }
                     },
                     'createdBy': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.createdBy) emit(doc.createdBy._id, doc._id);
                         }
                     }
                 }
             });
-        } catch (ignore) {}
+        } catch (ignore) { }
         try {
             await this.instance._db.insert({
                 _id: '_design/users',
                 'views': {
                     'all': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User') emit(doc._id);
                         }
                     },
                     'root': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.root === true) emit(doc._id);
                         }
                     },
                     'byLogin': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.login) emit(doc.login, doc._id);
                         }
                     },
                     'byName': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.name) emit(doc.name, doc._id);
                         }
                     },
                     'byEmail': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.email) emit(doc.email, doc._id);
                         }
                     },
                     'byOccupation': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.occupation) emit(doc.occupation, doc._id);
                         }
                     },
                     'byCountry': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'User' && doc.country) emit(doc.country, doc._id);
                         }
                     }
                 }
             });
-        } catch (ignore) {}
+        } catch (ignore) { }
         try {
             await this.instance._db.insert({
                 _id: '_design/teams',
                 'views': {
                     'all': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team') emit(doc._id);
                         }
                     },
                     'byName': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.name) emit(doc.name, doc._id);
                         }
                     },
                     'byType': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.type) emit(doc.type, doc._id);
                         }
                     },
                     'createdBy': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.createdBy) emit(doc.createdBy._id, doc._id);
                         }
                     },
                     'byMember': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.members) {
                                 for (var member in doc.members) {
-                                    emit (doc.members[member].user._id, doc._id);
+                                    emit(doc.members[member].user._id, doc._id);
                                 }
                             }
                         }
                     },
                     'byOwner': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.members) {
                                 for (var member in doc.members) {
                                     if (doc.members[member].role === 0) {
-                                        emit (doc.members[member].user._id, doc._id);
+                                        emit(doc.members[member].user._id, doc._id);
                                     }
                                 }
                             }
@@ -163,61 +163,61 @@ export class DbInterface {
                     }
                 }
             });
-        } catch (ignore) {}
+        } catch (ignore) { }
         try {
             await this.instance._db.insert({
                 _id: '_design/projects',
                 'views': {
                     'all': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Project') emit(doc._id);
                         }
                     },
                     'byName': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Project' && doc.name) emit(doc.name, doc._id);
                         }
                     },
                     'byOwner': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Project' && doc.owner) emit(doc.owner._id, doc._id);
                         }
                     },
                     'createdBy': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Project' && doc.createdBy) emit(doc.createdBy._id, doc._id);
                         }
                     }
                 }
             });
-        } catch (ignore) {}
+        } catch (ignore) { }
         try {
             await this.instance._db.insert({
                 _id: '_design/publications',
                 'views': {
                     'all': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Publication') emit(doc._id);
                         }
                     },
                     'byName': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.name) emit(doc.name, doc._id);
                         }
                     },
                     'byProject': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id);
                         }
                     },
                     'createdBy': {
-                        map: function(doc: any) {
+                        map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.createdBy) emit(doc.createdBy._id, doc._id);
                         }
                     }
                 }
             });
-        } catch (ignore) {}
+        } catch (ignore) { }
         return true;
     }
 
@@ -267,7 +267,7 @@ export class PersistentObjectUtils {
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
         const map = new Map();
         for (const item of response.rows) {
-            if(!map.has(item.id)){
+            if (!map.has(item.id)) {
                 map.set(item.id, true);
                 result.push(item.id);
             }
@@ -292,7 +292,7 @@ export class PersistentObjectUtils {
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
         const map = new Map();
         for (const item of response.rows) {
-            if(!map.has(item.id)){
+            if (!map.has(item.id)) {
                 map.set(item.id, true);
                 if (this.cache.has(item.id)) {
                     this.cache.delete(item.id);
@@ -369,6 +369,9 @@ export class PersistentObjectUtils {
     }
 
     static Rehydrate(data: any, sandboxed: boolean = false, cache: Map<string, any> = new Map()) {
+        if (!data) {
+            return data;
+        }
         if (data._id !== undefined) {
             if (sandboxed === true && cache.has(data._id) === true) {
                 return cache.get(data._id);
