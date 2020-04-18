@@ -5,9 +5,11 @@ import Layout from '../components/layout'
 import Form from '../components/form'
 import fetch from '../lib/fetch'
 import { mutate } from 'swr'
+import { useI18n } from 'react-simple-i18n'
 
 const Login = () => {
   useUser({ redirectTo: '/profile', redirectIfFound: true })
+  const { t } = useI18n()
 
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -34,6 +36,7 @@ const Login = () => {
   return (
     <Layout>
       <div className="login">
+        <p>{t('nav.home')}</p>
         <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
       <style jsx>{`

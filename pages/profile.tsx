@@ -3,11 +3,14 @@ import Layout from '../components/layout'
 import withSession from '../lib/session'
 import { PersistentObjectUtils } from '../utils/persistent-object-utils'
 import { User } from '../interfaces/user'
+import { useI18n } from 'react-simple-i18n'
 
 const SsrProfile = ({ user }) => {
+  const { t } = useI18n()
   return (
     <Layout>
       <h1>Your GitHub profile</h1>
+      <p>{t('nav.home')}</p>
       <h2>
         This page uses{' '}
         <a href="https://nextjs.org/docs/basic-features/pages#server-side-rendering">

@@ -18,6 +18,7 @@ export interface IUser {
     verified?: boolean; // @TODO
     created?: Date; // @TODO
     password?: string;
+    lang?: string;
     root?: boolean;
 }
 
@@ -125,6 +126,14 @@ export class User extends PersistentObject {
             this.savedState.url = url;
             this.saved = false;
         }
+    }
+
+    get lang() {
+        return this.savedState.lang;
+    }
+
+    set lang(lang: string) {
+        this.savedState.lang = lang;
     }
 
     get root() {
