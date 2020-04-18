@@ -1,5 +1,5 @@
 import withIronSession from 'next-iron-session'
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
 export default function withSession(handler) {
   dotenv.config()

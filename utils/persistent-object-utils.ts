@@ -1,9 +1,9 @@
-import Nano from 'nano';
-import { v4 as uuidv4 } from 'uuid';
-import * as Models from '../interfaces';
+import Nano from 'nano'
+import { v4 as uuidv4 } from 'uuid'
+import * as Models from '../interfaces'
 
-export declare function emit(val: any);
-export declare function emit(key: any, value: any);
+export declare function emit(val: any)
+export declare function emit(key: any, value: any)
 
 export enum Requests {
     Objects = 'objects/all',
@@ -35,45 +35,45 @@ export enum Requests {
 }
 
 export class DbInterface {
-    private static instance: DbInterface;
-    private _n: Nano.ServerScope;
-    private _db: Nano.DocumentScope<unknown>;
+    private static instance: DbInterface
+    private _n: Nano.ServerScope
+    private _db: Nano.DocumentScope<unknown>
 
     private constructor() { }
 
     public static async init() {
-        this.getInstance();
+        this.getInstance()
         try {
             await this.instance._db.insert({
                 _id: '_design/objects',
                 'views': {
                     'all': {
                         map: function (doc: any) {
-                            if (doc.instanceOf) emit(doc._id);
+                            if (doc.instanceOf) emit(doc._id)
                         }
                     },
                     'byName': {
                         map: function (doc: any) {
-                            if (doc.name) emit(doc.name, doc._id);
+                            if (doc.name) emit(doc.name, doc._id)
                         }
                     },
                     'byClass': {
                         map: function (doc: any) {
-                            if (doc.instanceOf) emit(doc.instanceOf, doc._id);
+                            if (doc.instanceOf) emit(doc.instanceOf, doc._id)
                         }
                     },
                     'byNameAndClass': {
                         map: function (doc: any) {
-                            if (doc.name && doc.instanceOf) emit([doc.name, doc.instanceOf], doc._id);
+                            if (doc.name && doc.instanceOf) emit([doc.name, doc.instanceOf], doc._id)
                         }
                     },
                     'createdBy': {
                         map: function (doc: any) {
-                            if (doc.createdBy) emit(doc.createdBy._id, doc._id);
+                            if (doc.createdBy) emit(doc.createdBy._id, doc._id)
                         }
                     }
                 }
-            });
+            })
         } catch (ignore) { }
         try {
             await this.instance._db.insert({
@@ -81,41 +81,41 @@ export class DbInterface {
                 'views': {
                     'all': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User') emit(doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User') emit(doc._id)
                         }
                     },
                     'root': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.root === true) emit(doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.root === true) emit(doc._id)
                         }
                     },
                     'byLogin': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.login) emit(doc.login, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.login) emit(doc.login, doc._id)
                         }
                     },
                     'byName': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.name) emit(doc.name, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.name) emit(doc.name, doc._id)
                         }
                     },
                     'byEmail': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.email) emit(doc.email, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.email) emit(doc.email, doc._id)
                         }
                     },
                     'byOccupation': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.occupation) emit(doc.occupation, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.occupation) emit(doc.occupation, doc._id)
                         }
                     },
                     'byCountry': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.country) emit(doc.country, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'User' && doc.country) emit(doc.country, doc._id)
                         }
                     }
                 }
-            });
+            })
         } catch (ignore) { }
         try {
             await this.instance._db.insert({
@@ -123,29 +123,29 @@ export class DbInterface {
                 'views': {
                     'all': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Team') emit(doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Team') emit(doc._id)
                         }
                     },
                     'byName': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.name) emit(doc.name, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.name) emit(doc.name, doc._id)
                         }
                     },
                     'byType': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.type) emit(doc.type, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.type) emit(doc.type, doc._id)
                         }
                     },
                     'createdBy': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.createdBy) emit(doc.createdBy._id, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Team' && doc.createdBy) emit(doc.createdBy._id, doc._id)
                         }
                     },
                     'byMember': {
                         map: function (doc: any) {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.members) {
                                 for (var member in doc.members) {
-                                    emit(doc.members[member].user._id, doc._id);
+                                    emit(doc.members[member].user._id, doc._id)
                                 }
                             }
                         }
@@ -155,14 +155,14 @@ export class DbInterface {
                             if (doc.instanceOf && doc.instanceOf === 'Team' && doc.members) {
                                 for (var member in doc.members) {
                                     if (doc.members[member].role === 0) {
-                                        emit(doc.members[member].user._id, doc._id);
+                                        emit(doc.members[member].user._id, doc._id)
                                     }
                                 }
                             }
                         }
                     }
                 }
-            });
+            })
         } catch (ignore) { }
         try {
             await this.instance._db.insert({
@@ -170,26 +170,26 @@ export class DbInterface {
                 'views': {
                     'all': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Project') emit(doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Project') emit(doc._id)
                         }
                     },
                     'byName': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.name) emit(doc.name, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.name) emit(doc.name, doc._id)
                         }
                     },
                     'byOwner': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.owner) emit(doc.owner._id, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.owner) emit(doc.owner._id, doc._id)
                         }
                     },
                     'createdBy': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.createdBy) emit(doc.createdBy._id, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Project' && doc.createdBy) emit(doc.createdBy._id, doc._id)
                         }
                     }
                 }
-            });
+            })
         } catch (ignore) { }
         try {
             await this.instance._db.insert({
@@ -197,307 +197,307 @@ export class DbInterface {
                 'views': {
                     'all': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Publication') emit(doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Publication') emit(doc._id)
                         }
                     },
                     'byName': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.name) emit(doc.name, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.name) emit(doc.name, doc._id)
                         }
                     },
                     'byProject': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id)
                         }
                     },
                     'createdBy': {
                         map: function (doc: any) {
-                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.createdBy) emit(doc.createdBy._id, doc._id);
+                            if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.createdBy) emit(doc.createdBy._id, doc._id)
                         }
                     }
                 }
-            });
+            })
         } catch (ignore) { }
-        return true;
+        return true
     }
 
     public static getInstance(): DbInterface {
         if (!DbInterface.instance) {
-            DbInterface.instance = new DbInterface();
-            DbInterface.instance._n = Nano('http://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_HOST + ':' + process.env.DB_PORT);
-            DbInterface.instance._db = DbInterface.instance._n.db.use(process.env.DB_NAME);
+            DbInterface.instance = new DbInterface()
+            DbInterface.instance._n = Nano('http://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_HOST + ':' + process.env.DB_PORT)
+            DbInterface.instance._db = DbInterface.instance._n.db.use(process.env.DB_NAME)
         }
-        return DbInterface.instance;
+        return DbInterface.instance
     }
 
     public getDbHandler() {
-        return this._db;
+        return this._db
     }
 
     public async insert(doc: any) {
-        return await this._db.insert(doc);
+        return await this._db.insert(doc)
     }
 
     public async get(req: any) {
-        return await this._db.get(req);
+        return await this._db.get(req)
     }
 
     public async view(designname: string, viewname: string, params: any) {
-        return await this._db.view(designname, viewname, params);
+        return await this._db.view(designname, viewname, params)
     }
 }
 
 export class PersistentObjectUtils {
-    private static cache: Map<string, any> = new Map();
+    private static cache: Map<string, any> = new Map()
 
     static GetUUID() {
-        return uuidv4();
+        return uuidv4()
     }
 
     static SetSavedState(key: string, state: boolean) {
         if (this.cache.has(key)) {
-            this.cache.get(key).saved = state;
+            this.cache.get(key).saved = state
         }
     }
 
     static async Peek(req: Requests, key: any = undefined) {
-        const result = [];
-        const viewId = req.split('/');
-        const db = DbInterface.getInstance();
+        const result = []
+        const viewId = req.split('/')
+        const db = DbInterface.getInstance()
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
-        const map = new Map();
+        const map = new Map()
         for (const item of response.rows) {
             if (!map.has(item.id)) {
-                map.set(item.id, true);
-                result.push(item.id);
+                map.set(item.id, true)
+                result.push(item.id)
             }
         }
-        return result;
+        return result
     }
 
     static async PeekOne(req: Requests, key: any = undefined) {
-        const viewId = req.split('/');
-        const db = DbInterface.getInstance();
+        const viewId = req.split('/')
+        const db = DbInterface.getInstance()
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
         if (response.rows.length === 0) {
-            return null;
+            return null
         }
-        return response.rows[0].id;
+        return response.rows[0].id
     }
 
     static async Load(req: Requests, key: any = undefined) {
-        const result = [];
-        const viewId = req.split('/');
-        const db = DbInterface.getInstance();
+        const result = []
+        const viewId = req.split('/')
+        const db = DbInterface.getInstance()
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
-        const map = new Map();
+        const map = new Map()
         for (const item of response.rows) {
             if (!map.has(item.id)) {
-                map.set(item.id, true);
+                map.set(item.id, true)
                 if (this.cache.has(item.id)) {
-                    this.cache.delete(item.id);
+                    this.cache.delete(item.id)
                 }
-                result.push(this.Rehydrate(item.doc));
-                this.SetSavedState(item.id, true);
+                result.push(this.Rehydrate(item.doc))
+                this.SetSavedState(item.id, true)
             }
         }
-        return result;
+        return result
     }
 
     static async LoadOne(req: Requests, key: any = undefined) {
-        const viewId = req.split('/');
-        const db = DbInterface.getInstance();
+        const viewId = req.split('/')
+        const db = DbInterface.getInstance()
         const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
         if (response.rows.length === 0) {
-            return null;
+            return null
         }
-        const item = response.rows[0];
+        const item = response.rows[0]
         if (this.cache.has(item.id)) {
-            this.cache.delete(item.id);
+            this.cache.delete(item.id)
         }
-        const result = this.Rehydrate(item.doc);
-        this.SetSavedState(item.id, true);
-        return result;
+        const result = this.Rehydrate(item.doc)
+        this.SetSavedState(item.id, true)
+        return result
     }
 
     static async Save(obj: any) {
-        let validateSave = true;
+        let validateSave = true
         if (typeof obj.validateSave === 'function') {
-            validateSave = await obj.validateSave();
+            validateSave = await obj.validateSave()
         }
-        const responses = [];
+        const responses = []
         if (validateSave === true) {
-            const db = DbInterface.getInstance();
-            const data = this.Dehydrate(obj);
-            const [, documents] = this.expand(data);
+            const db = DbInterface.getInstance()
+            const data = this.Dehydrate(obj)
+            const [, documents] = this.expand(data)
             for (const [, doc] of documents) {
                 if (doc._id && !doc._rev) {
-                    doc.created = new Date();
+                    doc.created = new Date()
                     if (this.cache.has(doc._id)) {
-                        this.cache.get(doc._id).created = doc.created;
+                        this.cache.get(doc._id).created = doc.created
                     }
                     if (doc._id === obj.id) {
-                        obj.created = doc.created;
+                        obj.created = doc.created
                     }
                 }
-                const resp = await db.insert(doc);
+                const resp = await db.insert(doc)
                 if (resp.ok && resp.id && resp.rev) {
                     if (this.cache.has(resp.id)) {
-                        this.cache.get(resp.id).revision = resp.rev;
-                        this.SetSavedState(resp.id, true);
+                        this.cache.get(resp.id).revision = resp.rev
+                        this.SetSavedState(resp.id, true)
                     }
                     if (resp.id === obj.id) {
-                        obj.revision = resp.rev;
-                        obj.saved = true;
+                        obj.revision = resp.rev
+                        obj.saved = true
                     }
                 } else if (resp.id) {
-                    this.SetSavedState(resp.id, false);
+                    this.SetSavedState(resp.id, false)
                     if (resp.id === obj.id) {
-                        obj.saved = false;
+                        obj.saved = false
                     }
                 }
-                responses.push(resp);
+                responses.push(resp)
             }
         } else {
             responses.push({
                 ok: false,
                 id: obj.id,
                 rev: obj.revision
-            });
+            })
         }
-        return responses;
+        return responses
     }
 
     static Rehydrate(data: any, sandboxed: boolean = false, cache: Map<string, any> = new Map()) {
         if (!data) {
-            return data;
+            return data
         }
         if (data._id !== undefined) {
             if (sandboxed === true && cache.has(data._id) === true) {
-                return cache.get(data._id);
+                return cache.get(data._id)
             }
             if (sandboxed === false && this.cache.has(data._id) === true) {
-                return this.cache.get(data._id);
+                return this.cache.get(data._id)
             }
         }
-        let rehydratedObj: any;
+        let rehydratedObj: any
         if (data.instanceOf !== undefined) {
-            rehydratedObj = new (<any>Models)[data.instanceOf]();
-            rehydratedObj.rehydrate(data);
+            rehydratedObj = new (<any>Models)[data.instanceOf]()
+            rehydratedObj.rehydrate(data)
         } else {
-            rehydratedObj = {};
+            rehydratedObj = {}
         }
         if (sandboxed === true && data._id !== undefined) {
-            cache.set(data._id, rehydratedObj);
+            cache.set(data._id, rehydratedObj)
         } else if (sandboxed === false && data._id !== undefined) {
-            this.cache.set(data._id, rehydratedObj);
+            this.cache.set(data._id, rehydratedObj)
         }
         for (const key in data) {
             switch (key) {
                 case '_included':
-                    delete data[key];
-                    break;
+                    delete data[key]
+                    break
                 case '_id':
-                    rehydratedObj.id = data[key];
-                    break;
+                    rehydratedObj.id = data[key]
+                    break
                 case '_rev':
-                    rehydratedObj.revision = data[key];
-                    break;
+                    rehydratedObj.revision = data[key]
+                    break
                 default:
                     if (Array.isArray(data[key])) {
-                        rehydratedObj[key] = [];
+                        rehydratedObj[key] = []
                         for (const element of data[key]) {
-                            rehydratedObj[key].push(this.Rehydrate(element, sandboxed, cache));
+                            rehydratedObj[key].push(this.Rehydrate(element, sandboxed, cache))
                         }
                     } else if (data[key] instanceof Object && data[key].constructor === Object) {
-                        rehydratedObj[key] = this.Rehydrate(data[key], sandboxed, cache);
+                        rehydratedObj[key] = this.Rehydrate(data[key], sandboxed, cache)
                     } else {
-                        rehydratedObj[key] = data[key];
+                        rehydratedObj[key] = data[key]
                     }
             }
         }
-        return rehydratedObj;
+        return rehydratedObj
     }
 
     static Dehydrate(obj: any) {
-        let temp: any;
-        let dehydratedObj: any;
+        let temp: any
+        let dehydratedObj: any
         if (obj instanceof Models.PersistentObject) {
             if (obj.id === undefined) {
-                obj.id = this.GetUUID();
+                obj.id = this.GetUUID()
             }
             if (obj.instanceOf === undefined) {
-                obj.instanceOf = obj.constructor.name;
+                obj.instanceOf = obj.constructor.name
             }
-            temp = Object.assign({}, obj.dehydrate());
-            temp._included = obj.isIncluded;
+            temp = Object.assign({}, obj.dehydrate())
+            temp._included = obj.isIncluded
         } else {
-            temp = obj;
+            temp = obj
         }
         if (Array.isArray(temp)) {
-            dehydratedObj = [];
+            dehydratedObj = []
             for (const element of temp) {
-                dehydratedObj.push(this.Dehydrate(element));
+                dehydratedObj.push(this.Dehydrate(element))
             }
         } else if (temp instanceof Object && temp.constructor === Object) {
-            dehydratedObj = {};
+            dehydratedObj = {}
             for (const element in temp) {
-                dehydratedObj[element] = this.Dehydrate(temp[element]);
+                dehydratedObj[element] = this.Dehydrate(temp[element])
             }
         } else {
-            dehydratedObj = temp;
+            dehydratedObj = temp
         }
-        return dehydratedObj;
+        return dehydratedObj
     }
 
     private static expand(obj: any, documents: Map<string, any> = new Map(), root: boolean = true) {
-        let property: any = undefined;
-        let prop: any;
+        let property: any = undefined
+        let prop: any
         if (Array.isArray(obj)) {
             property = []
             for (const element of obj) {
-                [prop, documents] = this.expand(element, documents, false);
-                property.push(prop);
+                [prop, documents] = this.expand(element, documents, false)
+                property.push(prop)
             }
         } else if (obj instanceof Object && obj.constructor === Object) {
             if (obj._id !== undefined && obj._included === false && root !== true) {
                 property = {
                     _id: obj._id
-                };
-                if (obj.instanceOf !== undefined) {
-                    property.instanceOf = obj.instanceOf;
                 }
-                let doc = {};
+                if (obj.instanceOf !== undefined) {
+                    property.instanceOf = obj.instanceOf
+                }
+                let doc = {}
                 for (const key in obj) {
                     switch (key) {
                         case '_included':
-                            break;
+                            break
                         default:
-                            [prop, documents] = this.expand(obj[key], documents, false);
-                            doc[key] = prop;
+                            [prop, documents] = this.expand(obj[key], documents, false)
+                            doc[key] = prop
                     }
                 }
                 if (obj._id !== undefined) {
-                    documents.set(obj._id, doc);
+                    documents.set(obj._id, doc)
                 }
             } else {
                 property = {}
                 for (const key in obj) {
                     switch (key) {
                         case '_included':
-                            break;
+                            break
                         default:
-                            [prop, documents] = this.expand(obj[key], documents, false);
-                            property[key] = prop;
+                            [prop, documents] = this.expand(obj[key], documents, false)
+                            property[key] = prop
                     }
                 }
                 if (obj._id !== undefined) {
-                    documents.set(obj._id, property);
+                    documents.set(obj._id, property)
                 }
             }
         } else {
-            property = obj;
+            property = obj
         }
-        return [property, documents];
+        return [property, documents]
     }
 }

@@ -1,23 +1,20 @@
 import App from 'next/app'
 import { createI18n, I18nProvider } from 'react-simple-i18n'
 import useUser from '../lib/hooks/useUser'
-
-const langData = {
-    en: {
-        nav: {
-            home: 'Home',
-        }
-    },
-    fr: {
-        nav: {
-            home: 'Accueil',
-        }
-    }
-}
+import langData from '../i18n.json'
 
 function MyApp({ Component, pageProps }) {
-    let lang = 'en'
     const user = useUser({ redirectIfFound: false })
+    let lang = 'en'
+    if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+        const detectBrowserLanguage = require('detect-browser-language')
+        const userLanguage = detectBrowserLanguage()
+        for (let langDataKey in langData) {
+            if (userLanguage.indexOf(langDataKey) === 0) {
+                lang = langDataKey
+            }
+        }
+    }
     if (user && user.lang) {
         lang = user.lang
     }

@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Layout from '../components/layout'
 import { GetServerSideProps } from 'next'
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 import withSession from '../lib/session'
 import { DbInterface, PersistentObjectUtils, Requests } from '../utils/persistent-object-utils'
 
@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = withSession(async context 
     done: user.name,
     valid: valid ? 'ok' : 'not ok',
     color: 'green'
-  };
+  }
   return {
     props: {
       allProps
