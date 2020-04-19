@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import useUser from '../lib/hooks/useUser'
 import Layout from '../components/layout'
-import Form from '../components/form'
+import LoginForm from '../components/loginForm'
 import fetch from '../lib/fetch'
 import { mutate } from 'swr'
 import { useI18n } from 'react-simple-i18n'
@@ -29,18 +29,19 @@ const Login = () => {
       })
       mutate('/api/user', user)
     } catch (error) {
-      setErrorMsg('Wrong username or password')
+      setErrorMsg(t('login.error'))
     }
   }
 
   return (
     <Layout>
       <div className="login">
-        <p>{t('nav.home')}</p>
-        <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
+        <p>{t('login.title')}</p>
+        <LoginForm errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
       <style jsx>{`
         .login {
+          min-width: 21rem;
           max-width: 21rem;
           margin: 0 auto;
           padding: 1rem;

@@ -27,7 +27,7 @@ const Header = () => {
             <>
               <li>
                 <Link href="/profile">
-                  <a>Profile (Server-side Rendering)</a>
+                  <a>Profile</a>
                 </Link>
               </li>
               <li>
