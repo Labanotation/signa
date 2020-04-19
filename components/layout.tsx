@@ -8,7 +8,7 @@ type Props = {
 
 const Layout = ({
   children,
-  title = 'This is the default title'
+  title = 'Signa'
 }) => (
     <>
       <Head>
@@ -74,11 +74,11 @@ const Layout = ({
 
       <footer>
         <a
-          href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://nextjs.org/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
+          Powered by Next.js
         </a>
       </footer>
     </>

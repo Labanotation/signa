@@ -8,7 +8,10 @@
             "error": "Wrong username or password"
         },
         "nav": {
-            "home": "Home"
+            "home": "Home",
+            "about": "About Signa",
+            "doc": "Documentation",
+            "explore": "Explore"
         }
     },
     "fr": {
@@ -20,7 +23,10 @@
             "error": "Identifiant ou mot de passe erroné"
         },
         "nav": {
-            "home": "Accueil"
+            "home": "Accueil",
+            "about": "À propos de Signa",
+            "doc": "Documentation",
+            "explore": "Explorer"
         }
     }
 }
