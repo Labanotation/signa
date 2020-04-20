@@ -11,7 +11,9 @@
             "home": "Home",
             "about": "About Signa",
             "doc": "Documentation",
-            "explore": "Explore"
+            "explore": "Explore",
+            "blog": "Blog",
+            "contact": "Contact"
         }
     },
     "fr": {
@@ -26,7 +28,9 @@
             "home": "Accueil",
             "about": "À propos de Signa",
             "doc": "Documentation",
-            "explore": "Explorer"
+            "explore": "Explorer",
+            "blog": "Blog",
+            "contact": "Contact"
         }
     }
 }

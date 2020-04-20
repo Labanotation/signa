@@ -67,8 +67,7 @@ const Header = () => {
       <style jsx>{`
         #logo {
           width: 30px;
-          background: #fff;
-          border-radius: 15px;
+          background: transparent;
           padding: 1px;
         }
         ul {
@@ -97,9 +96,9 @@ const Header = () => {
           margin-left: 1em;
         }
         header {
-          padding: 0.1rem;
+          padding: 1px;
           color: #eee;
-          background-color: #333;
+          background-color: #789;
         }
       `}</style>
     </header>

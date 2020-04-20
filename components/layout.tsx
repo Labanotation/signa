@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Head from 'next/head'
 import Header from './header'
+import Footer from './footer'
 
 type Props = {
   title?: string
@@ -26,25 +27,11 @@ const Layout = ({
         padding: 0;
         margin: 0;
         color: #333;
+        height: 100%;
+        width: 100%;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           'Helvetica Neue', Arial, Noto Sans, sans-serif, 'Apple Color Emoji',
           'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-      }
-      footer {
-        width: 100%;
-        height: 100px;
-        border-top: 1px solid #eaeaea;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      footer img {
-        margin-left: 0.5rem;
-      }
-      footer a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
       .container {
         padding: 0 0.5rem;
@@ -54,7 +41,7 @@ const Layout = ({
         align-items: center;
       }
       main {
-        padding: 5rem 0;
+        padding: 2rem 0;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -67,20 +54,10 @@ const Layout = ({
       }
     `}</style>
       <Header />
-
       <main>
         <div className="container">{children}</div>
       </main>
-
-      <footer>
-        <a
-          href="https://nextjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by Next.js
-        </a>
-      </footer>
+      <Footer />
     </>
   )
 
