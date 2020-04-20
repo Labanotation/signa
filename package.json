@@ -8,14 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
     "argon2": "^0.26.2",
+    "bootstrap": "^4.4.1",
     "detect-browser-language": "^0.0.2",
     "dotenv": "^8.2.0",
     "nano": "^8.2.2",
     "next": "9.3.4",
     "next-iron-session": "^3.1.1",
     "node-fetch": "^2.6.0",
+    "node-sass": "^4.13.1",
     "react": "16.13.1",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "16.13.1",
     "react-simple-i18n": "^1.2.0",
     "swr": "^0.2.0",

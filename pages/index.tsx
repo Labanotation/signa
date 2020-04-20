@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Layout from '../components/layout'
 
 const Home = () => (
@@ -7,7 +6,7 @@ const Home = () => (
       Welcome to <a href="https://nextjs.org">Next.js!</a>
     </h1>
 
-    <p className="description">
+    <p className="description example">
       Get started by editing <code>pages/index.js</code>
     </p>
 

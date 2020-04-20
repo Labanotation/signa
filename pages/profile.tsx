@@ -9,7 +9,7 @@ const SsrProfile = ({ user }) => {
   const { t } = useI18n()
   return (
     <Layout>
-      <h1>Your GitHub profile</h1>
+      <h1>Your profile</h1>
       <p>{t('nav.home')}</p>
       <h2>
         This page uses{' '}
@@ -24,9 +24,6 @@ const SsrProfile = ({ user }) => {
 
       {user?._id && (
         <>
-          <p style={{ fontStyle: 'italic' }}>
-            plop
-          </p>
           <pre>{JSON.stringify(user, undefined, 2)}</pre>
         </>
       )}

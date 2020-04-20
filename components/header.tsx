@@ -24,12 +24,12 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link href="/doc">
+            <Link href="/about">
               <a>{t('nav.doc')}</a>
             </Link>
           </li>
           <li className="last">
-            <Link href="/explore">
+            <Link href="/about">
               <a>{t('nav.explore')}</a>
             </Link>
           </li>
@@ -67,8 +67,7 @@ const Header = () => {
       <style jsx>{`
         #logo {
           width: 30px;
-          background: transparent;
-          padding: 1px;
+          margin-left: .5em;
         }
         ul {
           display: flex;
@@ -86,19 +85,11 @@ const Header = () => {
         li.last {
           margin-right: auto;
         }
-        a {
-          color: #eee;
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-        }
-        a img {
-          margin-left: 1em;
-        }
         header {
-          padding: 1px;
           color: #eee;
           background-color: #789;
+          height: 48px;
+          padding-top: 10px;
         }
       `}</style>
     </header>

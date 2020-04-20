@@ -6,65 +6,63 @@ import { mutate } from 'swr'
 import { useI18n } from 'react-simple-i18n'
 
 const Footer = () => {
-    const user = useUser()
-    const router = useRouter()
-    const { t } = useI18n()
-    return (
-        <footer>
-            <nav>
-                <ul>
-                    <li>
-                        <Link href="/">
-                            <a>{t('nav.home')}</a>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/blog">
-                            <a>{t('nav.blog')}</a>
-                        </Link>
-                    </li>
-                    <li className="last">
-                        <Link href="/contact">
-                            <a>{t('nav.contact')}</a>
-                        </Link>
-                    </li>
-                    {!user?._id && (
-                        <li>
-                            <Link href="/login">
-                                <a>Login</a>
-                            </Link>
-                        </li>
-                    )}
-                    {user?._id && (
-                        <>
-                            <li>
-                                <Link href="/profile">
-                                    <a>Profile</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <a
-                                    href="/api/logout"
-                                    onClick={async e => {
-                                        e.preventDefault()
-                                        await fetch('/api/logout')
-                                        mutate('/api/user', {})
-                                        router.push('/login')
-                                    }}
-                                >
-                                    Logout
+  const user = useUser()
+  const router = useRouter()
+  const { t } = useI18n()
+  return (
+    <footer>
+      <nav>
+        <ul>
+          <li>
+            <Link href="/">
+              <a>{t('nav.home')}</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/about">
+              <a>{t('nav.blog')}</a>
+            </Link>
+          </li>
+          <li className="last">
+            <Link href="/about">
+              <a>{t('nav.contact')}</a>
+            </Link>
+          </li>
+          {!user?._id && (
+            <li>
+              <Link href="/login">
+                <a>Login</a>
+              </Link>
+            </li>
+          )}
+          {user?._id && (
+            <>
+              <li>
+                <Link href="/profile">
+                  <a>Profile</a>
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="/api/logout"
+                  onClick={async e => {
+                    e.preventDefault()
+                    await fetch('/api/logout')
+                    mutate('/api/user', {})
+                    router.push('/login')
+                  }}
+                >
+                  Logout
                 </a>
-                            </li>
-                        </>
-                    )}
-                    <li>
-                        <Link href="https://nextjs.org/">
-                            <a>Powered by Next.js</a>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-            <style jsx>{`
+              </li>
+            </>
+          )}
+          <li>
+            <a href="https://nextjs.org/">Powered by Next.js</a>
+          </li>
+        </ul>
+      </nav>
+      <style jsx>{`
         ul {
           display: flex;
           list-style: none;
@@ -81,24 +79,16 @@ const Footer = () => {
         li.last {
           margin-right: auto;
         }
-        a {
-          color: #eee;
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-        }
-        a img {
-          margin-left: 1em;
-        }
         footer {
           font-size: 70%;
-          padding: 1px;
           color: #eee;
           background-color: #789;
+          height: 24px;
+          padding-top: 4px;
         }
       `}</style>
-        </footer>
-    )
+    </footer>
+  )
 }
 
 export default Footer
