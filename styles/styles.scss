@@ -3,7 +3,44 @@
 @import "~bootstrap/scss/mixins/_breakpoints";
 @import "~bootstrap/scss/bootstrap";
 
+@font-face {
+  font-family: "SignaSans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Roboto/Roboto-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SignaSans";
+  font-style: italic;
+  font-weight: 400;
+  src: url("/fonts/Roboto/Roboto-LightItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SignaSerif";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Lora/static/Lora-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SignaSerif";
+  font-style: italic;
+  font-weight: 400;
+  src: url("/fonts/Lora/static/Lora-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SignaMono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Inconsolata/Static/Inconsolata-Light.ttf") format("truetype");
+}
+
 $a-tags: 'a, a:active, a:hover, a:visited';
+$header-a-tags: 'header a, header a:active, header a:hover, header a:visited';
+$footer-a-tags: 'footer a, footer a:active, footer a:hover, footer a:visited';
 $a-tags-hover: 'a:active, a:hover';
 
 $font-size: 50px;
@@ -14,11 +51,12 @@ $font-size: 50px;
 
 html,
 body {
+  background-color: #567;
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, Noto Sans, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "SignaSans";
 }
 #container {
+  background-color: #fefefe;
   padding: 0;
 }
 #main {
@@ -30,6 +68,13 @@ body {
   align-items: center;
 }
 #{$a-tags} {
-  color: #eee;
+  color: #202020;
   text-decoration: none;
+}
+#{$header-a-tags}, #{$footer-a-tags} {
+  color: #efefef;
+  text-decoration: none;
+}
+pre {
+  font-family: "SignaMono";
 }

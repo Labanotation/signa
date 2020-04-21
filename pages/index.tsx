@@ -1,4 +1,6 @@
 import Layout from '../components/layout'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 const Home = () => (
   <Layout>
@@ -14,6 +16,7 @@ const Home = () => (
       <a href="https://nextjs.org/docs" className="card">
         <h3>Documentation &rarr;</h3>
         <p>Find in-depth information about Next.js features and API.</p>
+        <FontAwesomeIcon icon={faCoffee} />
       </a>
 
       <a href="https://nextjs.org/learn" className="card">

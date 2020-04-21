@@ -6,6 +6,7 @@ import langData from '../i18n.json'
 function MyApp({ Component, pageProps }) {
     const user = useUser({ redirectIfFound: false })
     let lang = 'en'
+    // @TODO keep in session...
     if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
         const detectBrowserLanguage = require('detect-browser-language')
         const userLanguage = detectBrowserLanguage()

@@ -68,6 +68,7 @@ const Header = () => {
         #logo {
           width: 30px;
           margin-left: .5em;
+          margin-top: -3px;
         }
         ul {
           display: flex;
@@ -89,7 +90,7 @@ const Header = () => {
           color: #eee;
           background-color: #789;
           height: 48px;
-          padding-top: 10px;
+          padding-top: 12px;
         }
       `}</style>
     </header>
