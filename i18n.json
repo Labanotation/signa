@@ -13,7 +13,8 @@
             "doc": "Documentation",
             "explore": "Explore",
             "blog": "Blog",
-            "contact": "Contact"
+            "contact": "Contact",
+            "support": "Support"
         }
     },
     "fr": {
@@ -30,7 +31,8 @@
             "doc": "Documentation",
             "explore": "Explorer",
             "blog": "Blog",
-            "contact": "Contact"
+            "contact": "Contact",
+            "support": "Soutenir"
         }
     }
 }

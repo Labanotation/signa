@@ -4,6 +4,8 @@ import useUser from '../lib/hooks/useUser'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
 import { useI18n } from 'react-simple-i18n'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 const Header = () => {
   const user = useUser()
@@ -28,10 +30,13 @@ const Header = () => {
               <a>{t('nav.doc')}</a>
             </Link>
           </li>
-          <li className="last">
+          <li>
             <Link href="/about">
               <a>{t('nav.explore')}</a>
             </Link>
+          </li>
+          <li className="last">
+            <FontAwesomeIcon icon={faSearch} width="18px" />
           </li>
           {!user?._id && (
             <li>
@@ -87,7 +92,7 @@ const Header = () => {
           margin-right: auto;
         }
         header {
-          color: #eee;
+          color: #fff;
           background-color: #789;
           height: 48px;
           padding-top: 12px;

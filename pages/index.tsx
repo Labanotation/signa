@@ -1,48 +1,35 @@
 import Layout from '../components/layout'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 const Home = () => (
   <Layout>
     <h1 className="title">
-      Welcome to <a href="https://nextjs.org">Next.js!</a>
+      Welcome to Signa
     </h1>
-
-    <p className="description example">
-      Get started by editing <code>pages/index.js</code>
+    <img id="logo-big" src="/logo.png" alt="Signa" />
+    <p className="description">
+      A Web application dedicated to Laban notation
     </p>
 
     <div className="grid">
-      <a href="https://nextjs.org/docs" className="card">
-        <h3>Documentation &rarr;</h3>
-        <p>Find in-depth information about Next.js features and API.</p>
-        <FontAwesomeIcon icon={faCoffee} />
+      <a href="#" className="card">
+        <h3>Writing</h3>
+        <p></p>
       </a>
 
-      <a href="https://nextjs.org/learn" className="card">
-        <h3>Learn &rarr;</h3>
-        <p>Learn about Next.js in an interactive course with quizzes!</p>
+      <a href="#" className="card">
+        <h3>Publishing</h3>
+        <p></p>
       </a>
 
-      <a
-        href="https://github.com/zeit/next.js/tree/master/examples"
-        className="card"
-      >
-        <h3>Examples &rarr;</h3>
-        <p>Discover and deploy boilerplate example Next.js projects.</p>
-      </a>
-
-      <a
-        href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        className="card"
-      >
-        <h3>Deploy &rarr;</h3>
-        <p>
-          Instantly deploy your Next.js site to a public URL with ZEIT Now.
-          </p>
+      <a href="#" className="card">
+        <h3>Teaching</h3>
+        <p></p>
       </a>
     </div>
     <style jsx>{`
+      #logo-big {
+        width: 64px;
+      }
       .title a {
         color: #0070f3;
         text-decoration: none;
@@ -57,7 +44,7 @@ const Home = () => (
       .title {
         margin: 0;
         line-height: 1.15;
-        font-size: 4rem;
+        font-size: 3rem;
       }
 
       .title,
@@ -84,14 +71,13 @@ const Home = () => (
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-
-        max-width: 800px;
-        margin-top: 3rem;
+        width: 100%;
+        margin-top: 1rem;
       }
 
       .card {
         margin: 1rem;
-        flex-basis: 45%;
+        flex-basis: 30%;
         padding: 1.5rem;
         text-align: left;
         color: inherit;

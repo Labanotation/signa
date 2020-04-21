@@ -23,9 +23,14 @@ const Footer = () => {
               <a>{t('nav.blog')}</a>
             </Link>
           </li>
-          <li className="last">
+          <li>
             <Link href="/about">
               <a>{t('nav.contact')}</a>
+            </Link>
+          </li>
+          <li className="last">
+            <Link href="/about">
+              <a>{t('nav.support')}</a>
             </Link>
           </li>
           {!user?._id && (
@@ -81,7 +86,7 @@ const Footer = () => {
         }
         footer {
           font-size: 70%;
-          color: #eee;
+          color: #fff;
           background-color: #789;
           height: 24px;
           padding-top: 5px;

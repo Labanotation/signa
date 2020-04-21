@@ -21,7 +21,6 @@ const SsrProfile = ({ user }) => {
           getServerSideProps
         </a>
       </h2>
-
       {user?._id && (
         <>
           <pre>{JSON.stringify(user, undefined, 2)}</pre>
