@@ -1,0 +1,39 @@
+{
+	"Home": "Accueil",
+	"About": "À propos",
+  "Features": "Fonctionnalités",
+  "Introduction": "Introduction",
+	"Documentation": "Documentation",
+	"Explore": "Exploration",
+	"Search": "Rechercher",
+  "Login": "Se connecter",
+  "Logout": "Se déconnecter",
+	"Profile": "Profil",
+	"Resources": "Ressources",
+  "index": {
+    "welcome": "Bienvenue dans Signa",
+    "tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
+    "comingsoon": "Bientôt disponible"
+  },
+	"login": {
+    "title": "Se connecter à Signa...",
+    "login": "Identifiant",
+    "password": "Mot de passe",
+    "submit": "Envoyer"
+	},
+  "footer": {
+    "supportCND": "Avec le soutien du",
+    "writing": "Écrire",
+    "publishing": "Publier",
+    "teaching": "Enseigner",
+    "teams": "Collaborer",
+    "developers": "Développer",
+    "blog": "Blog",
+    "api": "API",
+    "kinetography": "Cinétographie Laban",
+    "team": "Équipe",
+    "support": "Soutenir",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation"
+  }
+}

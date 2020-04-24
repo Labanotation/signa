@@ -1,0 +1,39 @@
+{
+  "Home": "Home",
+  "About": "About",
+  "Features": "Features",
+  "Introduction": "Introduction",
+  "Documentation": "Documentation",
+  "Explore": "Exploration",
+  "Search": "Search",
+  "Login": "Login",
+  "Logout": "Logout",
+  "Profile": "Profile",
+  "Resources": "Resources",
+  "index": {
+    "welcome": "Welcome to Signa",
+    "tagline": "A Web platform for writing and publishing Laban scores.",
+    "comingsoon": "Coming soon"
+  },
+  "login": {
+    "title": "Login to Signa...",
+    "login": "Login",
+    "password": "Password",
+    "submit": "Submit"
+  },
+  "footer": {
+    "supportCND": "With the support of",
+    "writing": "Writing",
+    "publishing": "Publishing",
+    "teaching": "Teaching",
+    "teams": "Collaborating",
+    "developers": "Coding",
+    "blog": "Blog",
+    "api": "API",
+    "kinetography": "Kinetography Laban",
+    "team": "Team",
+    "support": "Support",
+    "privacy": "Privacy",
+    "terms": "Terms of use"
+  }
+}

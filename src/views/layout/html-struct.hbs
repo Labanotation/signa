@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Signa, a Web application for Laban notation">
+  <meta name="author" content="Sébastien Courvoisier">
+  <title>{{title}}</title>
+  <link rel="icon" href="/images/favicon.ico">
+  {{> styles}}
+  {{{block "pageStyles"}}}
+</head>
+
+<body>
+  <nav class="site-header sticky-top py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <a class="p-2" href="/" aria-label="{{{__ "Home"}}}">
+        <img id="logo-header" src="/images/logo.png" class="d-block mx-auto">
+      </a>
+      <a class="p-2 d-none d-md-inline-block" href="#">{{{__ "Introduction"}}}</a>
+      <a class="p-2 d-none d-md-inline-block" href="#">{{{__ "Documentation"}}}</a>
+      <a class="p-2 d-none d-md-inline-block" href="#">{{{__ "Explore"}}}</a>
+      {{#if isAuthenticated}}
+      <a class="ml-auto p-2 d-none d-md-inline-block" href="#"><i class="fas fa-user-circle"></i> {{ user.login }}</a>
+      <a class="p-2 d-none d-md-inline-block" href="/logout">{{{__ "Logout"}}}</a>
+      {{else}}
+      <a class="ml-auto p-2 d-none d-md-inline-block" href="/login">{{{__ "Login"}}}</a>
+      {{/if}}
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInputGroup">{{{__ "Search"}}}</label>
+        <div class="input-group p-1">
+          <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-search"></i></div>
+          </div>
+          <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup"
+            placeholder="{{{__ "Search"}}}">
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  <div class="container-fluid">
+    {{{body}}}
+  </div>
+  <footer class="container py-5">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <div class="col-6 col-md">
+        <h5 class="d-block mb-1 mx-1">Signa <i class="fab fa-github mx-1"></i> <i class="fab fa-twitter mx-1"></i> <i class="fab fa-facebook mx-1"></i></h5>
+        <small class="d-inline-block mb-3 text-muted">{{{__ "footer.supportCND"}}}</small>&nbsp;<a
+          href="https://www.cnd.fr/"><img id="logo-cnd-footer" src="/images/cnd.png" class="d-inline-block mb-2"
+            aria-label="CND"></a>
+      </div>
+      <div class="col-6 col-md">
+        <h5>{{{__ "Features"}}}</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="text-muted" href="#">{{{__ "footer.writing"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.publishing"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.teaching"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.teams"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.developers"}}}</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>{{{__ "Resources"}}}</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="text-muted" href="#">{{{__ "footer.blog"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "Documentation"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.api"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.kinetography"}}}</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>{{{__ "About"}}}</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="text-muted" href="#">{{{__ "footer.team"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.support"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.privacy"}}}</a></li>
+          <li><a class="text-muted" href="#">{{{__ "footer.terms"}}}</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+  {{> scripts}}
+  {{{block 'pageScripts'}}}
+</body>
+
+</html>

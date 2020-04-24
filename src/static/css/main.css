@@ -1,0 +1,51 @@
+#logo-header {
+  height: 24px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+#logo-footer {
+  height: 24px;
+}
+
+#logo-cnd-footer {
+  height: 18px;
+}
+
+.logologin {
+  width: 64px;
+  height: 64px;
+}
+
+.bg-signa {
+  background: url(/images/logo_faded.png) center no-repeat;
+  background-size: 25%;
+}
+
+.site-header {
+  background-color: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+  color: #999;
+  transition: ease-in-out color 0.15s;
+}
+.site-header a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.flex-equal > * {
+  -ms-flex: 1;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    -ms-flex: 1;
+    flex: 1;
+  }
+}
+
+.overflow-hidden { overflow: hidden; }
