@@ -76,8 +76,6 @@ app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
 
 hbs.registerHelper('layout', function (id, options) {
-  const template = hbs.handlebars.compile("{{ user.name }}");
-  console.log(options, template(options.data.root))
   const attrs = []
   if (options) {
     for (const prop in options.hash) {
@@ -85,7 +83,7 @@ hbs.registerHelper('layout', function (id, options) {
     }
   }
   const attributes = attrs.join(' ')
-  return new hbs.SafeString(`<div id="${id}" ${attributes} class="container my-2">
+  const template = hbs.compile(`<div id="${id}" ${attributes} class="container my-2">
     <div class="row">
       <div class="col bg-dark text-light m-1 p-5">{{ user.name }}</div>
       <div class="col bg-success text-light m-1 p-5">col</div>
@@ -97,6 +95,7 @@ hbs.registerHelper('layout', function (id, options) {
       <div class="col bg-dark text-light m-1">col-2</div>
     </div>
   </div>`)
+  return template({...options.hash, ...options.data.root})
 })
 
 /* Sync
