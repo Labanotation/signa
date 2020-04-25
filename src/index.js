@@ -75,6 +75,30 @@ app.engine('hbs', hbs.express4({
 app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
 
+hbs.registerHelper('layout', function (id, options) {
+  const template = hbs.handlebars.compile("{{ user.name }}");
+  console.log(options, template(options.data.root))
+  const attrs = []
+  if (options) {
+    for (const prop in options.hash) {
+      attrs.push(`${prop}="${options.hash[prop]}"`)
+    }
+  }
+  const attributes = attrs.join(' ')
+  return new hbs.SafeString(`<div id="${id}" ${attributes} class="container my-2">
+    <div class="row">
+      <div class="col bg-dark text-light m-1 p-5">{{ user.name }}</div>
+      <div class="col bg-success text-light m-1 p-5">col</div>
+      <div class="col bg-dark text-light m-1 p-5">col</div>
+      <div class="col bg-success text-light m-1 p-5">col</div>
+    </div>
+    <div class="row">
+      <div class="col bg-success text-light m-1">col-2</div>
+      <div class="col bg-dark text-light m-1">col-2</div>
+    </div>
+  </div>`)
+})
+
 /* Sync
 hbs.registerHelper('link', function (text, options) {
   const attrs = []
@@ -105,12 +129,16 @@ app.get('/', function (req, res) {
     req.session.views = 1
   }
   */
-  console.log(req.user)
+  let userForTemplate = null
+  if (req.isAuthenticated() && req.user) {
+    userForTemplate = req.user.dehydrate()
+    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+  }
   res.render('index', {
     title: 'Signa',
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated(),
-    user: req.user ? req.user.dehydrate() : null
+    user: userForTemplate
     // count: req.session.views
   })
 })
@@ -157,7 +185,7 @@ app.get('/login', (req, res) => {
     res.redirect('/')
   } else {
     res.render('login', {
-      title: 'Signa | Login',
+      title: 'Signa',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       invalid: req.query.invalid !== undefined
@@ -169,7 +197,7 @@ app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     req.login(user, (err) => {
       if (user) {
-        return res.redirect('/')
+        return res.redirect('/dashboard')
       } else {
         return res.redirect('/login?invalid')
       }
@@ -182,12 +210,19 @@ app.get('/logout', (req, res) => {
   return res.redirect('/')
 })
 
-app.get('/profile', (req, res) => {
-  console.log(`User authenticated? ${req.isAuthenticated()}`)
+app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send('you hit the authentication endpoint\n')
+    let userForTemplate = req.user.dehydrate()
+    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    res.render('dashboard', {
+      title: 'Signa',
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      user: userForTemplate,
+      active_dashboard: true
+    })
   } else {
-    res.redirect('/')
+    res.redirect('/login')
   }
 })
 

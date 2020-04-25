@@ -49,3 +49,7 @@
 }
 
 .overflow-hidden { overflow: hidden; }
+
+.text-underlined {
+  text-decoration: underline;
+}
