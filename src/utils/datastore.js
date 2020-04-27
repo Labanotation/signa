@@ -520,13 +520,16 @@ class DatastoreUtils {
         for (const key in obj) {
           switch (key) {
             case '_included':
+              if (root !== true) {
+                property[key] = obj[key]
+              }
               break
             default:
               [prop, documents] = this.expand(obj[key], documents, false)
               property[key] = prop
           }
         }
-        if (obj._id !== undefined) {
+        if (obj._id !== undefined && obj._included === false) {
           documents.set(obj._id, property)
         }
       }

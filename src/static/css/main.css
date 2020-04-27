@@ -48,8 +48,157 @@
   }
 }
 
-.overflow-hidden { overflow: hidden; }
+.overflow-hidden {
+  overflow: hidden;
+}
 
 .text-underlined {
   text-decoration: underline;
+}
+
+.bbox {
+  /*
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  */
+  display: table;
+  border-collapse: separate;
+  border-spacing: 5px;
+}
+.bbox > * {
+  /*
+  flex: 1 1 80px;
+  */
+  display: table-cell;
+  width: 25%;
+  padding: 10px;
+  background-color: pink;
+}
+/*
+@media all {
+  @page {
+    size: 210mm 297mm;
+    margin-top: 18mm;
+    margin-bottom: 18mm;
+    margin-left: 4mm;
+    margin-right: 4mm;
+  }
+  .passcodeCell {
+    width: 100mm;
+    height: 70mm;
+    border-style: dashed;
+    align-content: center;
+    position: relative;
+  }
+  .passcodeGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 100mm);
+    grid-template-rows: repeat(4, 70mm);
+    grid-column-gap: 3mm;
+    align-items: center;
+  }
+}
+*/
+/* responsive grid cf. https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Realizing_common_layouts_using_CSS_Grid_Layout
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout
+https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas
+.main-header {
+  background-color: pink;
+  grid-area: header;
+}
+.main-content {
+  background-color: green;
+  grid-area: content;
+}
+.main-nav {
+  background-color: red;
+  grid-area: nav;
+}
+.main-side {
+  background-color: blue;
+  grid-area: sidebar;
+}
+.main-footer {
+  background-color: lime;
+  grid-area: footer;
+}
+.main-wrapper {
+  display: grid;
+  grid-gap: 1em 0.5em;
+  grid-template-areas:
+    "header"
+    "nav"
+    "content"
+    "sidebar"
+    "footer";
+}
+@media (min-width: 500px) {
+  .main-wrapper {
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas:
+      "header  header"
+      "nav     nav"
+      "sidebar content"
+      "footer  footer";
+  }
+  nav ul {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+@media (min-width: 700px) {
+  .main-wrapper {
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-areas:
+      "header header  header"
+      "nav    content sidebar"
+      "nav    content sidebar"
+      "footer footer  footer"
+   }
+   nav ul {
+     flex-direction: column;
+   }
+}
+*/
+
+.main-wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  grid-gap: 0.25cm;
+  background-color: powderblue;
+  padding: 0;
+  width: 10cm;
+  margin: 0;
+}
+
+.main-header {
+  background-color: pink;
+  grid-column: col-start / -1;
+}
+.main-content {
+  background-color: green;
+  grid-column: col-start 2 / -2;
+  grid-row: 2 / 4;
+}
+.main-nav {
+  background-color: red;
+  grid-column: col-start;
+  grid-row: 2 / 3;
+}
+.main-nav2 {
+  background-color: rgb(255, 0, 221);
+  grid-column: col-start;
+  grid-row: 3 / 4;
+}
+.main-side {
+  background-color: blue;
+  grid-column: -2;
+  grid-row: 2 / 4;
+}
+.main-footer {
+  background-color: lime;
+  grid-column: col-start / -1;
+  grid-row: 4;
 }

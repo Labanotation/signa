@@ -8,5 +8,8 @@ exports.Models = {
   Media: require('./media').Media,
   Survey: require('./survey').Survey,
   Score: require('./score').Score,
+  Block: require('./publication').Block,
+  Page: require('./publication').Page,
+  Section: require('./publication').Section,
   Publication: require('./publication').Publication
 }

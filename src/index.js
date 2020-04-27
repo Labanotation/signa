@@ -13,6 +13,7 @@ const session = require('express-session')
 const PouchSession = require('session-pouchdb-store')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const { Models } = require('./models')
 
 i18n.configure({
   locales: ['en', 'fr'],
@@ -86,13 +87,13 @@ hbs.registerHelper('layout', function (id, options) {
   const template = hbs.compile(`<div id="${id}" ${attributes} class="container my-2">
     <div class="row">
       <div class="col bg-dark text-light m-1 p-5">{{ user.name }}</div>
-      <div class="col bg-success text-light m-1 p-5">col</div>
-      <div class="col bg-dark text-light m-1 p-5">col</div>
-      <div class="col bg-success text-light m-1 p-5">col</div>
+      <div class="col bg-success text-light m-1 p-5">row1 col2</div>
+      <div class="col bg-dark text-light m-1 p-5">row1 col3</div>
+      <div class="col bg-success text-light m-1 p-5">row1 col4</div>
     </div>
     <div class="row">
-      <div class="col bg-success text-light m-1">col-2</div>
-      <div class="col bg-dark text-light m-1">col-2</div>
+      <div class="col bg-success text-light m-1">row2 col1</div>
+      <div class="col bg-dark text-light m-1">row2 col2</div>
     </div>
   </div>`)
   return template({...options.hash, ...options.data.root})
@@ -229,6 +230,28 @@ async function init() {
   const dbIsReady = await db.init()
   if (dbIsReady === true) {
     app.listen(8080)
+    const block = new Models.Block()
+    const page = new Models.Page()
+    const layout = new Models.Layout()
+    const section = new Models.Section()
+    const publication = new Models.Publication()
+    block.content = 'Block de texte'
+    page.blocks = [block]
+    layout.name = 'Test de layout'
+    layout.description = 'Description du layout'
+    section.name = 'Test de section'
+    section.header = 'Test de Header'
+    section.footer = 'Test de Footer'
+    section.layout = layout
+    section.pages = [page]
+    publication.name = 'Test de publication'
+    publication.sections = [section]
+    const test = DatastoreUtils.Dehydrate(publication)
+    const [, documents] = DatastoreUtils.expand(test)
+    documents.forEach((value) => {
+      console.log(JSON.stringify(value))
+    })
+    // @TODO REHYDRATE
     /*
     const user1 = await DatastoreUtils.LoadOne(Requests.UsersByEmail, 'sebastien.courvoisier@gmail.com')
     console.log(user1.id)
