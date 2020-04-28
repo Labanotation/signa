@@ -60,6 +60,7 @@ class User extends BaseObject {
     return (existingUserByLogin === null && existingUserByEmail === null) || (this.id && existingUserByLogin === this.id && existingUserByEmail === this.id)
   }
 
+  // @TODO GDPR
   get name() {
     return this.savedState.name
   }
@@ -72,6 +73,7 @@ class User extends BaseObject {
     }
   }
 
+    // @TODO GDPR
   get email() {
     return this.savedState.email
   }
@@ -93,6 +95,7 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  // @TODO GDPR
   get picture() {
     return this.savedState.picture
   }
@@ -115,6 +118,7 @@ class User extends BaseObject {
     }
   }
 
+  // @TODO GDPR?
   get occupation() {
     return this.savedState.occupation
   }
@@ -125,6 +129,7 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  // @TODO GDPR?
   get lang() {
     return this.savedState.lang
   }
@@ -135,6 +140,7 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  // @TODO GDPR?
   get country() {
     return this.savedState.country
   }

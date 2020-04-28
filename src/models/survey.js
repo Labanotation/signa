@@ -1,19 +1,6 @@
 const { BaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 
-/*
-export interface ISurvey {
-    id?: string
-    name?: string
-    description?: string
-    content?: string // @TODO
-    project?: Project // @TODO
-    created?: Date // @TODO
-    createdBy?: User // @TODO
-    revision?: number // @TODO
-}
-*/
-
 class Survey extends BaseObject {
   get name() {
     return this.savedState.name
@@ -36,6 +23,16 @@ class Survey extends BaseObject {
     this.saved = false
   }
 
+  get lang() {
+    return this.savedState.lang
+  }
+
+  set lang(lang) {
+    // @TODO
+    this.savedState.lang = lang
+    this.saved = false
+  }
+
   get content() {
     return this.savedState.content
   }
@@ -43,6 +40,54 @@ class Survey extends BaseObject {
   set content(content) {
     // @TODO
     this.savedState.content = content
+    this.saved = false
+  }
+
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get settings() {
+    return this.savedState.settings
+  }
+
+  set settings(settings) {
+    // @TODO
+    this.savedState.settings = settings
     this.saved = false
   }
 

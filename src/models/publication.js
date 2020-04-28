@@ -3,6 +3,8 @@ const { Validator } = require('../utils/validator')
 
 // @TODO TYPE ???
 
+// @TODO ADD LANG
+
 /*
 export interface IPublication {
   id?: string

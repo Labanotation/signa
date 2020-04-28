@@ -97,6 +97,25 @@ class Team extends BaseObject {
     this.saved = false
   }
 
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get settings() {
+    return this.savedState.settings
+  }
+
+  set settings(settings) {
+    // @TODO
+    this.savedState.settings = settings
+    this.saved = false
+  }
+
   constructor() {
     super()
   }
