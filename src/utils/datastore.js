@@ -289,13 +289,23 @@ class DatastoreUtils {
   }
 
   static async PeekOne(req, key) {
-    const viewId = req.split('/')
-    const db = Datastore.getInstance()
-    const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
-    if (response.rows.length === 0) {
-      return null
+    if (key === undefined) {
+      const db = Datastore.getInstance()
+      try {
+        const response = await db.get(req)
+        return response
+      } catch (ignore) {
+        return null
+      }
+    } else {
+      const viewId = req.split('/')
+      const db = Datastore.getInstance()
+      const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
+      if (response.rows.length === 0) {
+        return null
+      }
+      return response.rows[0].id
     }
-    return response.rows[0].id
   }
 
   static async Load(req, key) {
@@ -325,22 +335,40 @@ class DatastoreUtils {
   }
 
   static async LoadOne(req, key) {
-    const viewId = req.split('/')
-    const db = Datastore.getInstance()
-    const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
-    if (response.rows.length === 0) {
-      return null
-    }
-    const item = response.rows[0]
-    if (this.cache.has(item.id)) {
-      if (this.GetSavedState(item.id) === true) {
-        return this.cache.get(item.id)
+    if (key === undefined) {
+      const db = Datastore.getInstance()
+      try {
+        const item = await db.get(req)
+        if (this.cache.has(item._id)) {
+          if (this.GetSavedState(item._id) === true) {
+            return this.cache.get(item._id)
+          }
+          this.cache.delete(item._id)
+        }
+        const result = this.Rehydrate(item)
+        this.SetSavedState(item._id, true)
+        return result
+      } catch (ignore) {
+        return null
       }
-      this.cache.delete(item.id)
+    } else {
+      const viewId = req.split('/')
+      const db = Datastore.getInstance()
+      const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
+      if (response.rows.length === 0) {
+        return null
+      }
+      const item = response.rows[0]
+      if (this.cache.has(item.id)) {
+        if (this.GetSavedState(item.id) === true) {
+          return this.cache.get(item.id)
+        }
+        this.cache.delete(item.id)
+      }
+      const result = this.Rehydrate(item.doc)
+      this.SetSavedState(item.id, true)
+      return result
     }
-    const result = this.Rehydrate(item.doc)
-    this.SetSavedState(item.id, true)
-    return result
   }
 
   static Rehydrate(data, sandboxed, cache) {
@@ -520,7 +548,7 @@ class DatastoreUtils {
         for (const key in obj) {
           switch (key) {
             case '_included':
-              if (root !== true) {
+              if (root !== true) { // @FIXME
                 property[key] = obj[key]
               }
               break
