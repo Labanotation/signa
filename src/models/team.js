@@ -1,21 +1,6 @@
 const { BaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 
-/*
-export interface ITeam {
-    id?: string
-    type?: TeamType
-    name?: string
-    description?: string
-    url?: string
-    picture?: string // @TODO
-    private?: boolean // @TODO
-    created?: Date // @TODO
-    createdBy?: User // @TODO
-    members?: Array<ITeamMember>
-}
-*/
-
 const Role = {
   Owner: 0,
   Teacher: 1,
@@ -33,6 +18,11 @@ const TeamType = {
 class Team extends BaseObject {
   get type() {
     return this.savedState.type
+  }
+
+  set type(type) {
+    this.savedState.type = type
+    this.saved = false
   }
 
   get name() {
@@ -68,12 +58,42 @@ class Team extends BaseObject {
     }
   }
 
+  get picture() {
+    return this.savedState.picture
+  }
+
+  set picture(picture) {
+    // @TODO
+    this.savedState.picture = picture
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
   get members() {
     return this.savedState.members
   }
 
   set members(members) {
+    // @TODO add, validate, etc.
     this.savedState.members = members
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
     this.saved = false
   }
 

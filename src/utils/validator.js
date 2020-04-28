@@ -1,3 +1,5 @@
+const countries = require('i18n-iso-countries')
+
 class Validator {
   static Login(login) {
     if (login.length > 3 && /^[a-zA-Z0-9-_]+$/.test(login)) {
@@ -46,6 +48,14 @@ class Validator {
       return true
     } else {
       throw new Error('Invalid path format')
+    }
+  }
+
+  static Country(country) {
+    if (countries.isValid(country)) {
+      return true
+    } else {
+      throw new Error('Invalid country')
     }
   }
 }

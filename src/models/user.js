@@ -1,27 +1,19 @@
 const { BaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 const argon2 = require('argon2')
+const countries = require('i18n-iso-countries')
 
-/*
-export interface IUser {
-    id?: string
-    login?: string
-    name?: string
-    email?: string
-    description?: string
-    url?: string
-    picture?: string // @TODO
-    occupation?: number // @TODO
-    country?: number // @TODO
-    status?: number // @TODO
-    private?: boolean // @TODO
-    verified?: boolean // @TODO
-    created?: Date // @TODO
-    password?: string
-    lang?: string
-    root?: boolean
+const Occupation = {
+  Notator: 0,
+  Choreographer: 1,
+  Dancer: 2,
+  Student: 3,
+  Researcher: 4,
+  Teacher: 5,
+  Developer: 6,
+  Musician: 7,
+  Other: 8
 }
-*/
 
 class User extends BaseObject {
   get login() {
@@ -101,6 +93,16 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  get picture() {
+    return this.savedState.picture
+  }
+
+  set picture(picture) {
+    // @TODO
+    this.savedState.picture = picture
+    this.saved = false
+  }
+
   get url() {
     return this.savedState.url
   }
@@ -113,28 +115,92 @@ class User extends BaseObject {
     }
   }
 
+  get occupation() {
+    return this.savedState.occupation
+  }
+
+  set occupation(occupation) {
+    // @TODO
+    this.savedState.occupation = occupation
+    this.saved = false
+  }
+
   get lang() {
     return this.savedState.lang
   }
 
   set lang(lang) {
+    // @TODO
     this.savedState.lang = lang
+    this.saved = false
+  }
+
+  get country() {
+    return this.savedState.country
+  }
+
+  set country(country) {
+    country = country.trim()
+    if (Validator.Country(country)) {
+      this.savedState.country = countries.toAlpha3(country)
+      this.saved = false
+    }
   }
 
   get root() {
-    return this.savedState.root
+    return (this.savedState.root === true)
   }
 
   set root(root) {
-    this.savedState.root = root
+    // @TODO
+    this.savedState.root = (root === true)
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
   }
 
   get verified() {
-    return this.savedState.verified
+    return (this.savedState.verified === true)
   }
 
   set verified(verified) {
-    this.savedState.verified = verified
+    this.savedState.verified = (verified === true)
+    this.saved = false
+  }
+
+  get settings() {
+    return this.savedState.settings
+  }
+
+  set settings(settings) {
+    // @TODO
+    this.savedState.settings = settings
+    this.saved = false
+  }
+
+  get status() {
+    return this.unsavedState.status
+  }
+
+  set status(status) {
+    // @TODO
+    this.unsavedState.status = status
   }
 
   constructor() {
@@ -143,5 +209,6 @@ class User extends BaseObject {
 }
 
 module.exports = {
+  Occupation: Occupation,
   User: User
 }
