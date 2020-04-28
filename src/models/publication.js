@@ -67,7 +67,7 @@ class Page extends IncludedBaseObject {
   }
 
   get blocks() {
-    return this.savedState.pages
+    return this.savedState.blocks
   }
 
   set blocks(blocks) {

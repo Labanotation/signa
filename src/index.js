@@ -230,41 +230,6 @@ async function init() {
   const dbIsReady = await db.init()
   if (dbIsReady === true) {
     app.listen(8080)
-    const block = new Models.Block()
-    const page = new Models.Page()
-    const layout = new Models.Layout()
-    const section = new Models.Section()
-    const publication = new Models.Publication()
-    block.content = 'Block de texte'
-    page.blocks = [block]
-    layout.name = 'Test de layout'
-    layout.description = 'Description du layout'
-    section.name = 'Test de section'
-    section.header = 'Test de Header'
-    section.footer = 'Test de Footer'
-    section.layout = layout
-    section.pages = [page]
-    publication.name = 'Test de publication'
-    publication.sections = [section]
-    const test = DatastoreUtils.Dehydrate(publication)
-    const [, documents] = DatastoreUtils.expand(test)
-    documents.forEach((value) => {
-      console.log(JSON.stringify(value))
-    })
-    // @TODO REHYDRATE
-    /*
-    const user1 = await DatastoreUtils.LoadOne(Requests.UsersByEmail, 'sebastien.courvoisier@gmail.com')
-    console.log(user1.id)
-    DatastoreUtils.LoadOne(Requests.UsersByEmail, 'sebastien.courvoisier@gmail.com').then((user) => {
-      console.log('then', user.id)
-    })
-    const user2 = await DatastoreUtils.LoadOne(Requests.UsersByLogin, 'LePhasme')
-    const valid1 = await user1.verifyPassword(process.env.DB_PASS)
-    const valid2 = await user2.verifyPassword(process.env.DB_PASS)
-    console.log(valid1, valid2, user1 === user2)
-    const res = await DatastoreUtils.Save(user2)
-    console.log(res)
-    */
   } else {
     // @TODO
     console.log('no db, exit')

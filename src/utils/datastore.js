@@ -322,12 +322,10 @@ class DatastoreUtils {
             result.push(this.cache.get(item.id))
           } else {
             this.cache.delete(item.id)
-            result.push(this.Rehydrate(item.doc))
-            this.SetSavedState(item.id, true)
+            result.push(await this.Rehydrate(item.doc))
           }
         } else {
-          result.push(this.Rehydrate(item.doc))
-          this.SetSavedState(item.id, true)
+          result.push(await this.Rehydrate(item.doc))
         }
       }
     }
@@ -345,8 +343,7 @@ class DatastoreUtils {
           }
           this.cache.delete(item._id)
         }
-        const result = this.Rehydrate(item)
-        this.SetSavedState(item._id, true)
+        const result = await this.Rehydrate(item)
         return result
       } catch (ignore) {
         return null
@@ -365,18 +362,20 @@ class DatastoreUtils {
         }
         this.cache.delete(item.id)
       }
-      const result = this.Rehydrate(item.doc)
-      this.SetSavedState(item.id, true)
+      const result = await this.Rehydrate(item.doc)
       return result
     }
   }
 
-  static Rehydrate(data, sandboxed, cache) {
+  static async Rehydrate(data, sandboxed, cache, sub) {
     if (sandboxed === undefined) {
       sandboxed = false
     }
     if (cache === undefined) {
       cache = new Map()
+    }
+    if (sub === undefined) {
+      sub = false
     }
     if (!data) {
       return data
@@ -386,13 +385,20 @@ class DatastoreUtils {
         return cache.get(data._id)
       }
       if (sandboxed === false && this.cache.has(data._id) === true) {
+        this.SetSavedState(data._id, true)
         return this.cache.get(data._id)
       }
     }
     let rehydratedObj
+    let skip = false
     if (data.instanceOf !== undefined) {
       rehydratedObj = new Models[data.instanceOf]()
-      rehydratedObj.rehydrate(data)
+      if (rehydratedObj instanceof Models.BaseObject === true && rehydratedObj instanceof Models.IncludedBaseObject === false && data._id && sub === true) {
+        rehydratedObj = await this.LoadOne(data._id)
+        skip = true
+      } else {
+        rehydratedObj.rehydrate(data)
+      }
     } else {
       rehydratedObj = {}
     }
@@ -401,29 +407,35 @@ class DatastoreUtils {
     } else if (sandboxed === false && data._id !== undefined) {
       this.cache.set(data._id, rehydratedObj)
     }
-    for (const key in data) {
-      switch (key) {
-        case '_included':
-          delete data[key]
-          break
-        case '_id':
-          rehydratedObj.id = data[key]
-          break
-        case '_rev':
-          rehydratedObj.revision = data[key]
-          break
-        default:
-          if (Array.isArray(data[key])) {
-            rehydratedObj[key] = []
-            for (const element of data[key]) {
-              rehydratedObj[key].push(this.Rehydrate(element, sandboxed, cache))
+    if (skip === false) {
+      for (const key in data) {
+        switch (key) {
+          case '_included':
+            delete data[key]
+            break
+          case '_id':
+            rehydratedObj.id = data[key]
+            break
+          case '_rev':
+            rehydratedObj.revision = data[key]
+            break
+          default:
+            if (Array.isArray(data[key])) {
+              rehydratedObj[key] = []
+              for (const element of data[key]) {
+                rehydratedObj[key].push(await this.Rehydrate(element, sandboxed, cache, true))
+              }
+            } else if (data[key] instanceof Object && data[key].constructor === Object) {
+              rehydratedObj[key] = await this.Rehydrate(data[key], sandboxed, cache, true)
+            } else {
+              rehydratedObj[key] = data[key]
             }
-          } else if (data[key] instanceof Object && data[key].constructor === Object) {
-            rehydratedObj[key] = this.Rehydrate(data[key], sandboxed, cache)
-          } else {
-            rehydratedObj[key] = data[key]
-          }
+        }
       }
+    }
+    rehydratedObj.saved = true
+    if (sandboxed === false && data._id !== undefined) {
+      this.SetSavedState(data._id, true)
     }
     return rehydratedObj
   }
@@ -548,9 +560,6 @@ class DatastoreUtils {
         for (const key in obj) {
           switch (key) {
             case '_included':
-              if (root !== true) { // @FIXME
-                property[key] = obj[key]
-              }
               break
             default:
               [prop, documents] = this.expand(obj[key], documents, false)
