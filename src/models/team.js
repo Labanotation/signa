@@ -106,13 +106,13 @@ class Team extends BaseObject {
     this.saved = false
   }
 
-  get settings() {
-    return this.savedState.settings
+  get parameters() {
+    return this.savedState.parameters
   }
 
-  set settings(settings) {
+  set parameters(parameters) {
     // @TODO
-    this.savedState.settings = settings
+    this.savedState.parameters = parameters
     this.saved = false
   }
 

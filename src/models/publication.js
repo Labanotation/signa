@@ -1,25 +1,11 @@
 const { BaseObject, IncludedBaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 
-// @TODO TYPE ???
-
-// @TODO ADD LANG
-
-/*
-export interface IPublication {
-  id?: string
-  name?: string
-  description?: string
-  project?: Project // @TODO
-  created?: Date // @TODO
-  createdBy?: User // @TODO
-  revision?: number // @TODO
-  score?: { [key: number]: Score } // @TODO
-  media?: { [key: number]: Media } // @TODO
-  survey?: { [key: number]: Survey } // @TODO
-  layout?: Layout // @TODO
+const PublishingMedia = {
+  Screen: 0,
+  Print: 1,
+  Projection: 2
 }
-*/
 
 class Block extends IncludedBaseObject {
   get content() {
@@ -29,6 +15,16 @@ class Block extends IncludedBaseObject {
   set content(content) {
     // @TODO validator Score || Survey || Media ID
     this.savedState.content = content
+    this.saved = false
+  }
+
+  get lang() {
+    return this.savedState.lang
+  }
+
+  set lang(lang) {
+    // @TODO
+    this.savedState.lang = lang
     this.saved = false
   }
 
@@ -78,6 +74,16 @@ class Page extends IncludedBaseObject {
     this.saved = false
   }
 
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO validator
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
   constructor() {
     super()
   }
@@ -102,6 +108,16 @@ class Section extends IncludedBaseObject {
 
   set description(description) {
     this.savedState.description = description.trim()
+    this.saved = false
+  }
+
+  get lang() {
+    return this.savedState.lang
+  }
+
+  set lang(lang) {
+    // @TODO
+    this.savedState.lang = lang
     this.saved = false
   }
 
@@ -147,6 +163,16 @@ class Section extends IncludedBaseObject {
     this.saved = false
   }
 
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO validator
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
   constructor() {
     super()
   }
@@ -174,6 +200,36 @@ class Publication extends BaseObject {
     this.saved = false
   }
 
+  get lang() {
+    return this.savedState.lang
+  }
+
+  set lang(lang) {
+    // @TODO
+    this.savedState.lang = lang
+    this.saved = false
+  }
+
+  get media() {
+    return this.savedState.media
+  }
+
+  set media(media) {
+    // @TODO
+    this.savedState.media = media
+    this.saved = false
+  }
+
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
   get sections() {
     return this.savedState.sections
   }
@@ -184,12 +240,60 @@ class Publication extends BaseObject {
     this.saved = false
   }
 
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get finalized() {
+    return (this.savedState.finalized === true)
+  }
+
+  set finalized(finalized) {
+    this.savedState.finalized = (finalized === true)
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
   constructor() {
     super()
   }
 }
 
 module.exports = {
+  PublishingMedia: PublishingMedia,
   Block: Block,
   Page: Page,
   Section: Section,
