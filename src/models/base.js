@@ -46,6 +46,44 @@ class BaseObject {
     this.saved = false
   }
 
+  first(prop) {
+    if (Array.isArray(this[prop]) === false) {
+      return this[prop]
+    }
+    if (this[prop].length === 0) {
+      return undefined
+    }
+    return this[prop][0]
+  }
+
+  last(prop) {
+    if (Array.isArray(this[prop]) === false) {
+      return this[prop]
+    }
+    if (this[prop].length === 0) {
+      return undefined
+    }
+    return this[prop][this[prop].length - 1]
+  }
+
+  nth(prop, n) {
+    if (Array.isArray(this[prop]) === false) {
+      return this[prop]
+    }
+    if (this[prop].length === 0) {
+      return undefined
+    }
+    if (n < 0) {
+      return this.first(prop)
+    }
+    if (n > this[prop].length - 1) {
+      return this.last(prop)
+    }
+    return this[prop][n]
+  }
+
+  // @TODO find(prop, id), etc.
+
   remove(prop, obj) {
     if (!this[prop]) {
       this[prop] = []

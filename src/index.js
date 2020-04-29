@@ -230,10 +230,6 @@ async function init() {
   const dbIsReady = await db.init()
   if (dbIsReady === true) {
     app.listen(8080)
-
-    const pub = await DatastoreUtils.LoadOne('6a875c8d-c311-4249-9d24-5ab15b4c0bb3')
-    console.log(pub)
-    console.log(pub.sections[0].layout)
   } else {
     // @TODO
     console.log('no db, exit')

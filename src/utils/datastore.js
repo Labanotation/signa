@@ -421,14 +421,28 @@ class DatastoreUtils {
             break
           default:
             if (Array.isArray(data[key])) {
-              rehydratedObj[key] = []
-              for (const element of data[key]) {
-                rehydratedObj[key].push(await this.Rehydrate(element, sandboxed, cache, true))
+              if (rehydratedObj instanceof Models.BaseObject) {
+                for (const element of data[key]) {
+                  rehydratedObj.add(key, await this.Rehydrate(element, sandboxed, cache, true))
+                }
+              } else {
+                rehydratedObj[key] = []
+                for (const element of data[key]) {
+                  rehydratedObj[key].push(await this.Rehydrate(element, sandboxed, cache, true))
+                }
               }
             } else if (data[key] instanceof Object && data[key].constructor === Object) {
-              rehydratedObj[key] = await this.Rehydrate(data[key], sandboxed, cache, true)
+              if (rehydratedObj instanceof Models.BaseObject) {
+                rehydratedObj.set(key, await this.Rehydrate(data[key], sandboxed, cache, true))
+              } else {
+                rehydratedObj[key] = await this.Rehydrate(data[key], sandboxed, cache, true)
+              }
             } else {
-              rehydratedObj[key] = data[key]
+              if (rehydratedObj instanceof Models.BaseObject) {
+                rehydratedObj.set(key, data[key])
+              } else {
+                rehydratedObj[key] = data[key]
+              }
             }
         }
       }
