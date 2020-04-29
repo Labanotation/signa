@@ -1,4 +1,4 @@
-const { BaseObject } = require('./base')
+const { BaseObject, IncludedBaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 
 // @TODO
@@ -6,6 +6,310 @@ const ScoreType = {
   Reconstruction: 0,
   Creation: 1,
   Exercise: 2
+}
+
+const PerformerGenre = {
+  Male: 0,
+  Female: 1,
+  Neutral: 2
+}
+
+class ScoreItem extends IncludedBaseObject {
+  get type() {
+    return this.savedState.type
+  }
+
+  set type(type) {
+    // @TODO
+    this.savedState.type = type
+    this.saved = false
+  }
+
+  get column() {
+    return this.savedState.column
+  }
+
+  set column(column) {
+    // @TODO
+    this.savedState.column = column
+    this.saved = false
+  }
+
+  get time() {
+    return this.savedState.time
+  }
+
+  set time(time) {
+    // @TODO
+    this.savedState.time = time
+    this.saved = false
+  }
+
+  get duration() {
+    return this.savedState.duration
+  }
+
+  set duration(duration) {
+    // @TODO
+    this.savedState.duration = duration
+    this.saved = false
+  }
+
+  get parent() {
+    return this.savedState.parent
+  }
+
+  set parent(parent) {
+    // @TODO
+    this.savedState.parent = parent
+    this.saved = false
+  }
+
+  get children() {
+    return this.savedState.children
+  }
+
+  set children(children) {
+    // @TODO
+    this.savedState.children = children
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
+class FloorItem extends IncludedBaseObject {
+  get type() {
+    return this.savedState.type
+  }
+
+  set type(type) {
+    // @TODO
+    this.savedState.type = type
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
+class Performer extends IncludedBaseObject {
+  get genre() {
+    return this.savedState.genre
+  }
+
+  set genre(genre) {
+    // @TODO
+    this.savedState.genre = genre
+    this.saved = false
+  }
+
+  get name() {
+    return this.savedState.name
+  }
+
+  set name(name) {
+    name = name.trim()
+    if (Validator.Name(name)) {
+      this.savedState.name = name
+      this.saved = false
+    }
+  }
+
+  get abbr() {
+    return this.savedState.abbr
+  }
+
+  set abbr(abbr) {
+    // @TODO
+    this.savedState.abbr = abbr
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
+class ScoreSegment extends IncludedBaseObject {
+  get timeBegin() {
+    return this.savedState.timeBegin
+  }
+
+  set timeBegin(timeBegin) {
+    // @TODO
+    this.savedState.timeBegin = timeBegin
+    this.saved = false
+  }
+
+  get timeEnd() {
+    return this.savedState.timeEnd
+  }
+
+  set timeEnd(timeEnd) {
+    // @TODO
+    this.savedState.timeEnd = timeEnd
+    this.saved = false
+  }
+
+  get performers() {
+    return this.savedState.performers
+  }
+
+  set performers(performers) {
+    // @TODO [Performer]
+    this.savedState.performers = performers
+    this.saved = false
+  }
+
+  get scoreItems() {
+    return this.savedState.scoreItems
+  }
+
+  set scoreItems(scoreItems) {
+    // @TODO [ScoreItem]
+    this.savedState.scoreItems = scoreItems
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
+class FloorSegment extends IncludedBaseObject {
+  get timeBegin() {
+    return this.savedState.timeBegin
+  }
+
+  set timeBegin(timeBegin) {
+    // @TODO
+    this.savedState.timeBegin = timeBegin
+    this.saved = false
+  }
+
+  get timeEnd() {
+    return this.savedState.timeEnd
+  }
+
+  set timeEnd(timeEnd) {
+    // @TODO
+    this.savedState.timeEnd = timeEnd
+    this.saved = false
+  }
+
+  get performers() {
+    return this.savedState.performers
+  }
+
+  set performers(performers) {
+    // @TODO [Performer]
+    this.savedState.performers = performers
+    this.saved = false
+  }
+
+  get floorItems() {
+    return this.savedState.floorItems
+  }
+
+  set floorItems(floorItems) {
+    // @TODO [FloorItem]
+    this.savedState.floorItems = floorItems
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
+class Part extends IncludedBaseObject {
+  get scoreSegments() {
+    return this.savedState.scoreSegments
+  }
+
+  set scoreSegments(scoreSegments) {
+    // @TODO [ScoreSegment]
+    this.savedState.scoreSegments = scoreSegments
+    this.saved = false
+  }
+
+  get floorSegments() {
+    return this.savedState.floorSegments
+  }
+
+  set floorSegments(floorSegments) {
+    // @TODO [FloorSegment]
+    this.savedState.floorSegments = floorSegments
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
 }
 
 class Score extends BaseObject {
@@ -50,33 +354,33 @@ class Score extends BaseObject {
     this.saved = false
   }
 
-  get author() {
-    return this.savedState.author
+  get authors() {
+    return this.savedState.authors
   }
 
-  set author(author) {
-    // @TODO string | User
-    this.savedState.author = author
+  set authors(authors) {
+    // @TODO [string | User]
+    this.savedState.authors = authors
     this.saved = false
   }
 
-  get notator() {
-    return this.savedState.author
+  get notators() {
+    return this.savedState.notators
   }
 
-  set notator(notator) {
-    // @TODO string | User
-    this.savedState.notator = notator
+  set notators(notators) {
+    // @TODO [string | User]
+    this.savedState.notators = notators
     this.saved = false
   }
 
-  get genre() {
-    return this.savedState.author
+  get genres() {
+    return this.savedState.genres
   }
 
-  set genre(genre) {
+  set genres(genres) {
     // @TODO
-    this.savedState.genre = genre
+    this.savedState.genres = genres
     this.saved = false
   }
 
@@ -87,6 +391,16 @@ class Score extends BaseObject {
   set tags(tags) {
     // @TODO
     this.savedState.tags = tags
+    this.saved = false
+  }
+
+  get parts() {
+    return this.savedState.parts
+  }
+
+  set parts(parts) {
+    // @TODO [Part]
+    this.savedState.parts = parts
     this.saved = false
   }
 
@@ -154,5 +468,12 @@ class Score extends BaseObject {
 
 module.exports = {
   ScoreType: ScoreType,
+  PerformerGenre: PerformerGenre,
+  ScoreItem: ScoreItem,
+  FloorItem: FloorItem,
+  Performer: Performer,
+  ScoreSegment: ScoreSegment,
+  FloorSegment: FloorSegment,
+  Part: Part,
   Score: Score
 }
