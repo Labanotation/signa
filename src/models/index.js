@@ -3,13 +3,15 @@ exports.Models = {
   IncludedBaseObject: require('./base').IncludedBaseObject,
   User: require('./user').User,
   Team: require('./team').Team,
-  Layout: require('./layout').Layout,
-  Project: require('./project').Project,
-  Media: require('./media').Media,
   Survey: require('./survey').Survey,
   Score: require('./score').Score,
   Block: require('./publication').Block,
   Page: require('./publication').Page,
   Section: require('./publication').Section,
-  Publication: require('./publication').Publication
+  Publication: require('./publication').Publication,
+  Post: require('./project').Post,
+  Discussion: require('./project').Discussion,
+  Project: require('./project').Project,
+  Media: require('./media').Media,
+  Layout: require('./layout').Layout
 }

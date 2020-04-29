@@ -9,21 +9,6 @@ const Type = {
   Text: 4,
   Application: 5
 }
-// others (web): example, message, model, multipart
-
-/*
-export interface IMedia {
-    id?: string
-    name?: string
-    description?: string
-    type?: Type
-    content?: string // @TODO
-    project?: Project // @TODO
-    created?: Date // @TODO
-    createdBy?: User // @TODO
-    revision?: number // @TODO
-}
-*/
 
 class Media extends BaseObject {
   get name() {
@@ -51,6 +36,12 @@ class Media extends BaseObject {
     return this.savedState.type
   }
 
+  set type(type) {
+    // @TODO
+    this.savedState.type = type
+    this.saved = false
+  }
+
   get content() {
     return this.savedState.content
   }
@@ -75,7 +66,54 @@ class Media extends BaseObject {
         this.saved = false
         break
     }
+  }
 
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
   }
 
   constructor() {

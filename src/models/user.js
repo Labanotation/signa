@@ -153,6 +153,16 @@ class User extends BaseObject {
     }
   }
 
+  get watched() { // --> [Project]
+    return this.savedState.watched
+  }
+
+  set watched(watched) {
+    // @TODO
+    this.savedState.watched = watched
+    this.saved = false
+  }
+
   get root() {
     return (this.savedState.root === true)
   }
