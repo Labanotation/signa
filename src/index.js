@@ -96,7 +96,7 @@ hbs.registerHelper('layout', function (id, options) {
       <div class="col bg-dark text-light m-1">row2 col2</div>
     </div>
   </div>`)
-  return template({...options.hash, ...options.data.root})
+  return template({ ...options.hash, ...options.data.root })
 })
 
 /* Sync
@@ -230,6 +230,10 @@ async function init() {
   const dbIsReady = await db.init()
   if (dbIsReady === true) {
     app.listen(8080)
+
+    const pub = await DatastoreUtils.LoadOne('6a875c8d-c311-4249-9d24-5ab15b4c0bb3')
+    console.log(pub)
+    console.log(pub.sections[0].layout)
   } else {
     // @TODO
     console.log('no db, exit')

@@ -3,6 +3,66 @@ class BaseObject {
     return false
   }
 
+  get child() {
+    if (this.unsavedState.child === undefined) {
+      this.unsavedState.child = new Set()
+    }
+    return this.unsavedState.child
+  }
+
+  set(prop, obj) {
+    this[prop] = obj
+    if (obj instanceof IncludedBaseObject) {
+      obj.parent = this
+    }
+    if (obj instanceof BaseObject) {
+      this.child.add(obj)
+    }
+    this.saved = false
+  }
+
+  unset(prop) {
+    if (this[prop] instanceof BaseObject) {
+      this.child.delete(this[prop])
+    }
+    if (this[prop] instanceof IncludedBaseObject) {
+      this[prop].parent = undefined
+    }
+    this[prop] = undefined
+    this.saved = false
+  }
+
+  add(prop, obj) {
+    if (!this[prop]) {
+      this[prop] = []
+    }
+    this[prop].push(obj)
+    if (obj instanceof IncludedBaseObject) {
+      obj.parent = this
+    }
+    if (obj instanceof BaseObject) {
+      this.child.add(obj)
+    }
+    this.saved = false
+  }
+
+  remove(prop, obj) {
+    if (!this[prop]) {
+      this[prop] = []
+    }
+    if (obj instanceof BaseObject) {
+      this.child.delete(obj)
+    }
+    if (obj instanceof IncludedBaseObject) {
+      obj.parent = undefined
+    }
+    this[prop] = this[prop].filter(function (el) {
+      return el !== obj
+    })
+    this.saved = false
+  }
+
+  /*
   isSaved(obj) {
     if (obj === undefined) {
       obj = this
@@ -10,6 +70,8 @@ class BaseObject {
     let saved = true
     if (obj.unsavedState !== undefined && obj.unsavedState.saved !== undefined) {
       saved = obj.unsavedState.saved
+    } else {
+      saved = false
     }
     if (obj.savedState !== undefined && obj.savedState instanceof Object && obj.savedState.constructor === Object) {
       saved = saved && this.isSaved(obj.savedState)
@@ -26,6 +88,7 @@ class BaseObject {
     }
     return saved
   }
+  */
 
   get id() {
     return this.savedState._id
@@ -88,6 +151,27 @@ class BaseObject {
 class IncludedBaseObject extends BaseObject {
   get isIncluded() {
     return true
+  }
+
+  get parent() {
+    return this.unsavedState.parent
+  }
+
+  set parent(parent) {
+    this.unsavedState.parent = parent
+  }
+
+  get saved() {
+    if (this.parent !== undefined) {
+      return this.parent.saved
+    }
+    return false
+  }
+
+  set saved(saved) {
+    if (this.parent !== undefined) {
+      this.parent.saved = saved
+    }
   }
 
   constructor() {
