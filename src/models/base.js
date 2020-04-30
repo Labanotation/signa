@@ -132,34 +132,6 @@ class BaseObject {
     this.saved = false
   }
 
-  /*
-  isSaved(obj) {
-    if (obj === undefined) {
-      obj = this
-    }
-    let saved = true
-    if (obj.unsavedState !== undefined && obj.unsavedState.saved !== undefined) {
-      saved = obj.unsavedState.saved
-    } else {
-      saved = false
-    }
-    if (obj.savedState !== undefined && obj.savedState instanceof Object && obj.savedState.constructor === Object) {
-      saved = saved && this.isSaved(obj.savedState)
-    } else {
-      for (const prop in obj) {
-        if (Array.isArray(obj[prop])) {
-          for (const item of obj[prop]) {
-            saved = saved && this.isSaved(item)
-          }
-        } else if (obj[prop] instanceof Object && obj[prop].constructor === Object) {
-          saved = saved && this.isSaved(obj[prop])
-        }
-      }
-    }
-    return saved
-  }
-  */
-
   get id() {
     return this.savedState._id
   }

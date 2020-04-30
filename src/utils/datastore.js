@@ -3,10 +3,14 @@ const { Models } = require('../models')
 
 const Requests = {
   Objects: 'objects/all',
+  ObjectsIndexable: 'objects/indexable',
+  ObjectsPublic: 'objects/public',
   ObjectsByName: 'objects/byName',
+  ObjectsByLang: 'objects/byLang',
   ObjectsByClass: 'objects/byClass',
   ObjectsByNameAndClass: 'objects/byNameAndClass',
-  ObjectsByCreator: 'objects/createdBy', // @TODO ...
+  ObjectsByCreator: 'objects/createdBy',
+  ObjectsByProject: 'objects/byProject',
   Users: 'users/all',
   UsersRoot: 'users/root',
   UsersIndexable: 'users/indexable',
@@ -44,14 +48,40 @@ const Requests = {
   ScoresByNotator: 'scores/byNotator',
   ScoresByGenre: 'scores/byGenre',
   ScoresByTag: 'scores/byTag',
-  Projects: 'projects/all', // @TODO ...
-  ProjectsByName: 'projects/byName',
-  ProjectsByOwner: 'projects/byOwner',
-  ProjectsByCreator: 'projects/createdBy',
   Publications: 'publications/all',
+  PublicationsIndexable: 'publications/indexable',
+  PublicationsPublic: 'publications/public',
   PublicationsByName: 'publications/byName',
+  PublicationsByLang: 'publications/byLang',
+  PublicationsByCreator: 'publications/createdBy',
   PublicationsByProject: 'publications/byProject',
-  PublicationsByCreator: 'publications/createdBy'
+  Projects: 'projects/all',
+  ProjectsIndexable: 'projects/indexable',
+  ProjectsPublic: 'projects/public',
+  ProjectsByName: 'projects/byName',
+  ProjectsByLang: 'projects/byLang',
+  ProjectsByOwner: 'projects/byOwner',
+  ProjectsByContributor: 'projects/byContributor',
+  ProjectsByCreator: 'projects/createdBy',
+  Discussions: 'discussions/all',
+  DiscussionsIndexable: 'discussions/indexable',
+  DiscussionsPublic: 'discussions/public',
+  DiscussionsByTitle: 'discussions/byTitle',
+  DiscussionsByCreator: 'discussions/createdBy',
+  DiscussionsByProject: 'discussions/byProject',
+  Media: 'media/all',
+  MediaIndexable: 'media/indexable',
+  MediaPublic: 'media/public',
+  MediaByName: 'media/byName',
+  MediaByLang: 'media/byLang',
+  MediaByCreator: 'media/createdBy',
+  MediaByProject: 'media/byProject',
+  MediaByType: 'media/byType',
+  Layouts: 'layouts/all',
+  LayoutsPublic: 'layouts/public',
+  LayoutsByName: 'layouts/byName',
+  LayoutsByCreator: 'layouts/createdBy',
+  LayoutsByProject: 'layouts/byProject'
 }
 
 let _instance = null
@@ -105,9 +135,24 @@ class Datastore {
               if (doc.instanceOf) emit(doc._id)
             }
           },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.priv === false) emit(doc._id)
+            }
+          },
           'byName': {
             map: function (doc) {
-              if (doc.name) emit(doc.name, doc._id)
+              if (doc.instanceOf && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.lang) emit(doc.lang, doc._id)
             }
           },
           'byClass': {
@@ -122,7 +167,12 @@ class Datastore {
           },
           'createdBy': {
             map: function (doc) {
-              if (doc.createdBy) emit(doc.createdBy._id, doc._id)
+              if (doc.instanceOf && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.project) emit(doc.project._id, doc._id)
             }
           }
         }
@@ -370,6 +420,48 @@ class Datastore {
     } catch (ignore) { }
     try {
       await this.handler.insert({
+        _id: '_design/publications',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.lang) emit(doc.lang, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
         _id: '_design/projects',
         'views': {
           'all': {
@@ -377,14 +469,38 @@ class Datastore {
               if (doc.instanceOf && doc.instanceOf === 'Project') emit(doc._id)
             }
           },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Project' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Project' && doc.priv === false) emit(doc._id)
+            }
+          },
           'byName': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Project' && doc.name) emit(doc.name, doc._id)
             }
           },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Project' && doc.lang) emit(doc.lang, doc._id)
+            }
+          },
           'byOwner': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Project' && doc.owner) emit(doc.owner._id, doc._id)
+            }
+          },
+          'byContributor': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Project' && doc.contributors) {
+                for (var contributor of doc.contributors) {
+                  emit(contributor._id, doc._id)
+                }
+              }
             }
           },
           'createdBy': {
@@ -397,26 +513,115 @@ class Datastore {
     } catch (ignore) { }
     try {
       await this.handler.insert({
-        _id: '_design/publications',
+        _id: '_design/discussions',
         'views': {
           'all': {
             map: function (doc) {
-              if (doc.instanceOf && doc.instanceOf === 'Publication') emit(doc._id)
+              if (doc.instanceOf && doc.instanceOf === 'Discussion') emit(doc._id)
             }
           },
-          'byName': {
+          'indexable': {
             map: function (doc) {
-              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.name) emit(doc.name, doc._id)
+              if (doc.instanceOf && doc.instanceOf === 'Discussion' && doc.indexable === true) emit(doc._id)
             }
           },
-          'byProject': {
+          'public': {
             map: function (doc) {
-              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id)
+              if (doc.instanceOf && doc.instanceOf === 'Discussion' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byTitle': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Discussion' && doc.title) emit(doc.title, doc._id)
             }
           },
           'createdBy': {
             map: function (doc) {
-              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+              if (doc.instanceOf && doc.instanceOf === 'Discussion' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Discussion' && doc.project) emit(doc.project._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/media',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.lang) emit(doc.lang, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.project) emit(doc.project._id, doc._id)
+            }
+          },
+          'byType': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.type) emit(doc.type, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/layouts',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout') emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.project) emit(doc.project._id, doc._id)
             }
           }
         }

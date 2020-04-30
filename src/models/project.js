@@ -50,6 +50,16 @@ class Discussion extends BaseObject {
     }
   }
 
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
   get posts() {
     return this.savedState.posts
   }
@@ -76,6 +86,25 @@ class Discussion extends BaseObject {
 
   set priv(priv) {
     this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
     this.saved = false
   }
 

@@ -32,6 +32,16 @@ class Media extends BaseObject {
     this.saved = false
   }
 
+  get lang() {
+    return this.savedState.lang
+  }
+
+  set lang(lang) {
+    // @TODO
+    this.savedState.lang = lang
+    this.saved = false
+  }
+
   get type() {
     return this.savedState.type
   }
