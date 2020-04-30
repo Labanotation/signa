@@ -114,7 +114,51 @@ class BaseObject {
     return this[prop][n]
   }
 
-  // @TODO find(prop, id), etc.
+  find(prop, fun) {
+    if (Array.isArray(this[prop]) === false) {
+      if (fun(this[prop]) === true) {
+        return this[prop]
+      }
+      return undefined
+    } else {
+      return this[prop].find(fun)
+    }
+  }
+
+  findIndex(prop, fun) {
+    if (Array.isArray(this[prop]) === false) {
+      return undefined
+    } else {
+      return this[prop].findIndex(fun)
+    }
+  }
+
+  sort(prop, fun) {
+    if (Array.isArray(this[prop]) === true) {
+      this[prop].sort(fun)
+    }
+  }
+
+  filter(prop, fun) {
+    if (Array.isArray(this[prop]) === true) {
+      return this[prop].filter(fun)
+    }
+    return fun(this[prop]) === true ? this[prop] : undefined
+  }
+
+  reduce(prop, fun) {
+    if (Array.isArray(this[prop]) === true) {
+      return this[prop].reduce(fun)
+    }
+    return this[prop]
+  }
+
+  map(prop, fun) {
+    if (Array.isArray(this[prop]) === true) {
+      return this[prop].map(fun)
+    }
+    return fun(this[prop])
+  }
 
   remove(prop, obj) {
     if (!this[prop]) {

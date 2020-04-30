@@ -84,7 +84,7 @@ const Requests = {
   LayoutsByProject: 'layouts/byProject'
 }
 
-let _instance = null
+let _instance = undefined
 
 class Datastore {
 
@@ -93,7 +93,7 @@ class Datastore {
   }
 
   static getInstance() {
-    if (!_instance) {
+    if (_instance === undefined) {
       _instance = new Datastore()
     }
     return _instance
@@ -674,14 +674,14 @@ class DatastoreUtils {
         const response = await db.get(req)
         return response
       } catch (ignore) {
-        return null
+        return undefined
       }
     } else {
       const viewId = req.split('/')
       const db = Datastore.getInstance()
       const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: false })
       if (response.rows.length === 0) {
-        return null
+        return undefined
       }
       return response.rows[0].id
     }
@@ -725,14 +725,14 @@ class DatastoreUtils {
         const result = await this.Rehydrate(item)
         return result
       } catch (ignore) {
-        return null
+        return undefined
       }
     } else {
       const viewId = req.split('/')
       const db = Datastore.getInstance()
       const response = await db.view(viewId[0], viewId[1], { key: key, include_docs: true })
       if (response.rows.length === 0) {
-        return null
+        return undefined
       }
       const item = response.rows[0]
       if (this.cache.has(item.id)) {
