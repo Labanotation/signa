@@ -55,25 +55,27 @@ class ScoreItem extends IncludedBaseObject {
     this.saved = false
   }
 
-  get parent() {
-    return this.savedState.parent
+  /* could use provided child/parent mechanisms
+  get parentItem() {
+    return this.savedState.parentItem
   }
 
-  set parent(parent) {
+  set parentItem(parentItem) {
     // @TODO
-    this.savedState.parent = parent
+    this.savedState.parentItem = parentItem
     this.saved = false
   }
 
-  get children() {
-    return this.savedState.children
+  get childrenItems() {
+    return this.savedState.childrenItems
   }
 
-  set children(children) {
+  set childrenItems(childrenItems) {
     // @TODO
-    this.savedState.children = children
+    this.savedState.childrenItems = childrenItems
     this.saved = false
   }
+  */
 
   get parameters() {
     return this.savedState.parameters

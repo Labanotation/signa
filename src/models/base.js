@@ -3,11 +3,43 @@ class BaseObject {
     return false
   }
 
-  get child() {
-    if (this.unsavedState.child === undefined) {
-      this.unsavedState.child = new Set()
+  get allChildren() {
+    return this.getAllChildren()
+  }
+
+  get allSeparateChildren() {
+    const _allChildren = this.allChildren
+    for (const item of _allChildren) {
+      if (item instanceof IncludedBaseObject) {
+        _allChildren.delete(item)
+      }
     }
-    return this.unsavedState.child
+    return _allChildren
+  }
+
+  get allIncludedChildren() {
+    const _allChildren = this.allChildren
+    for (const item of _allChildren) {
+      if (item instanceof IncludedBaseObject === false) {
+        _allChildren.delete(item)
+      }
+    }
+    return _allChildren
+  }
+
+  getAllChildren() {
+    let stack = new Set(this.children)
+    for (const item of this.children) {
+      stack = new Set([...stack, ...item.getAllChildren()])
+    }
+    return stack
+  }
+
+  get children() {
+    if (this.unsavedState.children === undefined) {
+      this.unsavedState.children = new Set()
+    }
+    return this.unsavedState.children
   }
 
   set(prop, obj) {
@@ -16,14 +48,14 @@ class BaseObject {
       obj.parent = this
     }
     if (obj instanceof BaseObject) {
-      this.child.add(obj)
+      this.children.add(obj)
     }
     this.saved = false
   }
 
   unset(prop) {
     if (this[prop] instanceof BaseObject) {
-      this.child.delete(this[prop])
+      this.children.delete(this[prop])
     }
     if (this[prop] instanceof IncludedBaseObject) {
       this[prop].parent = undefined
@@ -41,7 +73,7 @@ class BaseObject {
       obj.parent = this
     }
     if (obj instanceof BaseObject) {
-      this.child.add(obj)
+      this.children.add(obj)
     }
     this.saved = false
   }
@@ -89,7 +121,7 @@ class BaseObject {
       this[prop] = []
     }
     if (obj instanceof BaseObject) {
-      this.child.delete(obj)
+      this.children.delete(obj)
     }
     if (obj instanceof IncludedBaseObject) {
       obj.parent = undefined

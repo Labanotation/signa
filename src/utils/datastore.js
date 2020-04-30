@@ -455,11 +455,22 @@ class DatastoreUtils {
   }
 
   static async Save(obj) {
+    let responses = []
+    if (obj.saved === true && obj.id && obj.revision) {
+      responses.push({
+        ok: true,
+        id: obj.id,
+        rev: obj.revision
+      })
+      for (const item of obj.allSeparateChildren) {
+        responses = responses.concat(await this.Save(item))
+      }
+      return responses
+    }
     let validateSave = true
     if (typeof obj.validateSave === 'function') {
       validateSave = await obj.validateSave()
     }
-    const responses = []
     if (validateSave === true) {
       const db = Datastore.getInstance()
       const data = this.Dehydrate(obj)
