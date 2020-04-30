@@ -6,21 +6,45 @@ const Requests = {
   ObjectsByName: 'objects/byName',
   ObjectsByClass: 'objects/byClass',
   ObjectsByNameAndClass: 'objects/byNameAndClass',
-  ObjectsByCreator: 'objects/createdBy',
+  ObjectsByCreator: 'objects/createdBy', // @TODO ...
   Users: 'users/all',
   UsersRoot: 'users/root',
+  UsersIndexable: 'users/indexable',
+  UsersPublic: 'users/public',
   UsersByLogin: 'users/byLogin',
   UsersByName: 'users/byName',
   UsersByEmail: 'users/byEmail',
   UsersByOccupation: 'users/byOccupation',
   UsersByCountry: 'users/byCountry',
+  UsersByLang: 'users/byLang',
   Teams: 'teams/all',
+  TeamsIndexable: 'teams/indexable',
+  TeamsPublic: 'teams/public',
   TeamsByName: 'teams/byName',
   TeamsByType: 'teams/byType',
   TeamsByCreator: 'teams/createdBy',
   TeamsByMember: 'teams/byMember',
   TeamsByOwner: 'teams/byOwner',
-  Projects: 'projects/all',
+  Surveys: 'surveys/all',
+  SurveysIndexable: 'surveys/indexable',
+  SurveysPublic: 'surveys/public',
+  SurveysByName: 'surveys/byName',
+  SurveysByLang: 'surveys/byLang',
+  SurveysByCreator: 'surveys/createdBy',
+  SurveysByProject: 'surveys/byProject',
+  Scores: 'scores/all',
+  ScoresIndexable: 'scores/indexable',
+  ScoresPublic: 'scores/public',
+  ScoresByName: 'scores/byName',
+  ScoresByLang: 'scores/byLang',
+  ScoresByCreator: 'scores/createdBy',
+  ScoresByProject: 'scores/byProject',
+  ScoresByType: 'scores/byType',
+  ScoresByAuthor: 'scores/byAuthor',
+  ScoresByNotator: 'scores/byNotator',
+  ScoresByGenre: 'scores/byGenre',
+  ScoresByTag: 'scores/byTag',
+  Projects: 'projects/all', // @TODO ...
   ProjectsByName: 'projects/byName',
   ProjectsByOwner: 'projects/byOwner',
   ProjectsByCreator: 'projects/createdBy',
@@ -119,6 +143,16 @@ class Datastore {
               if (doc.instanceOf && doc.instanceOf === 'User' && doc.root === true) emit(doc._id)
             }
           },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'User' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'User' && doc.priv === false) emit(doc._id)
+            }
+          },
           'byLogin': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'User' && doc.login) emit(doc.login, doc._id)
@@ -143,6 +177,11 @@ class Datastore {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'User' && doc.country) emit(doc.country, doc._id)
             }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'User' && doc.lang) emit(doc.lang, doc._id)
+            }
           }
         }
       })
@@ -154,6 +193,16 @@ class Datastore {
           'all': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Team') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Team' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Team' && doc.priv === false) emit(doc._id)
             }
           },
           'byName': {
@@ -187,6 +236,131 @@ class Datastore {
                   if (doc.members[member].role === 0) {
                     emit(doc.members[member].user._id, doc._id)
                   }
+                }
+              }
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/surveys',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.lang) emit(doc.lang, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.project) emit(doc.project._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/scores',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byLang': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.lang) emit(doc.lang, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.project) emit(doc.project._id, doc._id)
+            }
+          },
+          'byType': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.type) emit(doc.type, doc._id)
+            }
+          },
+          'byAuthor': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.authors) {
+                for (var author of doc.authors) {
+                  emit(author, doc._id)
+                }
+              }
+            }
+          },
+          'byNotator': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.notators) {
+                for (var notator of doc.notators) {
+                  emit(notator, doc._id)
+                }
+              }
+            }
+          },
+          'byGenre': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.genres) {
+                for (var genre of doc.genres) {
+                  emit(genre, doc._id)
+                }
+              }
+            }
+          },
+          'byTag': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.tags) {
+                for (var tag of doc.tags) {
+                  emit(tag, doc._id)
                 }
               }
             }
