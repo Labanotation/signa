@@ -14,6 +14,12 @@ const PerformerGenre = {
   Neutral: 2
 }
 
+const ScoreMode = {
+  KIN: 0,
+  LAB: 1,
+  Motif: 2
+}
+
 class ScoreItem extends IncludedBaseObject {
   get type() {
     return this.savedState.type
@@ -346,6 +352,16 @@ class Score extends BaseObject {
     this.saved = false
   }
 
+  get mode() {
+    return this.savedState.mode
+  }
+
+  set mode(mode) {
+    // @TODO
+    this.savedState.mode = mode
+    this.saved = false
+  }
+
   get lang() {
     return this.savedState.lang
   }
@@ -471,6 +487,7 @@ class Score extends BaseObject {
 module.exports = {
   ScoreType: ScoreType,
   PerformerGenre: PerformerGenre,
+  ScoreMode: ScoreMode,
   ScoreItem: ScoreItem,
   FloorItem: FloorItem,
   Performer: Performer,

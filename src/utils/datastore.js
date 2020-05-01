@@ -44,6 +44,7 @@ const Requests = {
   ScoresByCreator: 'scores/createdBy',
   ScoresByProject: 'scores/byProject',
   ScoresByType: 'scores/byType',
+  ScoresByMode: 'scores/byMode',
   ScoresByAuthor: 'scores/byAuthor',
   ScoresByNotator: 'scores/byNotator',
   ScoresByGenre: 'scores/byGenre',
@@ -377,6 +378,11 @@ class Datastore {
           'byType': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Score' && doc.type) emit(doc.type, doc._id)
+            }
+          },
+          'byMode': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.mode) emit(doc.mode, doc._id)
             }
           },
           'byAuthor': {
