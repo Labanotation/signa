@@ -136,6 +136,7 @@ class BaseObject {
   sort(prop, fun) {
     if (Array.isArray(this[prop]) === true) {
       this[prop].sort(fun)
+      this.saved = false
     }
   }
 

@@ -183,56 +183,6 @@ class Folder extends BaseObject {
     this.saved = false
   }
 
-  get mediae() { // --> [Media]
-    return this.savedState.mediae
-  }
-
-  set mediae(mediae) {
-    // @TODO
-    this.savedState.mediae = mediae
-    this.saved = false
-  }
-
-  get publications() { // --> [Publication]
-    return this.savedState.publications
-  }
-
-  set publications(publications) {
-    // @TODO
-    this.savedState.publications = publications
-    this.saved = false
-  }
-
-  get scores() { // --> [Score]
-    return this.savedState.scores
-  }
-
-  set scores(scores) {
-    // @TODO
-    this.savedState.scores = scores
-    this.saved = false
-  }
-
-  get surveys() { // --> [Survey]
-    return this.savedState.surveys
-  }
-
-  set surveys(surveys) {
-    // @TODO
-    this.savedState.surveys = surveys
-    this.saved = false
-  }
-
-  get layouts() { // --> [Layout]
-    return this.savedState.layouts
-  }
-
-  set layouts(layouts) {
-    // @TODO
-    this.savedState.layouts = layouts
-    this.saved = false
-  }
-
   constructor() {
     super()
   }
@@ -367,66 +317,6 @@ class Project extends BaseObject {
   set parameters(parameters) {
     // @TODO
     this.savedState.parameters = parameters
-    this.saved = false
-  }
-
-  get folders() { // --> [Folder]
-    return this.savedState.folders
-  }
-
-  set folders(folders) {
-    // @TODO
-    this.savedState.folders = folders
-    this.saved = false
-  }
-
-  get mediae() { // --> [Media]
-    return this.savedState.mediae
-  }
-
-  set mediae(mediae) {
-    // @TODO
-    this.savedState.mediae = mediae
-    this.saved = false
-  }
-
-  get publications() { // --> [Publication]
-    return this.savedState.publications
-  }
-
-  set publications(publications) {
-    // @TODO
-    this.savedState.publications = publications
-    this.saved = false
-  }
-
-  get scores() { // --> [Score]
-    return this.savedState.scores
-  }
-
-  set scores(scores) {
-    // @TODO
-    this.savedState.scores = scores
-    this.saved = false
-  }
-
-  get surveys() { // --> [Survey]
-    return this.savedState.surveys
-  }
-
-  set surveys(surveys) {
-    // @TODO
-    this.savedState.surveys = surveys
-    this.saved = false
-  }
-
-  get layouts() { // --> [Layout]
-    return this.savedState.layouts
-  }
-
-  set layouts(layouts) {
-    // @TODO
-    this.savedState.layouts = layouts
     this.saved = false
   }
 

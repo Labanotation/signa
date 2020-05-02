@@ -28,10 +28,18 @@ const ScoreMode = {
 
 class Template extends BaseObject {
   // @TODO
+
+  constructor() {
+    super()
+  }
 }
 
 class Pattern extends BaseObject {
   // @TODO
+
+  constructor() {
+    super()
+  }
 }
 
 class ScoreItem extends IncludedBaseObject {
@@ -237,6 +245,7 @@ class ScoreSegment extends IncludedBaseObject {
     this.saved = false
   }
 
+  // @WARN avoid duplicate
   get performers() {
     return this.savedState.performers
   }
@@ -474,16 +483,6 @@ class Score extends BaseObject {
   set tags(tags) {
     // @TODO
     this.savedState.tags = tags
-    this.saved = false
-  }
-
-  get performers() {
-    return this.savedState.performers
-  }
-
-  set performers(performers) {
-    // @TODO [Performer]
-    this.savedState.performers = performers
     this.saved = false
   }
 
