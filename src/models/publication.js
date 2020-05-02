@@ -210,16 +210,6 @@ class Publication extends BaseObject {
     this.saved = false
   }
 
-  get media() {
-    return this.savedState.media
-  }
-
-  set media(media) {
-    // @TODO
-    this.savedState.media = media
-    this.saved = false
-  }
-
   get project() {
     return this.savedState.project
   }
@@ -227,6 +217,16 @@ class Publication extends BaseObject {
   set project(project) {
     // @TODO
     this.savedState.project = project
+    this.saved = false
+  }
+
+  get folder() {
+    return this.savedState.folder
+  }
+
+  set folder(folder) {
+    // @TODO
+    this.savedState.folder = folder
     this.saved = false
   }
 

@@ -11,6 +11,7 @@ const Requests = {
   ObjectsByNameAndClass: 'objects/byNameAndClass',
   ObjectsByCreator: 'objects/createdBy',
   ObjectsByProject: 'objects/byProject',
+  ObjectsByFolder: 'objects/byFolder',
   Users: 'users/all',
   UsersRoot: 'users/root',
   UsersIndexable: 'users/indexable',
@@ -36,6 +37,7 @@ const Requests = {
   SurveysByLang: 'surveys/byLang',
   SurveysByCreator: 'surveys/createdBy',
   SurveysByProject: 'surveys/byProject',
+  SurveysByFolder: 'surveys/byFolder',
   Scores: 'scores/all',
   ScoresIndexable: 'scores/indexable',
   ScoresPublic: 'scores/public',
@@ -43,6 +45,7 @@ const Requests = {
   ScoresByLang: 'scores/byLang',
   ScoresByCreator: 'scores/createdBy',
   ScoresByProject: 'scores/byProject',
+  ScoresByFolder: 'scores/byFolder',
   ScoresByType: 'scores/byType',
   ScoresByMode: 'scores/byMode',
   ScoresByAuthor: 'scores/byAuthor',
@@ -56,6 +59,7 @@ const Requests = {
   PublicationsByLang: 'publications/byLang',
   PublicationsByCreator: 'publications/createdBy',
   PublicationsByProject: 'publications/byProject',
+  PublicationsByFolder: 'publications/byFolder',
   Projects: 'projects/all',
   ProjectsIndexable: 'projects/indexable',
   ProjectsPublic: 'projects/public',
@@ -64,6 +68,11 @@ const Requests = {
   ProjectsByOwner: 'projects/byOwner',
   ProjectsByContributor: 'projects/byContributor',
   ProjectsByCreator: 'projects/createdBy',
+  Folders: 'folders/all',
+  FoldersIndexable: 'folders/indexable',
+  FoldersPublic: 'folders/public',
+  FoldersByName: 'folders/byName',
+  FoldersByCreator: 'folders/createdBy',
   Discussions: 'discussions/all',
   DiscussionsIndexable: 'discussions/indexable',
   DiscussionsPublic: 'discussions/public',
@@ -77,13 +86,19 @@ const Requests = {
   MediaByLang: 'media/byLang',
   MediaByCreator: 'media/createdBy',
   MediaByProject: 'media/byProject',
+  MediaByFolder: 'media/byFolder',
   MediaByType: 'media/byType',
   Layouts: 'layouts/all',
   LayoutsPublic: 'layouts/public',
   LayoutsByName: 'layouts/byName',
   LayoutsByCreator: 'layouts/createdBy',
-  LayoutsByProject: 'layouts/byProject'
+  LayoutsByProject: 'layouts/byProject',
+  LayoutsByFolder: 'layouts/byFolder',
+  Performers: 'performers/all',
+  PerformersByName: 'performers/byName',
+  PerformersByFolder: 'performers/byScore'
 }
+// @TODO Template, Pattern
 
 let _instance = undefined
 
@@ -174,6 +189,11 @@ class Datastore {
           'byProject': {
             map: function (doc) {
               if (doc.instanceOf && doc.project) emit(doc.project._id, doc._id)
+            }
+          },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.folder) emit(doc.folder._id, doc._id)
             }
           }
         }
@@ -332,6 +352,11 @@ class Datastore {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.project) emit(doc.project._id, doc._id)
             }
+          },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Survey' && doc.folder) emit(doc.folder._id, doc._id)
+            }
           }
         }
       })
@@ -373,6 +398,11 @@ class Datastore {
           'byProject': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Score' && doc.project) emit(doc.project._id, doc._id)
+            }
+          },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Score' && doc.folder) emit(doc.folder._id, doc._id)
             }
           },
           'byType': {
@@ -462,6 +492,11 @@ class Datastore {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.project) emit(doc.project._id, doc._id)
             }
+          },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Publication' && doc.folder) emit(doc.folder._id, doc._id)
+            }
           }
         }
       })
@@ -512,6 +547,38 @@ class Datastore {
           'createdBy': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Project' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/folders',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder') emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.createdBy) emit(doc.createdBy._id, doc._id)
             }
           }
         }
@@ -593,6 +660,11 @@ class Datastore {
               if (doc.instanceOf && doc.instanceOf === 'Media' && doc.project) emit(doc.project._id, doc._id)
             }
           },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Media' && doc.folder) emit(doc.folder._id, doc._id)
+            }
+          },
           'byType': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Media' && doc.type) emit(doc.type, doc._id)
@@ -629,10 +701,38 @@ class Datastore {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.project) emit(doc.project._id, doc._id)
             }
+          },
+          'byFolder': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Layout' && doc.folder) emit(doc.folder._id, doc._id)
+            }
           }
         }
       })
     } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/performers',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Performer') emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Performer' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'byScore': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Performer' && doc.score) emit(doc.score._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    // @TODO Template, Pattern
     this._inited = true
     return true
   }

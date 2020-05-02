@@ -116,6 +116,16 @@ class Team extends BaseObject {
     this.saved = false
   }
 
+  get projects() {
+    return this.savedState.projects
+  }
+
+  set projects(projects) {
+    // @TODO [Project]
+    this.savedState.projects = projects
+    this.saved = false
+  }
+
   constructor() {
     super()
   }

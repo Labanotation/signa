@@ -73,6 +73,16 @@ class Layout extends BaseObject {
     this.saved = false
   }
 
+  get folder() {
+    return this.savedState.folder
+  }
+
+  set folder(folder) {
+    // @TODO
+    this.savedState.folder = folder
+    this.saved = false
+  }
+
   get priv() {
     return (this.savedState.priv === true)
   }

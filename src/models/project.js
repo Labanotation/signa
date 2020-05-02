@@ -113,6 +113,131 @@ class Discussion extends BaseObject {
   }
 }
 
+class Folder extends BaseObject {
+  get name() {
+    return this.savedState.name
+  }
+
+  set name(name) {
+    name = name.trim()
+    if (Validator.Title(name)) {
+      this.savedState.name = name
+      this.saved = false
+    }
+  }
+
+  get description() {
+    return this.savedState.description
+  }
+
+  set description(description) {
+    this.savedState.description = description.trim()
+    this.saved = false
+  }
+
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  get mediae() { // --> [Media]
+    return this.savedState.mediae
+  }
+
+  set mediae(mediae) {
+    // @TODO
+    this.savedState.mediae = mediae
+    this.saved = false
+  }
+
+  get publications() { // --> [Publication]
+    return this.savedState.publications
+  }
+
+  set publications(publications) {
+    // @TODO
+    this.savedState.publications = publications
+    this.saved = false
+  }
+
+  get scores() { // --> [Score]
+    return this.savedState.scores
+  }
+
+  set scores(scores) {
+    // @TODO
+    this.savedState.scores = scores
+    this.saved = false
+  }
+
+  get surveys() { // --> [Survey]
+    return this.savedState.surveys
+  }
+
+  set surveys(surveys) {
+    // @TODO
+    this.savedState.surveys = surveys
+    this.saved = false
+  }
+
+  get layouts() { // --> [Layout]
+    return this.savedState.layouts
+  }
+
+  set layouts(layouts) {
+    // @TODO
+    this.savedState.layouts = layouts
+    this.saved = false
+  }
+
+  constructor() {
+    super()
+  }
+}
+
 class Project extends BaseObject {
   get name() {
     return this.savedState.name
@@ -245,6 +370,16 @@ class Project extends BaseObject {
     this.saved = false
   }
 
+  get folders() { // --> [Folder]
+    return this.savedState.folders
+  }
+
+  set folders(folders) {
+    // @TODO
+    this.savedState.folders = folders
+    this.saved = false
+  }
+
   get mediae() { // --> [Media]
     return this.savedState.mediae
   }
@@ -303,5 +438,6 @@ class Project extends BaseObject {
 module.exports = {
   Post: Post,
   Discussion: Discussion,
+  Folder: Folder,
   Project: Project
 }

@@ -1,6 +1,12 @@
 const { BaseObject, IncludedBaseObject } = require('./base')
 const { Validator } = require('../utils/validator')
 
+// Score defines Performer(s) and is divided into ScorePart(s)
+// ScorePart defines global staff settings (scale, metric, count, etc.)
+// ScorePart is divided into ScoreSegment(s) which revolve around a fixed combination of Score Performer(s)
+// A change in Performer(s) combination means a change of ScoreSegment
+// ScoreSegment is the container for ScoreItem(s)
+
 // @TODO
 const ScoreType = {
   Reconstruction: 0,
@@ -18,6 +24,14 @@ const ScoreMode = {
   KIN: 0,
   LAB: 1,
   Motif: 2
+}
+
+class Template extends BaseObject {
+  // @TODO
+}
+
+class Pattern extends BaseObject {
+  // @TODO
 }
 
 class ScoreItem extends IncludedBaseObject {
@@ -58,6 +72,26 @@ class ScoreItem extends IncludedBaseObject {
   set duration(duration) {
     // @TODO
     this.savedState.duration = duration
+    this.saved = false
+  }
+
+  get locked() {
+    return (this.savedState.locked === true)
+  }
+
+  set locked(locked) {
+    // @TODO
+    this.savedState.locked = (locked === true)
+    this.saved = false
+  }
+
+  get hidden() {
+    return (this.savedState.hidden === true)
+  }
+
+  set hidden(hidden) {
+    // @TODO
+    this.savedState.hidden = (hidden === true)
     this.saved = false
   }
 
@@ -124,7 +158,7 @@ class FloorItem extends IncludedBaseObject {
   }
 }
 
-class Performer extends IncludedBaseObject {
+class Performer extends BaseObject {
   get genre() {
     return this.savedState.genre
   }
@@ -164,6 +198,16 @@ class Performer extends IncludedBaseObject {
   set parameters(parameters) {
     // @TODO
     this.savedState.parameters = parameters
+    this.saved = false
+  }
+
+  get score() {
+    return this.savedState.score
+  }
+
+  set score(score) {
+    // @TODO
+    this.savedState.score = score
     this.saved = false
   }
 
@@ -284,7 +328,28 @@ class FloorSegment extends IncludedBaseObject {
   }
 }
 
-class Part extends IncludedBaseObject {
+class ScorePart extends IncludedBaseObject {
+  get name() {
+    return this.savedState.name
+  }
+
+  set name(name) {
+    name = name.trim()
+    if (Validator.Title(name)) {
+      this.savedState.name = name
+      this.saved = false
+    }
+  }
+
+  get description() {
+    return this.savedState.description
+  }
+
+  set description(description) {
+    this.savedState.description = description.trim()
+    this.saved = false
+  }
+
   get scoreSegments() {
     return this.savedState.scoreSegments
   }
@@ -412,12 +477,22 @@ class Score extends BaseObject {
     this.saved = false
   }
 
+  get performers() {
+    return this.savedState.performers
+  }
+
+  set performers(performers) {
+    // @TODO [Performer]
+    this.savedState.performers = performers
+    this.saved = false
+  }
+
   get parts() {
     return this.savedState.parts
   }
 
   set parts(parts) {
-    // @TODO [Part]
+    // @TODO [ScorePart]
     this.savedState.parts = parts
     this.saved = false
   }
@@ -429,6 +504,16 @@ class Score extends BaseObject {
   set project(project) {
     // @TODO
     this.savedState.project = project
+    this.saved = false
+  }
+
+  get folder() {
+    return this.savedState.folder
+  }
+
+  set folder(folder) {
+    // @TODO
+    this.savedState.folder = folder
     this.saved = false
   }
 
@@ -488,11 +573,13 @@ module.exports = {
   ScoreType: ScoreType,
   PerformerGenre: PerformerGenre,
   ScoreMode: ScoreMode,
+  Template: Template,
+  Pattern: Pattern,
   ScoreItem: ScoreItem,
   FloorItem: FloorItem,
   Performer: Performer,
   ScoreSegment: ScoreSegment,
   FloorSegment: FloorSegment,
-  Part: Part,
+  ScorePart: ScorePart,
   Score: Score
 }
