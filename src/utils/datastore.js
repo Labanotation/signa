@@ -72,6 +72,7 @@ const Requests = {
   FoldersIndexable: 'folders/indexable',
   FoldersPublic: 'folders/public',
   FoldersByName: 'folders/byName',
+  FoldersByProject: 'folders/byProject',
   FoldersByCreator: 'folders/createdBy',
   Discussions: 'discussions/all',
   DiscussionsIndexable: 'discussions/indexable',
@@ -96,9 +97,20 @@ const Requests = {
   LayoutsByFolder: 'layouts/byFolder',
   Performers: 'performers/all',
   PerformersByName: 'performers/byName',
-  PerformersByFolder: 'performers/byScore'
+  PerformersByFolder: 'performers/byScore',
+  Templates: 'templates/all',
+  TemplatesByName: 'templates/byName',
+  TemplatesPublic: 'templates/public',
+  TemplatesIndexable: 'templates/indexable',
+  TemplatesByCreator: 'templates/createdBy',
+  TemplatesByProject: 'templates/byProject',
+  Patterns: 'patterns/all',
+  PatternsByName: 'patterns/byName',
+  PatternsPublic: 'patterns/public',
+  PatternsIndexable: 'patterns/indexable',
+  PatternsByCreator: 'patterns/createdBy',
+  PatternsByScore: 'patterns/byScore'
 }
-// @TODO Template, Pattern
 
 let _instance = undefined
 
@@ -576,6 +588,11 @@ class Datastore {
               if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.name) emit(doc.name, doc._id)
             }
           },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.project) emit(doc.project._id, doc._id)
+            }
+          },
           'createdBy': {
             map: function (doc) {
               if (doc.instanceOf && doc.instanceOf === 'Folder' && doc.createdBy) emit(doc.createdBy._id, doc._id)
@@ -732,7 +749,80 @@ class Datastore {
         }
       })
     } catch (ignore) { }
-    // @TODO Template, Pattern
+    try {
+      await this.handler.insert({
+        _id: '_design/templates',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template') emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byProject': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.project) emit(doc.project._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
+    try {
+      await this.handler.insert({
+        _id: '_design/patterns',
+        'views': {
+          'all': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Pattern') emit(doc._id)
+            }
+          },
+          'public': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Pattern' && doc.priv === false) emit(doc._id)
+            }
+          },
+          'indexable': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Pattern' && doc.indexable === true) emit(doc._id)
+            }
+          },
+          'byName': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Pattern' && doc.name) emit(doc.name, doc._id)
+            }
+          },
+          'createdBy': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Pattern' && doc.createdBy) emit(doc.createdBy._id, doc._id)
+            }
+          },
+          'byScore': {
+            map: function (doc) {
+              if (doc.instanceOf && doc.instanceOf === 'Template' && doc.score) emit(doc.score._id, doc._id)
+            }
+          }
+        }
+      })
+    } catch (ignore) { }
     this._inited = true
     return true
   }

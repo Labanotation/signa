@@ -6,6 +6,7 @@ const { Validator } = require('../utils/validator')
 // ScorePart is divided into ScoreSegment(s) which revolve around a fixed combination of Score Performer(s)
 // A change in Performer(s) combination means a change of ScoreSegment
 // ScoreSegment is the container for ScoreItem(s)
+// @TODO ScoreItem(s) could exist without a visible score (isolated --> ScoreSample?)
 
 // @TODO
 const ScoreType = {
@@ -27,7 +28,74 @@ const ScoreMode = {
 }
 
 class Template extends BaseObject {
-  // @TODO
+  get name() {
+    return this.savedState.name
+  }
+
+  set name(name) {
+    name = name.trim()
+    if (Validator.Title(name)) {
+      this.savedState.name = name
+      this.saved = false
+    }
+  }
+
+  get description() {
+    return this.savedState.description
+  }
+
+  set description(description) {
+    this.savedState.description = description.trim()
+    this.saved = false
+  }
+
+  get project() {
+    return this.savedState.project
+  }
+
+  set project(project) {
+    // @TODO
+    this.savedState.project = project
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
 
   constructor() {
     super()
@@ -35,7 +103,84 @@ class Template extends BaseObject {
 }
 
 class Pattern extends BaseObject {
-  // @TODO
+  get name() {
+    return this.savedState.name
+  }
+
+  set name(name) {
+    name = name.trim()
+    if (Validator.Title(name)) {
+      this.savedState.name = name
+      this.saved = false
+    }
+  }
+
+  get description() {
+    return this.savedState.description
+  }
+
+  set description(description) {
+    this.savedState.description = description.trim()
+    this.saved = false
+  }
+
+  get items() {
+    return this.savedState.items
+  }
+
+  set items(items) {
+    // @TODO [ScoreItem]
+    this.savedState.items = items
+    this.saved = false
+  }
+
+  get score() {
+    return this.savedState.score
+  }
+
+  set score(score) {
+    // @TODO
+    this.savedState.score = score
+    this.saved = false
+  }
+
+  get createdBy() {
+    return this.savedState.createdBy
+  }
+
+  set createdBy(createdBy) {
+    // @TODO
+    this.savedState.createdBy = createdBy
+    this.saved = false
+  }
+
+  get priv() {
+    return (this.savedState.priv === true)
+  }
+
+  set priv(priv) {
+    this.savedState.priv = (priv === true)
+    this.saved = false
+  }
+
+  get indexable() {
+    return (this.savedState.indexable === true)
+  }
+
+  set indexable(indexable) {
+    this.savedState.indexable = (indexable === true)
+    this.saved = false
+  }
+
+  get parameters() {
+    return this.savedState.parameters
+  }
+
+  set parameters(parameters) {
+    // @TODO
+    this.savedState.parameters = parameters
+    this.saved = false
+  }
 
   constructor() {
     super()
