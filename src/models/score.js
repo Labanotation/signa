@@ -7,7 +7,7 @@ const { Validator } = require('../utils/validator')
 // A change in Performer(s) combination means a change of ScoreSegment
 // ScoreSegment is the container for ScoreItem(s)
 // @TODO ScoreItem(s) could exist without a visible score (isolated --> ScoreSample?)
-
+// Custom mouse cursor with level indicator
 // @TODO
 const ScoreType = {
   Reconstruction: 0,
