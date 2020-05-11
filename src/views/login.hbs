@@ -1,7 +1,7 @@
 <div class="position-relative overflow-hidden p-3 p-md-4 m-md-3 text-center bg-light">
   <div class="card col-md-4 p-lg-1 mx-auto my-1">
     <div class="card-body text-left">
-      <h5 class="card-title">{{{__ "login.title"}}}</h5>
+      <h5 class="card-title">{{{__ "login.title"}}}<img id="logo-login" src="/images/logo.png"></h5>
       <form action="/login" method="post">
         <div class="form-group">
           <label for="login">{{{__ "login.login"}}}</label>
@@ -24,8 +24,31 @@
           <input type="checkbox" class="custom-control-input" id="rememberMe">
           <label class="custom-control-label" for="rememberMe">Remember me</label>
         </div -->
-        <button type="submit" class="btn btn-primary my-2">{{{__ "login.submit"}}}</button>
+        <div class="btn-toolbar justify-content-between">
+          <button type="submit" class="btn btn-primary my-2">{{{__ "login.submit"}}}</button>
+          <button type="submit" id="login_signup" class="btn btn-secondary my-2" data-toggle="tooltip" data-placement="right"
+            title="{{{__ "login.signup_tooltip"}}}">{{{__ "login.signup"}}}</button>
+        </div>
       </form>
     </div>
   </div>
 </div>
+
+{{#contentFor "pageStyles"}}
+<style type="text/css">
+#logo-login {
+  height: 32px;
+  float: right;
+}
+</style>
+{{/contentFor}}
+
+{{#contentFor "pageScripts"}}
+<script type="text/javascript">
+$(function () {
+  setTimeout(() => {
+    $('#login_signup').tooltip('show')
+  }, 3000)
+})
+</script>
+{{/contentFor}}

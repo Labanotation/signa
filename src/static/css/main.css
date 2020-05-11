@@ -5,17 +5,8 @@
   padding: 2px;
 }
 
-#logo-footer {
-  height: 24px;
-}
-
 #logo-cnd-footer {
   height: 18px;
-}
-
-.logologin {
-  width: 64px;
-  height: 64px;
 }
 
 .bg-signa {
@@ -35,6 +26,12 @@
 .site-header a:hover {
   color: #fff;
   text-decoration: none;
+}
+
+.tooltip-arrow,
+.tooltip > .tooltip-inner {
+  color: #aaa;
+  font-style: italic;
 }
 
 .flex-equal > * {

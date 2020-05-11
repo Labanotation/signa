@@ -16,10 +16,12 @@
     "comingsoon": "Coming soon"
   },
   "login": {
-    "title": "Login to Signa...",
+    "title": "Welcome to Signa",
     "login": "Login",
     "password": "Password",
-    "submit": "Submit"
+    "submit": "Login",
+    "signup": "Signup",
+    "signup_tooltip": "Click here to create a user account."
   },
   "footer": {
     "supportCND": "With the support of",
