@@ -10,6 +10,7 @@
 	"Logout": "Se déconnecter",
 	"Profile": "Profil",
 	"Resources": "Ressources",
+  "Help": "Aide",
 	"index": {
 		"welcome": "Signa",
 		"tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
@@ -21,7 +22,8 @@
 		"password": "Mot de passe",
 		"submit": "Se connecter",
     "signup": "S'inscrire",
-    "signup_tooltip": "Pour créer un compte utilisateur, cliquez ici."
+    "signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
+    "forgot": "Mot de passe oublié ?"
 	},
 	"footer": {
 		"supportCND": "Avec le soutien du",

@@ -1,7 +1,7 @@
 <div class="position-relative overflow-hidden p-3 p-md-4 m-md-3 text-center bg-light">
   <div class="card col-md-4 p-lg-1 mx-auto my-1">
     <div class="card-body text-left">
-      <h5 class="card-title">{{{__ "login.title"}}}<img id="logo-login" src="/images/logo.png"></h5>
+      <h5 class="card-title"><img id="logo-login" src="/images/logo.png" class="mx-4">{{{__ "login.title"}}}</h5>
       <form action="/login" method="post">
         <div class="form-group">
           <label for="login">{{{__ "login.login"}}}</label>
@@ -19,6 +19,9 @@
             Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces,
             special characters, or emoji.
           </small -->
+          <small id="passwordHelpBlock" class="form-text text-muted text-right">
+            <a class="nav-link" href="/forgotpassword">{{{__ "login.forgot"}}}</a>
+          </small>
         </div>
         <!-- div class="orm-group custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="rememberMe">
@@ -26,8 +29,9 @@
         </div -->
         <div class="btn-toolbar justify-content-between">
           <button type="submit" class="btn btn-primary my-2">{{{__ "login.submit"}}}</button>
-          <button type="submit" id="login_signup" class="btn btn-secondary my-2" data-toggle="tooltip" data-placement="right"
-            title="{{{__ "login.signup_tooltip"}}}">{{{__ "login.signup"}}}</button>
+          <a id="login_signup" href="/signup" class="btn btn-secondary my-2" data-toggle="popover"
+            data-placement="right" data-title="{{{__ "Help"}}}" data-content="{{{__ "login.signup_tooltip"}}}"
+            role="button">{{{__ "login.signup"}}}</a>
         </div>
       </form>
     </div>
@@ -36,19 +40,20 @@
 
 {{#contentFor "pageStyles"}}
 <style type="text/css">
-#logo-login {
-  height: 32px;
-  float: right;
-}
+  #logo-login {
+    height: 32px;
+  }
 </style>
 {{/contentFor}}
 
 {{#contentFor "pageScripts"}}
 <script type="text/javascript">
-$(function () {
-  setTimeout(() => {
-    $('#login_signup').tooltip('show')
-  }, 3000)
+  $(function () {
+    if ({{ count }} < 4) {
+    setTimeout(() => {
+      $('#login_signup').popover('show')
+    }, 1000)
+  }
 })
 </script>
 {{/contentFor}}

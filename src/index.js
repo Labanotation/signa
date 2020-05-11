@@ -122,13 +122,6 @@ set language: res.cookie('locale', 'en', { maxAge: 900000, httpOnly: true })
 */
 
 app.get('/', function (req, res) {
-  /* session stuff
-  if (req.session.views) {
-    req.session.views++
-  } else {
-    req.session.views = 1
-  }
-  */
   let userForTemplate = null
   if (req.isAuthenticated() && req.user) {
     userForTemplate = req.user.dehydrate()
@@ -139,7 +132,6 @@ app.get('/', function (req, res) {
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated(),
     user: userForTemplate
-    // count: req.session.views
   })
 })
 
@@ -184,11 +176,17 @@ app.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     res.redirect('/')
   } else {
+    if (req.session.login_views) {
+      req.session.login_views++
+    } else {
+      req.session.login_views = 1
+    }
     res.render('login', {
       title: 'Signa',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
-      invalid: req.query.invalid !== undefined
+      invalid: req.query.invalid !== undefined,
+      count: req.session.login_views
     })
   }
 })
@@ -206,6 +204,8 @@ app.post('/login', (req, res, next) => {
 })
 
 app.get('/logout', (req, res) => {
+  // @TODO generalize (custom "reset" for session (req.session.destroy() doesn't work))
+  req.session.login_views = 0
   req.logOut()
   return res.redirect('/')
 })
@@ -224,6 +224,28 @@ app.get('/dashboard', (req, res) => {
   } else {
     res.redirect('/login')
   }
+})
+
+app.use(function (err, req, res, next) {
+  // @TODO 500
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+
+// KEEP IT AT THE BOTTOM OF THE STACK
+app.use(function (req, res, next) {
+  // @TODO 404
+  let userForTemplate = null
+  if (req.isAuthenticated() && req.user) {
+    userForTemplate = req.user.dehydrate()
+    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+  }
+  res.status(404).render('404', {
+    title: 'Signa',
+    lang: req.getLocale(),
+    isAuthenticated: req.isAuthenticated(),
+    user: userForTemplate
+  })
 })
 
 async function init() {

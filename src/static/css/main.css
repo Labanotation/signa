@@ -28,10 +28,13 @@
   text-decoration: none;
 }
 
-.tooltip-arrow,
-.tooltip > .tooltip-inner {
-  color: #aaa;
+.popover-header {
+  font-size: 12px;
+}
+
+.popover-body {
   font-style: italic;
+  font-size: 12px;
 }
 
 .flex-equal > * {
