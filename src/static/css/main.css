@@ -1,3 +1,86 @@
+@font-face {
+  font-family: "Inconsolata";
+  font-weight: normal;
+  src: url("../webfonts/Inconsolata-Regular.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Inconsolata";
+  font-weight: bold;
+  src: url("../webfonts/Inconsolata-Bold.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: normal;
+  src: url("../webfonts/Roboto-Regular.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: bold;
+  src: url("../webfonts/Roboto-Bold.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: normal;
+  font-style: italic;
+  src: url("../webfonts/Roboto-Italic.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-weight: bold;
+  font-style: italic;
+  src: url("../webfonts/Roboto-BoldItalic.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Lora";
+  font-weight: normal;
+  src: url("../webfonts/Lora-Regular.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Lora";
+  font-weight: bold;
+  src: url("../webfonts/Lora-Bold.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Lora";
+  font-weight: normal;
+  font-style: italic;
+  src: url("../webfonts/Lora-Italic.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Lora";
+  font-weight: bold;
+  font-style: italic;
+  src: url("../webfonts/Lora-BoldItalic.ttf") format("ttf");
+}
+
+body {
+  font-family: "Roboto";
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: "Inconsolata";
+}
+
+.tooltip, .popover {
+  font-family: "Roboto";
+}
+
+.font-monospace {
+  font-family: "Inconsolata" !important;
+}
+
 #logo-header {
   height: 24px;
   background-color: #fff;

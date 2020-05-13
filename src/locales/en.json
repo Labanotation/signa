@@ -11,6 +11,8 @@
   "Profile": "Profile",
   "Resources": "Resources",
   "Help": "Help",
+  "Error404": "404 error",
+  "NotFound": "The page you are looking for cannot be reached or no longer exists...",
   "index": {
     "welcome": "Signa",
     "tagline": "A Web platform for writing and publishing Laban scores.",

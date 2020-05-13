@@ -11,6 +11,8 @@
 	"Profile": "Profil",
 	"Resources": "Ressources",
   "Help": "Aide",
+  "Error404": "Erreur 404",
+  "NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
 	"index": {
 		"welcome": "Signa",
 		"tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
