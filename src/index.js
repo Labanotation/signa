@@ -1,5 +1,6 @@
 require('dotenv').config()
 const { Datastore, DatastoreUtils, Requests } = require('./utils/datastore')
+const { Session } = require('./utils/session')
 const db = Datastore.getInstance()
 const fs = require('fs-extra')
 const fp = require('path')
@@ -176,17 +177,13 @@ app.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     res.redirect('/')
   } else {
-    if (req.session.login_views) {
-      req.session.login_views++
-    } else {
-      req.session.login_views = 1
-    }
+    Session.incrementViews(req, 'login')
     res.render('login', {
       title: 'Signa',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       invalid: req.query.invalid !== undefined,
-      count: req.session.login_views
+      count: Session.getViews(req, 'login')
     })
   }
 })
@@ -204,8 +201,7 @@ app.post('/login', (req, res, next) => {
 })
 
 app.get('/logout', (req, res) => {
-  // @TODO generalize (custom "reset" for session (req.session.destroy() doesn't work))
-  req.session.login_views = 0
+  Session.reset(req)
   req.logOut()
   return res.redirect('/')
 })
