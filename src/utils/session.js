@@ -4,7 +4,7 @@ class Session {
   }
 
   static reset(req) {
-    // Custom "reset" for session (req.session.destroy() doesn't work)
+    // Custom "reset" for session (because req.session.destroy() doesn't work as expected)
     req.session.login_views = 0
   }
 

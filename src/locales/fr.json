@@ -13,6 +13,8 @@
   "Help": "Aide",
   "Error404": "Erreur 404",
   "NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
+  "Error500": "Erreur 500",
+  "ServerError": "Le serveur a rencontré une erreur interne...",
 	"index": {
 		"welcome": "Signa",
 		"tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",

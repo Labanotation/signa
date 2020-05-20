@@ -100,7 +100,8 @@ hbs.registerHelper('layout', function (id, options) {
   return template({ ...options.hash, ...options.data.root })
 })
 
-/* Sync
+/*
+Sync
 hbs.registerHelper('link', function (text, options) {
   const attrs = []
   for (const prop in options.hash) {
@@ -120,6 +121,13 @@ hbs.registerAsyncHelper('readFile', function (filename, cb) {
 })
 
 set language: res.cookie('locale', 'en', { maxAge: 900000, httpOnly: true })
+
+app.get('/veggies/:name', function (req, res) {
+  res.render('veggies/details', {
+    veggie: req.params.name,
+    layout: 'layout/veggie-details'
+  })
+})
 */
 
 app.get('/', function (req, res) {
@@ -136,50 +144,13 @@ app.get('/', function (req, res) {
   })
 })
 
-/*
-app.get('/replace', function (req, res) {
-  res.render('replace', {
-    title: 'express-hbs example'
-  })
-})
-
-app.get('/fruits', function (req, res) {
-  res.cookie('locale', 'en', { maxAge: 900000, httpOnly: true })
-  res.render('fruits/index', {
-    title: 'My favorite fruits',
-    fruits: fruits
-  })
-})
-
-app.get('/fruits/:name', function (req, res) {
-  res.render('fruits/details', {
-    fruit: req.params.name
-  })
-})
-
-app.get('/veggies', function (req, res) {
-  res.render('veggies', {
-    title: 'My favorite veggies',
-    veggies: veggies,
-    layout: 'layout/veggie'
-  })
-})
-
-app.get('/veggies/:name', function (req, res) {
-  res.render('veggies/details', {
-    veggie: req.params.name,
-    layout: 'layout/veggie-details'
-  })
-})
-*/
-
 app.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     res.redirect('/')
   } else {
     Session.incrementViews(req, 'login')
     res.render('login', {
-      title: 'Signa',
+      title: 'Signa | Login',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       invalid: req.query.invalid !== undefined,
@@ -211,7 +182,7 @@ app.get('/dashboard', (req, res) => {
     let userForTemplate = req.user.dehydrate()
     userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
     res.render('dashboard', {
-      title: 'Signa',
+      title: 'Signa | Dashboard',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       user: userForTemplate,
@@ -222,22 +193,22 @@ app.get('/dashboard', (req, res) => {
   }
 })
 
+// KEEP THOSE TWO AT THE BOTTOM OF THE STACK:
 app.use(function (err, req, res, next) {
-  // @TODO 500
   console.error(err.stack)
-  res.status(500).send('Something broke!')
+  res.status(500).render('500', {
+    title: 'Signa | Server Error'
+  })
 })
 
-// KEEP IT AT THE BOTTOM OF THE STACK
 app.use(function (req, res, next) {
-  // @TODO 404
   let userForTemplate = null
   if (req.isAuthenticated() && req.user) {
     userForTemplate = req.user.dehydrate()
     userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
   }
   res.status(404).render('404', {
-    title: 'Signa',
+    title: 'Signa | Page Not Found',
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated(),
     user: userForTemplate
