@@ -15,6 +15,7 @@ const PouchSession = require('session-pouchdb-store')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Models } = require('./models')
+const { Mailer } = require('./utils/mailer')
 
 let locales = []
 let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
@@ -230,9 +231,22 @@ app.get('/signup', (req, res) => {
       title: 'Signa | Signup',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
-      invalid: req.query.invalid !== undefined
+      mail_invalid: req.query.mail_invalid !== undefined,
+      login_invalid: req.query.login_invalid !== undefined,
+      password_invalid: req.query.password_invalid !== undefined
     })
   }
+})
+
+app.post('/signup', (req, res, next) => {
+  // 1. test user data
+  res.redirect('/signup?login_invalid')
+  // 2. create *pending* user + send email
+  /*
+  Mailer.getInstance().send('toto@foo.com', 'Welcome to Signa', 'Test email from Signa', '<h1>Test email from Signa</h1>').then((info) => {
+    console.log(info.messageId)
+  })
+  */
 })
 
 app.get('/logout', (req, res) => {

@@ -31,10 +31,15 @@
     "invalid": "Invalid login or password."
   },
 	"signup": {
+		"email": "Email address",
 		"title": "Signup to Signa",
 		"submit": "Signup",
-    "invalid": "Invalid login or password.",
-    "help": "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji."
+    "mail_invalid": "Invalid email.",
+    "login_invalid": "Invalid login.",
+    "password_invalid": "Invalid password.",
+    "mail_help": "Your email address, etc.",
+    "login_help": "Your login, etc.",
+    "password_help": "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji."
 	},
   "footer": {
     "supportCND": "With the support of",

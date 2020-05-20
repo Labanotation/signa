@@ -10,11 +10,11 @@
 	"Logout": "Se déconnecter",
 	"Profile": "Profil",
 	"Resources": "Ressources",
-  "Help": "Aide",
-  "Error404": "Erreur 404",
-  "NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
-  "Error500": "Erreur 500",
-  "ServerError": "Le serveur a rencontré une erreur interne...",
+	"Help": "Aide",
+	"Error404": "Erreur 404",
+	"NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
+	"Error500": "Erreur 500",
+	"ServerError": "Le serveur a rencontré une erreur interne...",
 	"index": {
 		"welcome": "Signa",
 		"tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
@@ -25,16 +25,21 @@
 		"login": "Identifiant",
 		"password": "Mot de passe",
 		"submit": "Se connecter",
-    "signup": "S'inscrire",
-    "signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
-    "forgot": "Mot de passe oublié ?",
-    "invalid": "Identifiant ou mot de passe invalide."
+		"signup": "S'inscrire",
+		"signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
+		"forgot": "Mot de passe oublié ?",
+		"invalid": "Identifiant ou mot de passe invalide."
 	},
 	"signup": {
+		"email": "Adresse e-mail",
 		"title": "S'inscrire à Signa",
 		"submit": "S'inscrire",
-    "invalid": "Identifiant ou mot de passe invalide.",
-    "help": "Votre mot de passe doit contenir entre 8 et 20 caractères, être composé de lettres et de nombres, mais ne doit pas contenir d'espace, ni de caractère spécial, ni d'émoji."
+		"mail_invalid": "Adresse e-mail invalide.",
+		"login_invalid": "Identifiant invalide.",
+		"password_invalid": "Mot de passe invalide.",
+		"mail_help": "Votre adresse e-mail, etc.",
+		"login_help": "Votre identifiant, etc.",
+		"password_help": "Votre mot de passe doit contenir entre 8 et 20 caractères, être composé de lettres et de nombres, mais ne doit pas contenir d'espace, ni de caractère spécial, ni d'émoji."
 	},
 	"footer": {
 		"supportCND": "Avec le soutien du",

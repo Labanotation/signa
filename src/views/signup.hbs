@@ -4,19 +4,36 @@
       <h5 class="card-title"><img id="logo-login" src="/images/logo.png" class="mx-4">{{{__ "signup.title"}}}</h5>
       <form action="/signup" method="post">
         <div class="form-group">
+          <label for="email">{{{__ "signup.email"}}}</label>
+          <input type="text" class="form-control {{#if mail_invalid}}is-invalid{{/if}}" name="email" id="email"
+            autocomplete="email" value="" required>
+          <div class="invalid-feedback">
+            {{{__ "signup.mail_invalid" }}}
+          </div>
+          <small id="emailHelpBlock" class="form-text text-muted">
+            {{{__ "signup.mail_help" }}}
+          </small>
+        </div>
+        <div class="form-group">
           <label for="login">{{{__ "login.login"}}}</label>
-          <input type="text" class="form-control {{#if invalid}}is-invalid{{/if}}" name="login" id="login"
+          <input type="text" class="form-control {{#if login_invalid}}is-invalid{{/if}}" name="login" id="login"
             autocomplete="username" value="" required>
+          <div class="invalid-feedback">
+            {{{__ "signup.login_invalid" }}}
+          </div>
+          <small id="loginHelpBlock" class="form-text text-muted">
+            {{{__ "signup.login_help" }}}
+          </small>
         </div>
         <div class="form-group">
           <label for="password">{{{__ "login.password"}}}</label>
-          <input type="password" class="form-control {{#if invalid}}is-invalid{{/if}}" name="password"
+          <input type="password" class="form-control {{#if password_invalid}}is-invalid{{/if}}" name="password"
             autocomplete="new-password" id="password" value="" required>
           <div class="invalid-feedback">
-            {{{__ "signup.invalid" }}}
+            {{{__ "signup.password_invalid" }}}
           </div>
           <small id="passwordHelpBlock" class="form-text text-muted">
-            {{{__ "signup.help" }}}
+            {{{__ "signup.password_help" }}}
           </small>
         </div>
         <div class="btn-toolbar justify-content-between">
