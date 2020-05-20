@@ -16,6 +16,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Models } = require('./models')
 const { Mailer } = require('./utils/mailer')
+const jwt = require('jsonwebtoken')
 
 let locales = []
 let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
@@ -241,8 +242,9 @@ app.get('/signup', (req, res) => {
 app.post('/signup', (req, res, next) => {
   // 1. test user data
   res.redirect('/signup?login_invalid')
-  // 2. create *pending* user + send email
+  // 2. create *pending* (verified = false) user + send email with JWT
   /*
+  const accessToken = jwt.sign({ username: req.body.login,  email: req.body.email }, process.env.JWT_SECRET)
   Mailer.getInstance().send('toto@foo.com', 'Welcome to Signa', 'Test email from Signa', '<h1>Test email from Signa</h1>').then((info) => {
     console.log(info.messageId)
   })
