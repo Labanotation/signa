@@ -104,7 +104,50 @@ hbs.registerHelper('layout', function (id, options) {
       <div class="col bg-success text-light m-1">row2 col1</div>
       <div class="col bg-dark text-light m-1">row2 col2</div>
     </div>
-  </div>`)
+  </div>
+  {{#contentFor "pageStyles"}}
+<style type="text/css">
+  .main-wrapper {
+    display: grid;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+    grid-gap: 0.25cm;
+    background-color: powderblue;
+    padding: 0;
+    width: 10cm;
+    margin: 0;
+  }
+
+  .main-header {
+    background-color: pink;
+    grid-column: col-start / -1;
+  }
+  .main-content {
+    background-color: green;
+    grid-column: col-start 2 / -2;
+    grid-row: 2 / 4;
+  }
+  .main-nav {
+    background-color: red;
+    grid-column: col-start;
+    grid-row: 2 / 3;
+  }
+  .main-nav2 {
+    background-color: rgb(255, 0, 221);
+    grid-column: col-start;
+    grid-row: 3 / 4;
+  }
+  .main-side {
+    background-color: blue;
+    grid-column: -2;
+    grid-row: 2 / 4;
+  }
+  .main-footer {
+    background-color: lime;
+    grid-column: col-start / -1;
+    grid-row: 4;
+  }
+  </style>
+  {{/contentFor}}`)
   return template({ ...options.hash, ...options.data.root })
 })
 
