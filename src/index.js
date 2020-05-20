@@ -248,7 +248,10 @@ app.post('/signup', (req, res, next) => {
   res.redirect('/signup?login_invalid')
   // 2. create *pending* (verified = false) user + send email with JWT
   /*
-  const accessToken = jwt.sign({ username: req.body.login,  email: req.body.email }, process.env.JWT_SECRET)
+  const accessToken = jwt.sign({ username: req.body.login,  email: req.body.email,  password: req.body.password, action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+  jwt.verify(accessToken, process.env.JWT_SECRET, (err, userData) => {
+    console.log(userData)
+  })
   Mailer.getInstance().send('toto@foo.com', 'Welcome to Signa', 'Test email from Signa', '<h1>Test email from Signa</h1>').then((info) => {
     console.log(info.messageId)
   })
