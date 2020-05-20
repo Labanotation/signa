@@ -27,8 +27,15 @@
     "submit": "Login",
     "signup": "Signup",
     "signup_tooltip": "Click on the « Signup » button to create a new user account.",
-    "forgot": "Forgot your password?"
+    "forgot": "Forgot your password?",
+    "invalid": "Invalid login or password."
   },
+	"signup": {
+		"title": "Signup to Signa",
+		"submit": "Signup",
+    "invalid": "Invalid login or password.",
+    "help": "Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji."
+	},
   "footer": {
     "supportCND": "With the support of",
     "writing": "Writing",

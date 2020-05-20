@@ -27,7 +27,14 @@
 		"submit": "Se connecter",
     "signup": "S'inscrire",
     "signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
-    "forgot": "Mot de passe oublié ?"
+    "forgot": "Mot de passe oublié ?",
+    "invalid": "Identifiant ou mot de passe invalide."
+	},
+	"signup": {
+		"title": "S'inscrire à Signa",
+		"submit": "S'inscrire",
+    "invalid": "Identifiant ou mot de passe invalide.",
+    "help": "Votre mot de passe doit contenir entre 8 et 20 caractères, être composé de lettres et de nombres, mais ne doit pas contenir d'espace, ni de caractère spécial, ni d'émoji."
 	},
 	"footer": {
 		"supportCND": "Avec le soutien du",

@@ -222,6 +222,19 @@ app.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
+app.get('/signup', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/')
+  } else {
+    res.render('signup', {
+      title: 'Signa | Signup',
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      invalid: req.query.invalid !== undefined
+    })
+  }
+})
+
 app.get('/logout', (req, res) => {
   Session.reset(req)
   req.logOut()
