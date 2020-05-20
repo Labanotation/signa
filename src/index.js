@@ -43,7 +43,11 @@ passport.use(new LocalStrategy(
       if (user) {
         user.verifyPassword(password).then((valid) => {
           if (valid) {
-            return done(null, user)
+            if (user.verified === true) {
+              return done(null, user)
+            } else {
+              return done(null, false)
+            }
           } else {
             return done(null, false)
           }
