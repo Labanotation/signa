@@ -16,12 +16,20 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Models } = require('./models')
 
+let locales = []
+let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
+localesFiles.forEach((localesFile) => {
+  if (/^\w\w\.json$/i.test(localesFile) === true) {
+    locales.push(/^(\w\w)\.json$/i.exec(localesFile)[1].toLocaleLowerCase())
+  }
+})
+
 i18n.configure({
-  locales: ['en', 'fr'],
-  defaultLocale: 'fr',
+  locales: locales,
+  defaultLocale: process.env.DEFAULT_LANG,
   queryParameter: 'lang',
   cookie: process.env.I18N_COOKIE,
-  directory: __dirname + '/locales',
+  directory: fp.join(__dirname, 'locales'),
   autoReload: true,
   objectNotation: true
 })
@@ -59,7 +67,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(i18n.init)
-app.use(express.static(__dirname + '/static'))
+app.use(express.static(fp.join(__dirname, 'static')))
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
@@ -70,12 +78,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.engine('hbs', hbs.express4({
-  partialsDir: __dirname + '/views/partials',
-  defaultLayout: __dirname + '/views/layout/default.hbs',
+  partialsDir: fp.join(__dirname, 'views', 'partials'),
+  defaultLayout: fp.join(__dirname, 'views', 'layout', 'default.hbs'),
   i18n: i18n
 }))
 app.set('view engine', 'hbs')
-app.set('views', __dirname + '/views')
+app.set('views', fp.join(__dirname, 'views'))
 
 hbs.registerHelper('layout', function (id, options) {
   const attrs = []
@@ -218,7 +226,7 @@ app.use(function (req, res, next) {
 async function init() {
   const dbIsReady = await db.init()
   if (dbIsReady === true) {
-    app.listen(8080)
+    app.listen(process.env.HTTP_PORT)
   } else {
     // @TODO
     console.log('no db, exit')
