@@ -17,6 +17,7 @@ const LocalStrategy = require('passport-local').Strategy
 const { Models } = require('./models')
 const { Mailer } = require('./utils/mailer')
 const jwt = require('jsonwebtoken')
+const htmlToText = require('html-to-text')
 
 let locales = []
 let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
@@ -241,6 +242,20 @@ app.get('/signup', (req, res) => {
       password_invalid: req.query.password_invalid !== undefined
     })
   }
+})
+
+app.get('/email', (req, res) => {
+  fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
+    const template = hbs.compile(data.toString())
+    const html = template({
+      body: 'mail de test',
+      title: 'test'
+    })
+    Mailer.getInstance().send('test@exemple.fr', 'Welcome to Signa', htmlToText.fromString(html), html).then((info) => {
+      console.log(info.messageId)
+      res.send(html)
+    })
+  })
 })
 
 app.post('/signup', (req, res, next) => {
