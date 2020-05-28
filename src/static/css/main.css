@@ -13,13 +13,13 @@
 @font-face {
   font-family: "Roboto";
   font-weight: normal;
-  src: url("../webfonts/Roboto-Regular.ttf") format("ttf");
+  src: url("../webfonts/Roboto-Regular.ttf") format("ttf"), url("../webfonts/Roboto-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Roboto";
   font-weight: bold;
-  src: url("../webfonts/Roboto-Bold.ttf") format("ttf");
+  src: url("../webfonts/Roboto-Bold.ttf") format("ttf"), url("../webfonts/Roboto-Bold.woff2") format("woff2");
 }
 
 @font-face {
@@ -73,7 +73,8 @@ samp {
   font-family: "Inconsolata";
 }
 
-.tooltip, .popover {
+.tooltip,
+.popover {
   font-family: "Roboto";
 }
 
@@ -133,6 +134,24 @@ samp {
 .flex-equal > * {
   -ms-flex: 1;
   flex: 1;
+}
+
+#toasts-wrapper {
+  position: fixed;
+  min-height: 200px;
+  width: 100%;
+  top: 68px;
+  right: 18px;
+}
+
+#toasts-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.toast {
+  min-width: 250px;
 }
 
 @media (min-width: 768px) {
