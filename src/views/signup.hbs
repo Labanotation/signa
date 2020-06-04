@@ -18,6 +18,7 @@
           <label for="login">{{{__ "login.login"}}}</label>
           <input type="text" class="form-control {{#if login_invalid}}is-invalid{{/if}}" name="login" id="login"
             autocomplete="username" value="" required>
+          <input type="text" class="form-control-fullname" name="fullname" id="fullname" value="">
           <div class="invalid-feedback">
             {{{__ "signup.login_invalid" }}}
           </div>
@@ -48,6 +49,9 @@
 <style type="text/css">
   #logo-login {
     height: 32px;
+  }
+  .form-control-fullname {
+    display: none;
   }
 </style>
 {{/contentFor}}

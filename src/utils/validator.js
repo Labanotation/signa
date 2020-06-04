@@ -9,6 +9,14 @@ class Validator {
     }
   }
 
+  static Password(password) {
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(password)) {
+      return true
+    } else {
+      throw new Error('Invalid password format')
+    }
+  }
+
   static Name(name) {
     if (name.length > 0 && /^[a-zA-ZÀ-ÖÙ-Üà-öù-ü-_\s]+$/.test(name)) {
       return true

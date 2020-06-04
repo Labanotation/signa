@@ -39,7 +39,7 @@
 		"password_invalid": "Mot de passe invalide.",
 		"mail_help": "L'adresse e-mail sera utilisée pour la validation du compte et comme destinataire des messages autorisés. Elle demeurera privée et ne fera l'objet d'aucune communication à des tiers.",
 		"login_help": "L'identifiant sera utilisé uniquement pour la connexion à Signa et demeurera une donnée privée.",
-		"password_help": "Le mot de passe doit comporter au minimum 8 caractères, dont au moins une lettre <u>et</u> un chiffre, sans espace ni caractère spécial. Il sera stocké et traité à l'aide d'un algorithme de chiffrement sécurisé."
+		"password_help": "Le mot de passe doit comporter au minimum 8 caractères, dont au moins une lettre en majuscule, une lettre en minuscule <u>et</u> un chiffre, sans espace ni caractère spécial. Il sera stocké et traité à l'aide d'un algorithme de chiffrement sécurisé."
 	},
 	"footer": {
 		"supportCND": "Avec le soutien du",

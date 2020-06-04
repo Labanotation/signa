@@ -53,11 +53,15 @@ class User extends BaseObject {
     const { DatastoreUtils, Requests } = require('../utils/datastore')
     const existingUserByLogin = await DatastoreUtils.PeekOne(Requests.UsersByLogin, this.login)
     const existingUserByEmail = await DatastoreUtils.PeekOne(Requests.UsersByEmail, this.email)
+    // @TODO REDO
+    return true
+    /*
     if (this.root) {
       const existingUserRoot = await DatastoreUtils.PeekOne(Requests.UsersRoot)
       return (existingUserByLogin === null && existingUserByEmail === null && existingUserRoot === null) || (this.id && existingUserByLogin === this.id && existingUserByEmail === this.id && existingUserRoot === this.id)
     }
     return (existingUserByLogin === null && existingUserByEmail === null) || (this.id && existingUserByLogin === this.id && existingUserByEmail === this.id)
+    */
   }
 
   // @TODO GDPR

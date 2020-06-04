@@ -18,6 +18,7 @@ const { Models } = require('./models')
 const { Mailer } = require('./utils/mailer')
 const jwt = require('jsonwebtoken')
 const htmlToText = require('html-to-text')
+const { Validator } = require('./utils/validator')
 
 let locales = []
 let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
@@ -251,26 +252,88 @@ app.get('/email', (req, res) => {
       body: 'mail de test',
       title: 'test'
     })
-    Mailer.getInstance().send('test@exemple.fr', 'Welcome to Signa', htmlToText.fromString(html), html).then((info) => {
-      console.log(info.messageId)
-      res.send(html)
-    })
+    res.send(html)
   })
 })
 
-app.post('/signup', (req, res, next) => {
-  // 1. test user data
-  res.redirect('/signup?login_invalid')
-  // 2. create *pending* (verified = false) user + send email with JWT
-  /*
-  const accessToken = jwt.sign({ username: req.body.login,  email: req.body.email,  password: req.body.password, action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
-  jwt.verify(accessToken, process.env.JWT_SECRET, (err, userData) => {
-    console.log(userData)
+app.get('/signupvalidation/:token', async (req, res) => {
+  jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
+    if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'verify') {
+      console.log(userData)
+      const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
+      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false) {
+        pendingUser.verified = true
+        const savedUser = await DatastoreUtils.Save(pendingUser)
+        if (savedUser && savedUser[0] && savedUser[0].ok) {
+          // @TODO CONFIRM + LINK TO LOGIN
+          res.redirect('/signupconfirm')
+        } else {
+          // @TODO ERROR
+          res.redirect('/signuperror')
+        }
+      } else {
+        // @TODO ERROR
+        res.redirect('/signuperror')
+      }
+    } else {
+      // @TODO ERROR
+      res.redirect('/signuperror')
+    }
   })
-  Mailer.getInstance().send('toto@foo.com', 'Welcome to Signa', 'Test email from Signa', '<h1>Test email from Signa</h1>').then((info) => {
-    console.log(info.messageId)
-  })
-  */
+})
+
+app.post('/signup', async (req, res, next) => {
+  let errors = []
+  try {
+    Validator.Email(req.body.email.trim())
+  } catch (ignore) {
+    errors.push('mail_invalid')
+  }
+  try {
+    Validator.Login(req.body.login.trim())
+    const existingUserByLogin = await DatastoreUtils.PeekOne(Requests.UsersByLogin, req.body.login.trim())
+    if (existingUserByLogin) {
+      errors.push('login_invalid')
+    }
+  } catch (ignore) {
+    errors.push('login_invalid')
+  }
+  try {
+    Validator.Password(req.body.password.trim())
+  } catch (ignore) {
+    errors.push('password_invalid')
+  }
+  if (req.body.fullname === '') {
+    if (errors.length > 0) {
+      res.redirect('/signup?' + errors.join('&'))
+    } else {
+      const pendingUser = new Models.User()
+      pendingUser.login = req.body.login.trim()
+      pendingUser.email = req.body.email.trim()
+      pendingUser.password = await Models.User.hashPassword(req.body.password.trim())
+      pendingUser.verified = false
+      const savedUser = await DatastoreUtils.Save(pendingUser)
+      if (savedUser && savedUser[0] && savedUser[0].ok) {
+        const accessToken = jwt.sign({ login: pendingUser.login, email: pendingUser.email, id: pendingUser.id, action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+        fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
+          const template = hbs.compile(data.toString())
+          const html = template({
+            body: '/signupvalidation/' + accessToken,
+            title: 'Signa : account validation.'
+          })
+          Mailer.getInstance().send(pendingUser.email, 'Signa : account validation.', htmlToText.fromString(html), html).then(() => {
+            res.redirect('/signuppendingvalidation')
+          })
+        })
+      } else {
+        // @TODO ERROR
+        res.redirect('/signuperror')
+      }
+    }
+  } else {
+    // @TODO ERROR
+    res.redirect('/signuperror')
+  }
 })
 
 app.get('/logout', (req, res) => {
