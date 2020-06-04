@@ -281,6 +281,11 @@ app.post('/signup', async (req, res, next) => {
   let errors = []
   try {
     Validator.Email(req.body.email.trim())
+    const existingUserByEmail = await DatastoreUtils.PeekOne(Requests.UsersByEmail, req.body.email.trim())
+    // @TODO check in pending only
+    if (existingUserByEmail && existingUserByEmail.verified === false) {
+      errors.push('mail_invalid')
+    }
   } catch (ignore) {
     errors.push('mail_invalid')
   }
@@ -358,8 +363,10 @@ app.get('/dashboard', (req, res) => {
 // KEEP THOSE TWO AT THE BOTTOM OF THE STACK:
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).render('500', {
-    title: 'Signa | Server Error'
+  res.status(500).render('error', {
+    title: 'Signa | Server Error',
+    error_id: i18n.__('Error500'),
+    error_msg: i18n.__('ServerError')
   })
 })
 
@@ -369,8 +376,10 @@ app.use(function (req, res, next) {
     userForTemplate = req.user.dehydrate()
     userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
   }
-  res.status(404).render('404', {
+  res.status(404).render('error', {
     title: 'Signa | Page Not Found',
+    error_id: i18n.__('Error404'),
+    error_msg: i18n.__('NotFound'),
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated(),
     user: userForTemplate
