@@ -893,7 +893,7 @@ class DatastoreUtils {
       if (!map.has(item.id)) {
         map.set(item.id, true)
         if (this.cache.has(item.id)) {
-          if (this.GetSavedState(item.id) === true) {
+          if (this.GetSavedState(item.id) === true && this.cache.get(item.id).revision === item.doc._rev) {
             result.push(this.cache.get(item.id))
           } else {
             this.cache.delete(item.id)
@@ -913,7 +913,7 @@ class DatastoreUtils {
       try {
         const item = await db.get(req)
         if (this.cache.has(item._id)) {
-          if (this.GetSavedState(item._id) === true) {
+          if (this.GetSavedState(item._id) === true && this.cache.get(item._id).revision === item._rev) {
             return this.cache.get(item._id)
           }
           this.cache.delete(item._id)
@@ -932,7 +932,7 @@ class DatastoreUtils {
       }
       const item = response.rows[0]
       if (this.cache.has(item.id)) {
-        if (this.GetSavedState(item.id) === true) {
+        if (this.GetSavedState(item.id) === true && this.cache.get(item.id).revision === item.doc._rev) {
           return this.cache.get(item.id)
         }
         this.cache.delete(item.id)

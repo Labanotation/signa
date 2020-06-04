@@ -281,9 +281,14 @@ app.post('/signup', async (req, res, next) => {
   let errors = []
   try {
     Validator.Email(req.body.email.trim())
-    const existingUserByEmail = await DatastoreUtils.PeekOne(Requests.UsersByEmail, req.body.email.trim())
-    // @TODO check in pending only
-    if (existingUserByEmail && existingUserByEmail.verified === false) {
+    let pendingAlready = false
+    const existingUsersByEmail = await DatastoreUtils.Load(Requests.UsersByEmail, req.body.email.trim())
+    existingUsersByEmail.forEach((existingUser) => {
+      if (pendingAlready === false && existingUser.verified === false) {
+        pendingAlready = true
+      }
+    })
+    if (pendingAlready === true) {
       errors.push('mail_invalid')
     }
   } catch (ignore) {
