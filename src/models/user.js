@@ -204,6 +204,15 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  get signuptoken() {
+    return this.savedState.signuptoken
+  }
+
+  set signuptoken(signuptoken) {
+    this.savedState.signuptoken = signuptoken
+    this.saved = false
+  }
+
   get parameters() {
     return this.savedState.parameters
   }

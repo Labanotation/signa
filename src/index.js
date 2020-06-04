@@ -180,13 +180,6 @@ hbs.registerAsyncHelper('readFile', function (filename, cb) {
 })
 
 set language: res.cookie('locale', 'en', { maxAge: 900000, httpOnly: true })
-
-app.get('/veggies/:name', function (req, res) {
-  res.render('veggies/details', {
-    veggie: req.params.name,
-    layout: 'layout/veggie-details'
-  })
-})
 */
 
 app.get('/', function (req, res) {
@@ -247,21 +240,23 @@ app.get('/signup', (req, res) => {
 
 app.get('/email', (req, res) => {
   fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
+    const accessToken = jwt.sign({ foo: 'bar', action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+    const link = process.env.BASE_URL + '/signupvalidation/' + accessToken
     const template = hbs.compile(data.toString())
     const html = template({
-      body: 'mail de test',
-      title: 'test'
+      title: i18n.__('signup.mail_title'),
+      body: i18n.__('signup.validation_link', link)
     })
     res.send(html)
   })
 })
 
+// @TODO *CRON* delete User verified === false && token expired
 app.get('/signupvalidation/:token', async (req, res) => {
   jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
     if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'verify') {
-      console.log(userData)
       const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
-      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false) {
+      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false && pendingUser.signuptoken === req.params.token) {
         pendingUser.verified = true
         const savedUser = await DatastoreUtils.Save(pendingUser)
         if (savedUser && savedUser[0] && savedUser[0].ok) {
@@ -315,15 +310,17 @@ app.post('/signup', async (req, res, next) => {
       const savedUser = await DatastoreUtils.Save(pendingUser)
       if (savedUser && savedUser[0] && savedUser[0].ok) {
         const accessToken = jwt.sign({ login: pendingUser.login, email: pendingUser.email, id: pendingUser.id, action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
-        fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
+        fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
+          const link = process.env.BASE_URL + '/signupvalidation/' + accessToken
           const template = hbs.compile(data.toString())
           const html = template({
-            body: '/signupvalidation/' + accessToken,
-            title: 'Signa : account validation.'
+            title: i18n.__('signup.mail_title'),
+            body: i18n.__('signup.validation_link', link)
           })
-          Mailer.getInstance().send(pendingUser.email, 'Signa : account validation.', htmlToText.fromString(html), html).then(() => {
-            res.redirect('/signuppendingvalidation')
-          })
+          await Mailer.getInstance().send(pendingUser.email, i18n.__('signup.mail_title'), htmlToText.fromString(html), html)
+          pendingUser.signuptoken = accessToken
+          await DatastoreUtils.Save(pendingUser)
+          res.redirect('/signuppendingvalidation')
         })
       } else {
         // @TODO ERROR
