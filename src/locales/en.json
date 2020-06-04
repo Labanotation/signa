@@ -39,7 +39,7 @@
     "password_invalid": "Invalid password.",
     "mail_help": "The email address will be used for account validation and as a recipient of authorized messages. It will remain private and will never be communicated to third parties.",
     "login_help": "The login will only be used for the connection to Signa and will remain private.",
-    "password_help": "The password must be at least 8 characters long, including at least one letter <u>and</u> one number, without spaces or special characters. It will be stored and processed using a secure encryption algorithm (<a href=\"https://en.wikipedia.org/wiki/Argon2\" target=\"_blank\">Argon2</a>)."
+    "password_help": "The password must be at least 8 characters long, including at least one letter <u>and</u> one number, without spaces or special characters. It will be stored and processed using a secure encryption algorithm."
 	},
   "footer": {
     "supportCND": "With the support of",

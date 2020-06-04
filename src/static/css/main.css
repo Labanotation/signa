@@ -1,3 +1,4 @@
+/*
 @font-face {
   font-family: "Inconsolata";
   font-weight: normal;
@@ -61,25 +62,32 @@
   font-style: italic;
   src: url("../webfonts/Lora-BoldItalic.ttf") format("ttf");
 }
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/*
+font-family: 'Lora', serif;
+*/
 
 body {
-  font-family: "Roboto";
+  font-family: 'Roboto', sans-serif;
 }
 
 pre,
 code,
 kbd,
 samp {
-  font-family: "Inconsolata";
+  font-family: 'Inconsolata', monospace;
 }
 
 .tooltip,
 .popover {
-  font-family: "Roboto";
+  font-family: 'Roboto', sans-serif;
 }
 
 .font-monospace {
-  font-family: "Inconsolata" !important;
+  font-family: 'Inconsolata', monospace !important;
 }
 
 #logo-header {
@@ -91,6 +99,13 @@ samp {
 
 #logo-cnd-footer {
   height: 18px;
+}
+
+#logo-agpl-footer {
+  position: relative;
+  height: 22px;
+  top: 3px;
+  left: 5px;
 }
 
 .bg-signa {
