@@ -26,7 +26,7 @@
         href="#">{{{__ "Explore"}}}</a>
       {{#if isAuthenticated}}
       <a class="ml-auto p-2 d-none d-md-inline-block bg-success {{#if active_dashboard}}text-white{{else}}text-dark{{/if}}"
-        href="/dashboard"><i class="fas fa-user-circle mx-1"></i>&nbsp;{{ user.shortName }}{{#if dataCompletionRequired}}&nbsp;<span class="mx-1 badge badge-pill badge-warning">!</span>{{/if}}</a>
+        href="/dashboard"><i class="fas fa-user-circle mx-1"></i>&nbsp;<span class="mr-1">{{ user.shortName }}</span>{{#if dataCompletionRequired}}&nbsp;<span class="mr-1 badge badge-pill badge-warning">!</span>{{/if}}</a>
       <a class="p-2 d-none d-md-inline-block" href="/logout">{{{__ "Logout"}}}</a>
       {{else}}
       <a class="ml-auto p-2 d-none d-md-inline-block" href="/login">{{{__ "Login"}}}</a>

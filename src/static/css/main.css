@@ -167,6 +167,11 @@ samp {
   min-width: 350px;
 }
 
+.badge-pill {
+  position: relative;
+  top: -2px;
+}
+
 @media (min-width: 768px) {
   .flex-md-equal > * {
     -ms-flex: 1;
