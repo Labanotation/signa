@@ -95,20 +95,22 @@ app.set('views', fp.join(__dirname, 'views'))
 
 app.get('/', function (req, res) {
   let userForTemplate = null
+  let dataCompletionRequired = false
   if (req.isAuthenticated() && req.user) {
     userForTemplate = req.user.dehydrate()
-    // @TODO : no name, etc. --> complete account form
     if (userForTemplate.name) {
       userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
     } else {
       userForTemplate.shortName = userForTemplate.login
+      dataCompletionRequired = true
     }
   }
   res.render('index', {
     title: 'Signa',
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated(),
-    user: userForTemplate
+    user: userForTemplate,
+    dataCompletionRequired: dataCompletionRequired
   })
 })
 
@@ -529,18 +531,20 @@ app.get('/logout', (req, res) => {
 app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
     let userForTemplate = req.user.dehydrate()
-    // @TODO : no name, etc. --> complete account form
+    let dataCompletionRequired = false
     if (userForTemplate.name) {
       userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
     } else {
       userForTemplate.shortName = userForTemplate.login
+      dataCompletionRequired = true
     }
     res.render('dashboard', {
       title: 'Signa > Dashboard',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       user: userForTemplate,
-      active_dashboard: true
+      active_dashboard: true,
+      dataCompletionRequired: dataCompletionRequired
     })
   } else {
     res.redirect('/login')
@@ -579,11 +583,16 @@ app.use(function (req, res, next) {
 
 async function init() {
   const dbIsReady = await db.init()
-  if (dbIsReady === true) {
-    app.listen(process.env.HTTP_PORT)
-  } else {
-    // @TODO
-    console.log('no db, exit')
+  app.listen(process.env.HTTP_PORT)
+  if (dbIsReady === false) {
+    fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
+      const template = hbs.compile(data.toString())
+      let html = template({
+        title: 'Signa Alert : NO DB',
+        body: '<h1>Signa started without DB!</h1>'
+      })
+      await Mailer.getInstance().send(process.env.EMAIL_LOGIN, 'Signa Alert : NO DB', htmlToText.fromString(html), html)
+    })
   }
 }
 
