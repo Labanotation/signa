@@ -6,12 +6,13 @@
         <div class="form-group">
           <label for="login">{{{__ "login.login"}}}</label>
           <input type="text" class="form-control {{#if invalid}}is-invalid{{/if}}" name="login" id="login"
-            autocomplete="username" value="" required>
+            autocomplete="username" value="{{login_value}}" required>
+          <input type="text" class="form-control-fullname" name="fullname" id="fullname" value="">
         </div>
         <div class="form-group">
           <label for="password">{{{__ "login.password"}}}</label>
           <input type="password" class="form-control {{#if invalid}}is-invalid{{/if}}" name="password"
-            autocomplete="current-password" id="password" value="" required>
+            autocomplete="current-password" id="password" value="{{password_value}}" required>
           <div class="invalid-feedback">
             {{{__ "login.invalid" }}}
           </div>
@@ -32,8 +33,8 @@
 
 {{#contentFor "pageStyles"}}
 <style type="text/css">
-  #logo-login {
-    height: 32px;
+  .form-control-fullname {
+    display: none;
   }
 </style>
 {{/contentFor}}

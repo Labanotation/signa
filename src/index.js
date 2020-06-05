@@ -202,25 +202,46 @@ app.get('/login', (req, res) => {
   } else {
     Session.incrementViews(req, 'login')
     res.render('login', {
-      title: 'Signa | Login',
+      title: 'Signa > ' + i18n.__('login.title'),
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
-      invalid: req.query.invalid !== undefined,
       count: Session.getViews(req, 'login')
     })
   }
 })
 
 app.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    req.login(user, (err) => {
-      if (user) {
-        return res.redirect('/dashboard')
-      } else {
-        return res.redirect('/login?invalid')
-      }
+  if (req.body.fullname === '') {
+    passport.authenticate('local', (err, user, info) => {
+      req.login(user, (err) => {
+        if (user) {
+          return res.redirect('/dashboard')
+        } else {
+          Session.incrementViews(req, 'login')
+          res.render('login', {
+            title: 'Signa > ' + i18n.__('login.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            invalid: true,
+            login_value: req.body.login.trim(),
+            password_value: req.body.password.trim(),
+            count: Session.getViews(req, 'login')
+          })
+        }
+      })
+    })(req, res, next)
+  } else {
+    Session.incrementViews(req, 'login')
+    res.render('login', {
+      title: 'Signa > ' + i18n.__('login.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      invalid: true,
+      login_value: req.body.login.trim(),
+      password_value: req.body.password.trim(),
+      count: Session.getViews(req, 'login')
     })
-  })(req, res, next)
+  }
 })
 
 app.get('/signup', (req, res) => {
@@ -228,53 +249,11 @@ app.get('/signup', (req, res) => {
     res.redirect('/')
   } else {
     res.render('signup', {
-      title: 'Signa | Signup',
+      title: 'Signa > ' + i18n.__('signup.title'),
       lang: req.getLocale(),
-      isAuthenticated: req.isAuthenticated(),
-      mail_invalid: req.query.mail_invalid !== undefined,
-      login_invalid: req.query.login_invalid !== undefined,
-      password_invalid: req.query.password_invalid !== undefined
+      isAuthenticated: req.isAuthenticated()
     })
   }
-})
-
-app.get('/email', (req, res) => {
-  fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
-    const accessToken = jwt.sign({ foo: 'bar', action: 'verify' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
-    const link = process.env.BASE_URL + '/signupvalidation/' + accessToken
-    const template = hbs.compile(data.toString())
-    const html = template({
-      title: i18n.__('signup.mail_title'),
-      body: i18n.__('signup.validation_link', link)
-    })
-    res.send(html)
-  })
-})
-
-// @TODO *CRON* delete User verified === false && token expired
-app.get('/signupvalidation/:token', async (req, res) => {
-  jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
-    if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'verify') {
-      const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
-      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false && pendingUser.signuptoken === req.params.token) {
-        pendingUser.verified = true
-        const savedUser = await DatastoreUtils.Save(pendingUser)
-        if (savedUser && savedUser[0] && savedUser[0].ok) {
-          // @TODO CONFIRM + LINK TO LOGIN
-          res.redirect('/signupconfirm')
-        } else {
-          // @TODO ERROR
-          res.redirect('/signuperror')
-        }
-      } else {
-        // @TODO ERROR
-        res.redirect('/signuperror')
-      }
-    } else {
-      // @TODO ERROR
-      res.redirect('/signuperror')
-    }
-  })
 })
 
 app.post('/signup', async (req, res, next) => {
@@ -310,7 +289,17 @@ app.post('/signup', async (req, res, next) => {
   }
   if (req.body.fullname === '') {
     if (errors.length > 0) {
-      res.redirect('/signup?' + errors.join('&'))
+      res.render('signup', {
+        title: 'Signa > ' + i18n.__('signup.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        mail_invalid: errors.indexOf('mail_invalid') !== -1,
+        mail_value: req.body.email.trim(),
+        login_invalid: errors.indexOf('login_invalid') !== -1,
+        login_value: req.body.login.trim(),
+        password_invalid: errors.indexOf('password_invalid') !== -1,
+        password_value: req.body.password.trim()
+      })
     } else {
       const pendingUser = new Models.User()
       pendingUser.login = req.body.login.trim()
@@ -324,23 +313,179 @@ app.post('/signup', async (req, res, next) => {
           const link = process.env.BASE_URL + '/signupvalidation/' + accessToken
           const template = hbs.compile(data.toString())
           const html = template({
-            title: i18n.__('signup.mail_title'),
-            body: i18n.__('signup.validation_link', link)
+            title: i18n.__('signup.mail_title', pendingUser.login),
+            body: i18n.__('signup.validation_link', pendingUser.login, link)
           })
-          await Mailer.getInstance().send(pendingUser.email, i18n.__('signup.mail_title'), htmlToText.fromString(html), html)
+          await Mailer.getInstance().send(pendingUser.email, i18n.__('signup.mail_title', pendingUser.login), htmlToText.fromString(html), html)
           pendingUser.signuptoken = accessToken
           await DatastoreUtils.Save(pendingUser)
-          res.redirect('/signuppendingvalidation')
+          res.render('signup', {
+            title: 'Signa > ' + i18n.__('signup.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            pending: true
+          })
         })
       } else {
-        // @TODO ERROR
-        res.redirect('/signuperror')
+        res.render('signup', {
+          title: 'Signa > ' + i18n.__('signup.title'),
+          lang: req.getLocale(),
+          isAuthenticated: req.isAuthenticated(),
+          mail_value: req.body.email.trim(),
+          login_value: req.body.login.trim(),
+          password_value: req.body.password.trim(),
+          error: true
+        })
       }
     }
   } else {
-    // @TODO ERROR
-    res.redirect('/signuperror')
+    res.render('signup', {
+      title: 'Signa > ' + i18n.__('signup.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      mail_value: req.body.email.trim(),
+      login_value: req.body.login.trim(),
+      password_value: req.body.password.trim(),
+      error: true
+    })
   }
+})
+
+// @TODO *CRON* delete User verified === false && token expired
+app.get('/signupvalidation/:token', async (req, res) => {
+  jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
+    if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'verify') {
+      const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
+      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false && pendingUser.signuptoken === req.params.token) {
+        pendingUser.verified = true
+        const savedUser = await DatastoreUtils.Save(pendingUser)
+        if (savedUser && savedUser[0] && savedUser[0].ok) {
+          res.render('signup', {
+            title: 'Signa > ' + i18n.__('signup.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            validated: true
+          })
+        } else {
+          res.render('signup', {
+            title: 'Signa > ' + i18n.__('signup.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            error: true
+          })
+        }
+      } else {
+        res.render('signup', {
+          title: 'Signa > ' + i18n.__('signup.title'),
+          lang: req.getLocale(),
+          isAuthenticated: req.isAuthenticated(),
+          error: true
+        })
+      }
+    } else {
+      res.render('signup', {
+        title: 'Signa > ' + i18n.__('signup.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        error: true
+      })
+    }
+  })
+})
+
+app.get('/forgotpassword', (req, res) => {
+  res.render('forgotpassword', {
+    title: 'Signa > ' + i18n.__('forgotpassword.title'),
+    lang: req.getLocale(),
+    isAuthenticated: req.isAuthenticated()
+  })
+})
+
+app.post('/forgotpassword', async (req, res, next) => {
+  let invalid = true
+  let existingUserByLogin = null
+  try {
+    Validator.Login(req.body.login.trim())
+    existingUserByLogin = await DatastoreUtils.LoadOne(Requests.UsersByLogin, req.body.login.trim())
+    if (existingUserByLogin) {
+      invalid = false
+    }
+  } catch (ignore) { }
+  if (req.body.fullname === '' && invalid === false && existingUserByLogin) {
+    const accessToken = jwt.sign({ login: existingUserByLogin.login, email: existingUserByLogin.email, id: existingUserByLogin.id, action: 'reset' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+    fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
+      const link = process.env.BASE_URL + '/resetpassword/' + accessToken
+      const template = hbs.compile(data.toString())
+      const html = template({
+        title: i18n.__('forgotpassword.mail_title', existingUserByLogin.login),
+        body: i18n.__('forgotpassword.validation_link', existingUserByLogin.login, link)
+      })
+      await Mailer.getInstance().send(existingUserByLogin.email, i18n.__('forgotpassword.mail_title', existingUserByLogin.login), htmlToText.fromString(html), html)
+      existingUserByLogin.signuptoken = accessToken
+      await DatastoreUtils.Save(existingUserByLogin)
+      res.render('forgotpassword', {
+        title: 'Signa > ' + i18n.__('forgotpassword.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        pending: existingUserByLogin.email
+      })
+    })
+  } else {
+    res.render('forgotpassword', {
+      title: 'Signa > ' + i18n.__('forgotpassword.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      login_value: req.body.login.trim(),
+      invalid: true
+    })
+  }
+})
+
+app.get('/resetpassword/:token', async (req, res) => {
+  jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
+    if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'reset') {
+      const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
+      if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === true && pendingUser.signuptoken === req.params.token) {
+        // @TODO FORM + POST, etc.
+        res.render('resetpassword', {
+          title: 'Signa > ' + i18n.__('signup.title'),
+          lang: req.getLocale(),
+          isAuthenticated: req.isAuthenticated()
+        })
+      }
+    } else {
+      res.render('forgotpassword', {
+        title: 'Signa > ' + i18n.__('forgotpassword.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        invalid: true
+      })
+    }
+  })
+})
+
+/*
+app.get('/email', (req, res) => {
+  fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
+    const accessToken = jwt.sign({ foo: 'bar', action: 'reset' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+    const link = process.env.BASE_URL + '/resetpassword/' + accessToken
+    const template = hbs.compile(data.toString())
+    const html = template({
+      title: i18n.__('forgotpassword.mail_title', 'bar'),
+      body: i18n.__('forgotpassword.validation_link', 'bar', link)
+    })
+    res.send(html)
+  })
+})
+*/
+
+app.get('/forgotlogin', (req, res) => {
+  // @TODO
+  res.render('forgotlogin', {
+    title: 'Signa > ' + i18n.__('forgotlogin.title'),
+    lang: req.getLocale(),
+    isAuthenticated: req.isAuthenticated()
+  })
 })
 
 app.get('/logout', (req, res) => {
@@ -354,7 +499,7 @@ app.get('/dashboard', (req, res) => {
     let userForTemplate = req.user.dehydrate()
     userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
     res.render('dashboard', {
-      title: 'Signa | Dashboard',
+      title: 'Signa > Dashboard',
       lang: req.getLocale(),
       isAuthenticated: req.isAuthenticated(),
       user: userForTemplate,
@@ -369,7 +514,7 @@ app.get('/dashboard', (req, res) => {
 app.use(function (err, req, res, next) {
   console.error(err.stack)
   res.status(500).render('error', {
-    title: 'Signa | Server Error',
+    title: 'Signa > ' + i18n.__('Error500'),
     error_id: i18n.__('Error500'),
     error_msg: i18n.__('ServerError')
   })
@@ -382,7 +527,7 @@ app.use(function (req, res, next) {
     userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
   }
   res.status(404).render('error', {
-    title: 'Signa | Page Not Found',
+    title: 'Signa > ' + i18n.__('Error404'),
     error_id: i18n.__('Error404'),
     error_msg: i18n.__('NotFound'),
     lang: req.getLocale(),
