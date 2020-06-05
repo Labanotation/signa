@@ -1,42 +1,25 @@
-<!-- div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-  <div class="col-md-6 p-lg-6 mx-auto my-5">
-    <p class="lead font-weight-normal">{{ user.name }}</p>
+<div class="position-relative overflow-hidden p-3 p-md-4 m-md-3 text-center bg-light">
+  <div class="card col-md-4 p-lg-1 mx-auto my-1">
+    <div class="card-body text-left">
+      <h5 class="card-title text-center">Welcome {{user.shortName}}</h5>
+      <div class="alert alert-success text-center">
+        <p>Work In Progress...</p>
+      </div>
+    </div>
   </div>
-</div -->
-<!-- div class="container my-2">
-  <div class="row">
-    <div class="col bg-dark text-light m-1 p-5">{{ user.name }}</div>
-    <div class="col bg-success text-light m-1 p-5">col</div>
-    <div class="col bg-dark text-light m-1 p-5">col</div>
-    <div class="col bg-success text-light m-1 p-5">col</div>
-  </div>
-  <div class="row">
-    <div class="col bg-success text-light m-1">col-2</div>
-    <div class="col bg-dark text-light m-1">col-2</div>
-  </div>
-</div -->
-
-{{{ layout 'aaa-bbb-ccc' }}}
-
-<div class="main-wrapper">
-  <div class="main-header">
-    <p>plop-header</p>
-    <p>plop-header</p>
-  </div>
-  <div class="main-content">
-    <p>plop-content</p>
-    <p>plop-content</p>
-    <p>plop-content</p>
-  </div>
-  <div class="main-nav">plop-nav</div>
-  <div class="main-nav2">plop-nav2</div>
-  <div class="main-side">
-    <p>plop-side</p>
-    <p>plop-side</p>
-    <p>plop-side</p>
-    <p>plop-side</p>
-    <p>plop-side</p>
-    <p>plop-side</p>
-  </div>
-  <div class="main-footer">plop-footer</div>
 </div>
+
+{{#contentFor "pageStyles"}}
+<style type="text/css">
+
+</style>
+{{/contentFor}}
+
+{{#contentFor "pageScripts"}}
+<script type="text/javascript">
+  $(function () {
+    console.log('dashboard')
+  }
+})
+</script>
+{{/contentFor}}
