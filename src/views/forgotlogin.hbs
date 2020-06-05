@@ -1,0 +1,39 @@
+<div class="position-relative overflow-hidden p-3 p-md-4 m-md-3 text-center bg-light">
+  <div class="card col-md-4 p-lg-1 mx-auto my-1">
+    <div class="card-body text-left">
+      <h5 class="card-title text-center">{{{__ "forgotlogin.title"}}}</h5>
+      {{#if pending}}
+      <div class="alert alert-success text-center">
+        <p>Votre demande de récupération de votre identifiant a bien été prise en compte.</p>
+        <p>Vous allez recevoir rapidement un e-mail contenant cette information.</p>
+      </div>
+      {{else}}
+      <form action="/forgotlogin" method="post">
+        <div class="form-group">
+          <label for="email">{{{__ "forgotlogin.email"}}}</label>
+          <input type="text" class="form-control {{#if mail_invalid}}is-invalid{{/if}}" name="email" id="email"
+            autocomplete="email" value="{{mail_value}}" required>
+          <input type="text" class="form-control-fullname" name="fullname" id="fullname" value="">
+          <div class="invalid-feedback">
+            {{{__ "signup.mail_invalid" }}}
+          </div>
+          <small id="emailHelpBlock" class="form-text text-muted">
+            {{{__ "forgotlogin.mail_help" }}}
+          </small>
+        </div>
+        <div class="btn-toolbar justify-content-between">
+          <button type="submit" class="btn btn-primary my-2">{{{__ "forgotlogin.submit"}}}</button>
+        </div>
+      </form>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+{{#contentFor "pageStyles"}}
+<style type="text/css">
+  .form-control-fullname {
+    display: none;
+  }
+</style>
+{{/contentFor}}

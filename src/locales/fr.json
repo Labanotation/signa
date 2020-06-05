@@ -1,84 +1,88 @@
 {
-	"Home": "Accueil",
-	"About": "À propos",
-	"Features": "Fonctionnalités",
-	"Introduction": "Introduction",
-	"Documentation": "Documentation",
-	"Explore": "Exploration",
-	"Search": "Rechercher",
-	"Login": "Se connecter",
-	"Logout": "Se déconnecter",
-	"Profile": "Profil",
-	"Resources": "Ressources",
-	"Help": "Aide",
-	"Error404": "Erreur 404",
-	"NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
-	"Error500": "Erreur 500",
-	"ServerError": "Le serveur a rencontré une erreur interne...",
-	"index": {
-		"welcome": "Signa",
-		"tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
-		"comingsoon": "Bientôt disponible"
-	},
-	"login": {
-		"title": "Se connecter à Signa",
-		"login": "Identifiant",
-		"password": "Mot de passe",
-		"submit": "Se connecter",
-		"signup": "S'inscrire",
-		"signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
-		"forgot": "Mot de passe oublié ?",
-		"invalid": "Identifiant ou mot de passe invalide."
-	},
-	"signup": {
-		"email": "Adresse e-mail",
-		"title": "S'inscrire à Signa",
-		"submit": "S'inscrire",
-		"confirm_password": "Confirmer le mot de passe",
-		"mail_invalid": "Adresse e-mail invalide.",
-		"login_invalid": "Identifiant invalide.",
-		"password_invalid": "Mot de passe invalide.",
-		"password_different": "Les mots de passe ne concordent pas.",
-		"mail_help": "L'adresse e-mail sera utilisée pour la validation du compte et comme destinataire des messages autorisés.",
-		"login_help": "L'identifiant sera utilisé uniquement pour la connexion à Signa.",
-		"password_help": "Le mot de passe doit comporter au minimum 8 caractères, dont au moins une lettre en majuscule, une lettre en minuscule <u>et</u> un chiffre, sans espace ni caractère spécial.",
-		"mail_title": "Signa pour %s : confirmation d'inscription.",
-		"validation_link": "Cher %s,<br/>&nbsp;<br/>Afin de confirmer votre inscription à Signa, veuillez <a href=\"%s\">cliquer sur ce lien</a> ou le copier-coller dans votre navigateur."
-	},
-	"forgotpassword": {
-		"title": "Mot de passe oublié",
-		"invalid": "Identifiant invalide.",
-		"login_help": "Un e-mail permettant de réinitialiser le mot de passe sera envoyé à l'adresse associée à votre identifiant.",
-		"forgotlogin": "Identifiant oublié ?",
-		"submit": "Réinitialiser le mot de passe",
-		"mail_title": "Signa pour %s : réinitialisation du mot de passe.",
-		"validation_link": "Cher %s,<br/>&nbsp;<br/>Afin de réinitialiser votre mot de passe pour Signa, veuillez <a href=\"%s\">cliquer sur ce lien</a> ou le copier-coller dans votre navigateur."
-	},
-	"resetpassword": {
+  "Home": "Accueil",
+  "About": "À propos",
+  "Features": "Fonctionnalités",
+  "Introduction": "Introduction",
+  "Documentation": "Documentation",
+  "Explore": "Exploration",
+  "Search": "Rechercher",
+  "Login": "Se connecter",
+  "Logout": "Se déconnecter",
+  "Profile": "Profil",
+  "Resources": "Ressources",
+  "Help": "Aide",
+  "Error404": "Erreur 404",
+  "NotFound": "La page que vous cherchez à atteindre est introuvable ou n'existe plus...",
+  "Error500": "Erreur 500",
+  "ServerError": "Le serveur a rencontré une erreur interne...",
+  "index": {
+    "welcome": "Signa",
+    "tagline": "Une plateforme Web pour l'écriture et la publication de partitions Laban.",
+    "comingsoon": "Bientôt disponible"
+  },
+  "login": {
+    "title": "Se connecter à Signa",
+    "login": "Identifiant",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "signup": "S'inscrire",
+    "signup_tooltip": "Pour créer un nouveau compte utilisateur, cliquez sur le bouton « S'inscrire ».",
+    "forgot": "Mot de passe oublié ?",
+    "invalid": "Identifiant ou mot de passe invalide."
+  },
+  "signup": {
+    "email": "Adresse e-mail",
+    "title": "S'inscrire à Signa",
+    "submit": "S'inscrire",
+    "confirm_password": "Confirmer le mot de passe",
+    "mail_invalid": "Adresse e-mail invalide.",
+    "login_invalid": "Identifiant invalide.",
+    "password_invalid": "Mot de passe invalide.",
+    "password_different": "Les mots de passe ne concordent pas.",
+    "mail_help": "L'adresse e-mail sera utilisée pour la validation du compte et comme destinataire des messages autorisés.",
+    "login_help": "L'identifiant sera utilisé uniquement pour la connexion à Signa.",
+    "password_help": "Le mot de passe doit comporter au minimum 8 caractères, dont au moins une lettre en majuscule, une lettre en minuscule <u>et</u> un chiffre, sans espace ni caractère spécial.",
+    "mail_title": "Signa pour %s : confirmation d'inscription.",
+    "validation_link": "Cher %s,<br/>&nbsp;<br/>Afin de confirmer votre inscription à Signa, veuillez <a href=\"%s\">cliquer sur ce lien</a> ou le copier-coller dans votre navigateur."
+  },
+  "forgotpassword": {
+    "title": "Mot de passe oublié",
+    "invalid": "Identifiant invalide.",
+    "login_help": "Un e-mail permettant de réinitialiser le mot de passe sera envoyé à l'adresse associée à votre identifiant.",
+    "forgotlogin": "Identifiant oublié ?",
+    "submit": "Réinitialiser le mot de passe",
+    "mail_title": "Signa pour %s : réinitialisation du mot de passe.",
+    "validation_link": "Cher %s,<br/>&nbsp;<br/>Afin de réinitialiser votre mot de passe pour Signa, veuillez <a href=\"%s\">cliquer sur ce lien</a> ou le copier-coller dans votre navigateur."
+  },
+  "resetpassword": {
     "password": "Nouveau mot de passe",
-		"confirm_password": "Confirmer le nouveau mot de passe",
+    "confirm_password": "Confirmer le nouveau mot de passe",
     "title": "Réinitialiser le mot de passe",
-		"submit": "Enregistrer"
-	},
-	"forgotlogin": {
-		"title": "Identifiant oublié",
-		"invalid": "E-mail invalide.",
-		"email_help": "Un e-mail permettant de récupérer l'identifiant sera envoyé à l'adresse ci-dessus.",
-		"submit": "Récupérer l'identifiant"
-	},
-	"footer": {
-		"supportCND": "Avec le soutien du",
-		"writing": "Écrire",
-		"publishing": "Publier",
-		"teaching": "Enseigner",
-		"teams": "Collaborer",
-		"developers": "Développer",
-		"blog": "Blog",
-		"api": "API",
-		"kinetography": "Cinétographie Laban",
-		"team": "Équipe",
-		"support": "Soutenir",
-		"privacy": "Confidentialité",
-		"terms": "Conditions d'utilisation"
-	}
+    "submit": "Enregistrer"
+  },
+  "forgotlogin": {
+    "title": "Identifiant oublié",
+    "invalid": "E-mail invalide.",
+    "mail_help": "Un e-mail permettant de récupérer l'identifiant sera envoyé à l'adresse ci-dessus.",
+    "submit": "Récupérer l'identifiant",
+    "email": "Adresse e-mail de récupération",
+    "mail_title": "Signa : récupération de l'identifiant.",
+    "mail_content_single": "Vous avez demandé l'identifiant Signa associé à votre adresse e-mail afin de réinitialiser le mot de passe.<br/>&nbsp;<br/>Voici votre identifiant : <span style=\"font-family: monospace;\">%s</span>",
+    "mail_content_many": "Vous avez demandé l'identifiant Signa associé à votre adresse e-mail afin de réinitialiser le mot de passe.<br/>&nbsp;<br/>Nous avons trouvé plusieurs identifiants associés à celle-ci : <ul style=\"font-family: monospace;\">%s</ul>"
+  },
+  "footer": {
+    "supportCND": "Avec le soutien du",
+    "writing": "Écrire",
+    "publishing": "Publier",
+    "teaching": "Enseigner",
+    "teams": "Collaborer",
+    "developers": "Développer",
+    "blog": "Blog",
+    "api": "API",
+    "kinetography": "Cinétographie Laban",
+    "team": "Équipe",
+    "support": "Soutenir",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation"
+  }
 }

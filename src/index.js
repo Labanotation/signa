@@ -535,25 +535,78 @@ app.post('/resetpassword/:token', async (req, res, next) => {
 /*
 app.get('/email', (req, res) => {
   fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), (err, data) => {
-    const accessToken = jwt.sign({ foo: 'bar', action: 'reset' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
-    const link = process.env.BASE_URL + '/resetpassword/' + accessToken
     const template = hbs.compile(data.toString())
-    const html = template({
-      title: i18n.__('forgotpassword.mail_title', 'bar'),
-      body: i18n.__('forgotpassword.validation_link', 'bar', link)
-    })
+    let html = ''
+    let logins = ['Toto', 'Tutu', 'Tata']
+    if (logins.length > 1) {
+      html = template({
+        title: i18n.__('forgotlogin.mail_title', 'bar'),
+        body: i18n.__('forgotlogin.mail_content_many', '<li>' + logins.join('</li><li>') + '</li>')
+      })
+    } else {
+      html = template({
+        title: i18n.__('forgotlogin.mail_title', 'bar'),
+        body: i18n.__('forgotlogin.mail_content_single', logins[0])
+      })
+    }
     res.send(html)
   })
 })
 */
 
 app.get('/forgotlogin', (req, res) => {
-  // @TODO
   res.render('forgotlogin', {
     title: 'Signa > ' + i18n.__('forgotlogin.title'),
     lang: req.getLocale(),
     isAuthenticated: req.isAuthenticated()
   })
+})
+
+app.post('/forgotlogin', async (req, res) => {
+  let invalid = false
+  let existingUsersByEmail = []
+  try {
+    Validator.Email(req.body.email.trim())
+    existingUsersByEmail = await DatastoreUtils.Load(Requests.UsersByEmail, req.body.email.trim())
+  } catch (ignore) {
+    invalid = true
+  }
+  if (req.body.fullname === '' && invalid === false && existingUsersByEmail.length > 0) {
+    fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
+      const template = hbs.compile(data.toString())
+      let html = ''
+      let logins = []
+      existingUsersByEmail.forEach((user) => {
+        logins.push(user.login)
+      })
+      if (logins.length > 1) {
+        html = template({
+          title: i18n.__('forgotlogin.mail_title'),
+          body: i18n.__('forgotlogin.mail_content_many', '<li>' + logins.join('</li><li>') + '</li>')
+        })
+      } else {
+        html = template({
+          title: i18n.__('forgotlogin.mail_title'),
+          body: i18n.__('forgotlogin.mail_content_single', logins[0])
+        })
+      }
+      await Mailer.getInstance().send(req.body.email.trim(), i18n.__('forgotlogin.mail_title'), htmlToText.fromString(html), html)
+      res.render('forgotlogin', {
+        title: 'Signa > ' + i18n.__('forgotlogin.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        pending: true
+      })
+    })
+  } else {
+    res.render('forgotlogin', {
+      title: 'Signa > ' + i18n.__('forgotlogin.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      mail_value: req.body.email.trim(),
+      mail_invalid: true
+    })
+  }
 })
 
 app.get('/logout', (req, res) => {

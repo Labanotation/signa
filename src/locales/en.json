@@ -30,15 +30,15 @@
     "forgot": "Forgot your password?",
     "invalid": "Invalid login or password."
   },
-	"signup": {
-		"email": "Email address",
-		"title": "Signup to Signa",
-		"submit": "Signup",
+  "signup": {
+    "email": "Email address",
+    "title": "Signup to Signa",
+    "submit": "Signup",
     "confirm_password": "Confirm password",
     "mail_invalid": "Invalid email.",
     "login_invalid": "Invalid login.",
     "password_invalid": "Invalid password.",
-		"password_different": "Passwords do not match.",
+    "password_different": "Passwords do not match.",
     "mail_help": "The email address will be used for account validation and as a recipient of authorized messages.",
     "login_help": "The login will only be used for the connection to Signa.",
     "password_help": "The password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter <u>and</u> one number, without spaces or special characters.",
@@ -47,25 +47,29 @@
   },
   "forgotpassword": {
     "title": "Forgotten password",
-		"invalid": "Invalid login.",
-		"login_help": "An email allowing you to reset the password will be sent to the address related to your login.",
-		"forgotlogin": "Forgot your login?",
-		"submit": "Reset password",
-		"mail_title": "Signa for %s : reset password.",
-		"validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to reset your password for Signa, or copy/paste it into your browser."
+    "invalid": "Invalid login.",
+    "login_help": "An email allowing you to reset the password will be sent to the address related to your login.",
+    "forgotlogin": "Forgot your login?",
+    "submit": "Reset password",
+    "mail_title": "Signa for %s : reset password.",
+    "validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to reset your password for Signa, or copy/paste it into your browser."
   },
-	"resetpassword": {
+  "resetpassword": {
     "password": "New password",
     "confirm_password": "Confirm new password",
-		"title": "Reset password",
-		"submit": "Save"
-	},
+    "title": "Reset password",
+    "submit": "Save"
+  },
   "forgotlogin": {
-		"title": "Forgotten login",
-		"invalid": "Invalid email.",
-		"email_help": "An email allowing you to retrieve your login will be sent to the given address.",
-		"submit": "Retrieve login"
-	},
+    "title": "Forgotten login",
+    "invalid": "Invalid email.",
+    "email_help": "An email allowing you to retrieve your login will be sent to the given address.",
+    "submit": "Retrieve login",
+    "email": "Email address for retrieval",
+    "mail_title": "Signa: login retrieval.",
+    "mail_content_single": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here is your login : <span style=\"font-family: monospace;\">%s</span>",
+    "mail_content_many": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here are the logins related to your email address: <ul style=\"font-family: monospace;\">%s</ul>"
+  },
   "footer": {
     "supportCND": "With the support of",
     "writing": "Writing",
