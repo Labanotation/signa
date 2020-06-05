@@ -186,7 +186,12 @@ app.get('/', function (req, res) {
   let userForTemplate = null
   if (req.isAuthenticated() && req.user) {
     userForTemplate = req.user.dehydrate()
-    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    // @TODO : no name, etc. --> complete account form
+    if (userForTemplate.name) {
+      userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    } else {
+      userForTemplate.shortName = userForTemplate.login
+    }
   }
   res.render('index', {
     title: 'Signa',
@@ -284,6 +289,10 @@ app.post('/signup', async (req, res, next) => {
   }
   try {
     Validator.Password(req.body.password.trim())
+    Validator.Password(req.body.confirm_password.trim())
+    if (req.body.password.trim() !== req.body.confirm_password.trim()) {
+      errors.push('password_different')
+    }
   } catch (ignore) {
     errors.push('password_invalid')
   }
@@ -298,7 +307,9 @@ app.post('/signup', async (req, res, next) => {
         login_invalid: errors.indexOf('login_invalid') !== -1,
         login_value: req.body.login.trim(),
         password_invalid: errors.indexOf('password_invalid') !== -1,
-        password_value: req.body.password.trim()
+        password_value: req.body.password.trim(),
+        password_different: errors.indexOf('password_different') !== -1,
+        confirm_password_value: req.body.confirm_password.trim()
       })
     } else {
       const pendingUser = new Models.User()
@@ -358,6 +369,7 @@ app.get('/signupvalidation/:token', async (req, res) => {
       const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
       if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === false && pendingUser.signuptoken === req.params.token) {
         pendingUser.verified = true
+        pendingUser.signuptoken = ''
         const savedUser = await DatastoreUtils.Save(pendingUser)
         if (savedUser && savedUser[0] && savedUser[0].ok) {
           res.render('signup', {
@@ -446,12 +458,68 @@ app.get('/resetpassword/:token', async (req, res) => {
     if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'reset') {
       const pendingUser = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
       if (pendingUser && pendingUser.email === userData.email && pendingUser.id === userData.id && pendingUser.verified === true && pendingUser.signuptoken === req.params.token) {
-        // @TODO FORM + POST, etc.
         res.render('resetpassword', {
-          title: 'Signa > ' + i18n.__('signup.title'),
+          title: 'Signa > ' + i18n.__('resetpassword.title'),
           lang: req.getLocale(),
-          isAuthenticated: req.isAuthenticated()
+          isAuthenticated: req.isAuthenticated(),
+          token_value: req.params.token
         })
+      }
+    } else {
+      res.render('forgotpassword', {
+        title: 'Signa > ' + i18n.__('forgotpassword.title'),
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        invalid: true
+      })
+    }
+  })
+})
+
+app.post('/resetpassword/:token', async (req, res, next) => {
+  jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
+    if (!err && userData.login && userData.email && userData.id && userData.action && userData.action === 'reset') {
+      let errors = []
+      try {
+        Validator.Password(req.body.password.trim())
+        Validator.Password(req.body.confirm_password.trim())
+        if (req.body.password.trim() !== req.body.confirm_password.trim()) {
+          errors.push('password_different')
+        }
+      } catch (ignore) {
+        errors.push('password_invalid')
+      }
+      if (errors.length > 0) {
+        res.render('resetpassword', {
+          title: 'Signa > ' + i18n.__('resetpassword.title'),
+          lang: req.getLocale(),
+          isAuthenticated: req.isAuthenticated(),
+          password_invalid: errors.indexOf('password_invalid') !== -1,
+          password_value: req.body.password.trim(),
+          password_different: errors.indexOf('password_different') !== -1,
+          confirm_password_value: req.body.confirm_password.trim(),
+          token_value: req.params.token
+        })
+      } else {
+        const existingUserByLogin = await DatastoreUtils.LoadOne(Requests.UsersByLogin, userData.login)
+        if (!existingUserByLogin || existingUserByLogin.id !== userData.id || existingUserByLogin.email !== userData.email || existingUserByLogin.signuptoken !== req.params.token) {
+          res.render('forgotpassword', {
+            title: 'Signa > ' + i18n.__('forgotpassword.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            invalid: true
+          })
+        } else {
+          existingUserByLogin.password = await Models.User.hashPassword(req.body.password.trim())
+          existingUserByLogin.signuptoken = ''
+          await DatastoreUtils.Save(existingUserByLogin)
+          res.render('resetpassword', {
+            title: 'Signa > ' + i18n.__('resetpassword.title'),
+            lang: req.getLocale(),
+            isAuthenticated: req.isAuthenticated(),
+            success: true
+          })
+        }
       }
     } else {
       res.render('forgotpassword', {
@@ -497,7 +565,12 @@ app.get('/logout', (req, res) => {
 app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
     let userForTemplate = req.user.dehydrate()
-    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    // @TODO : no name, etc. --> complete account form
+    if (userForTemplate.name) {
+      userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    } else {
+      userForTemplate.shortName = userForTemplate.login
+    }
     res.render('dashboard', {
       title: 'Signa > Dashboard',
       lang: req.getLocale(),
@@ -524,7 +597,11 @@ app.use(function (req, res, next) {
   let userForTemplate = null
   if (req.isAuthenticated() && req.user) {
     userForTemplate = req.user.dehydrate()
-    userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    if (userForTemplate.name) {
+      userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    } else {
+      userForTemplate.shortName = userForTemplate.login
+    }
   }
   res.status(404).render('error', {
     title: 'Signa > ' + i18n.__('Error404'),
