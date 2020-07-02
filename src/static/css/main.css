@@ -93,7 +93,6 @@ samp {
 #logo-header {
   height: 24px;
   background-color: #fff;
-  border-radius: 10px;
   padding: 2px;
 }
 
@@ -170,6 +169,11 @@ samp {
 .badge-pill {
   position: relative;
   top: -2px;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #f8f9fa !important;
+  border-color: #dee2e6 #dee2e6 #f8f9fa;
 }
 
 @media (min-width: 768px) {

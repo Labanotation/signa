@@ -16,7 +16,7 @@
   <nav class="site-header sticky-top py-1">
     <div class="container d-flex flex-column flex-md-row justify-content-between">
       <a class="p-2" href="/" aria-label="{{{__ "Home"}}}">
-        <img id="logo-header" src="/images/logo.png" class="d-block mx-auto">
+        <img id="logo-header" src="/images/logo.png" class="d-block mx-auto rounded-pill">
       </a>
       <a class="p-2 d-none d-md-inline-block {{#if active_introduction}}bg-secondary text-white{{/if}}"
         href="#">{{{__ "Introduction"}}}</a>
@@ -25,7 +25,7 @@
       <a class="p-2 d-none d-md-inline-block {{#if active_exploration}}bg-secondary text-white{{/if}}"
         href="#">{{{__ "Explore"}}}</a>
       {{#if isAuthenticated}}
-      <a class="ml-auto p-2 d-none d-md-inline-block bg-success {{#if active_dashboard}}text-white{{else}}text-dark{{/if}}"
+      <a class="ml-auto p-2 d-none d-md-inline-block bg-success {{#if active_dashboard}}text-white{{else}}text-dark{{/if}} rounded-pill"
         href="/dashboard"><i class="fas fa-user-circle mx-1"></i>&nbsp;<span class="mr-1">{{ user.shortName }}</span>{{#if dataCompletionRequired}}&nbsp;<span class="mr-1 badge badge-pill badge-warning">!</span>{{/if}}</a>
       <a class="p-2 d-none d-md-inline-block" href="/logout">{{{__ "Logout"}}}</a>
       {{else}}
