@@ -1,14 +1,14 @@
 <ul class="nav nav-tabs mx-3 mt-3" id="dashboardTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+    <a class="nav-link" id="home-tab" data-toggle="tab" data-target="#home" role="tab" aria-controls="home"
       aria-selected="true">Home</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="projects"
+    <a class="nav-link" id="projects-tab" data-toggle="tab" data-target="#projects" role="tab" aria-controls="projects"
       aria-selected="false">Projects</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+    <a class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" role="tab" aria-controls="profile"
       aria-selected="false">Profile{{#if dataCompletionRequired}}&nbsp;<span
         class="ml-2 badge badge-pill badge-warning">!</span>{{/if}}</a>
   </li>
@@ -28,7 +28,9 @@
     &nbsp;
   </div>
   <div class="tab-pane fade p-3 mx-3 text-center bg-light" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-    <form class="container text-left">
+    <form class="container text-left" action="/dashboard#profile" method="post">
+      <input type="hidden" id="from" name="from" value="profile">
+      <input type="text" class="form-control-fullname" name="fullname" id="fullname" value="">
       {{#if dataCompletionRequired}}
       <div class="row">
         <div class="alert alert-warning text-center col-12">
@@ -54,14 +56,14 @@
           <div class="card mt-3">
             <div class="card-body p-3">
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label" for="customSwitch1">Compte privé</label>
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input type="checkbox" class="custom-control-input" id="priv" name="priv" {{#if user.priv}}checked{{/if}}>
+                <label class="custom-control-label" for="priv">Compte privé</label>
+                <small id="privHelp" class="form-text text-muted">Les informations d'un compte privé sont inaccessibles aux autres utilisateurs</small>
               </div>
               <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label" for="customSwitch1">Compte indexé</label>
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input type="checkbox" class="custom-control-input" id="indexable" name="indexable" {{#if user.indexable}}checked{{/if}}>
+                <label class="custom-control-label" for="indexable">Compte indexé</label>
+                <small id="indexableHelp" class="form-text text-muted">Les informations d'un compte indexé sont visibles dans les résultats du moteur de recherche</small>
               </div>
             </div>
           </div>
@@ -72,75 +74,73 @@
               <div class="form-group row">
                 <label for="login" class="col-sm-2 col-form-label">Identifiant</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="login" value="{{user.login}}" readonly>
-                  <small id="loginHelp" class="form-text text-muted">Votre identifiant demeure invisible aux autres utilisateurs et ne peut pas être modifié.</small>
+                  <input type="text" class="form-control" id="login" name="login" value="{{user.login}}" readonly>
+                  <small id="loginHelp" class="form-text text-muted">Votre identifiant est invisible aux autres utilisateurs et ne peut pas être modifié</small>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label">Nom</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="name" placeholder="Votre nom complet" value="{{user.name}}">
-                  <small id="nameHelp" class="form-text text-muted">Votre nom est associé à tout ce que vous publiez dans la plateforme Signa.</small>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom complet..." value="{{user.name}}">
+                  <small id="nameHelp" class="form-text text-muted">Votre nom est associé à tout ce que vous publiez avec Signa</small>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label">E-mail</label>
+                <label for="email" class="col-sm-2 col-form-label">E-mail</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="formGroupExampleInput2"
-                    placeholder="Votre adresse e-mail" value="{{user.email}}">
-                  <small id="emailHelp" class="form-text text-muted">Votre adresse e-mail est utilisée pour la validation du compte et comme destinataire des messages autorisés. Elle ne sera jamais communiquée à un tiers.</small>
+                  <input type="text" class="form-control" id="email" name="email"
+                    placeholder="Votre adresse e-mail..." value="{{user.email}}">
+                  <small id="emailHelp" class="form-text text-muted">Votre adresse e-mail vous permet de recevoir des messages de Signa et ne sera jamais communiquée à un tiers</small>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="description" class="col-sm-2 col-form-label">Description</label>
                 <div class="col-sm-10">
-                  <textarea id="description" class="form-control" aria-label="With textarea" placeholder="Another input placeholder">{{user.description}}</textarea>
+                  <textarea id="description" name="description" class="form-control" aria-label="With textarea" placeholder="Une courte description de votre activité...">{{user.description}}</textarea>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label">Site Web</label>
+                <label for="url" class="col-sm-2 col-form-label">Site Web</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="formGroupExampleInput2"
-                    placeholder="Another input placeholder">
+                  <input type="text" class="form-control" id="url" name="url" placeholder="Adresse de votre site Web...">
                 </div>
-                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label">Occupation</label>
+                <label for="occupation" class="col-sm-2 col-form-label">Occupation</label>
                 <div class="col-sm-4">
-                  <select class="custom-select custom-select-sm">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <select id="occupation" name="occupation" class="custom-select custom-select-sm">
+                    <option value="">Non renseignée</option>
+                    {{#each occupations }}
+                    <option value="{{this.key}}" {{#if (iseq ../user.occupation this.key)}}selected{{/if}}>{{this.value}}</option>
+                    {{/each}}
                   </select>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label">Langue</label>
+                <label for="lang" class="col-sm-2 col-form-label">Langue</label>
                 <div class="col-sm-4">
-                  <select class="custom-select custom-select-sm">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <select id="lang" name="lang" class="custom-select custom-select-sm">
+                    <option value="en" {{#if (iseq user.lang 'en')}}selected{{/if}}>English</option>
+                    <option value="fr" {{#if (iseq user.lang 'fr')}}selected{{/if}}>Français</option>
                   </select>
                 </div>
-                <label for="formGroupExampleInput2" class="col-sm-2 col-form-label">Pays</label>
+                <label for="country" class="col-sm-2 col-form-label">Pays</label>
                 <div class="col-sm-4">
-                  <select class="custom-select custom-select-sm">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <select id="country" name="country" class="custom-select custom-select-sm">
+                    <option value="">Non renseigné</option>
+                    {{#each countries }}
+                    <option value="{{@key}}" {{#if (iseq ../user.country @key)}}selected{{/if}}>{{this}}</option>
+                    {{/each}}
                   </select>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="btn-toolbar col-12 justify-content-between">
-          <button class="btn btn-danger my-2">Supprimer mon compte</button>
-          <button type="submit" class="btn btn-primary my-2" disabled>Enregistrer les modifications</button>
+          <div class="row">
+            <div class="btn-toolbar col-12 justify-content-between">
+              <button class="btn btn-danger my-2" name="delete" value="1">Supprimer mon compte</button>
+              <button class="btn btn-warning my-2" name="reset" value="1">Réinitialiser mon mot de passe</button>
+              <button class="btn btn-primary my-2" type="submit" name="save" value="1" disabled>Enregistrer les modifications</button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -149,25 +149,35 @@
 
 {{#contentFor "pageStyles"}}
 <style type="text/css">
-
+  .form-control-fullname {
+    display: none;
+  }
 </style>
 {{/contentFor}}
 
 {{#contentFor "pageScripts"}}
 <script type="text/javascript">
   $(function () {
+    var scrollHeight = $(document).scrollTop()
     if ({{ dataCompletionRequired }}) {
-      $('#dashboardTab a[href="#profile"]').tab('show')
+      $('#dashboardTab a[data-target="#profile"]').tab('show')
     } else {
       var url = document.location.toString()
       if (url.match('#')) {
-        $('#dashboardTab a[href="#' + url.split('#')[1] + '"]').tab('show')
+        $('#dashboardTab a[data-target="#' + url.split('#')[1] + '"]').tab('show')
       } else {
-        $('#dashboardTab a[href="#home"]').tab('show')
+        $('#dashboardTab a[data-target="#home"]').tab('show')
       }
     }
+    setTimeout(function() {
+      $(window).scrollTop(scrollHeight)
+    }, 5)
     $('#dashboardTab a').on('shown.bs.tab', function (e) {
-      window.location.hash = e.target.hash
+      var scrollHeight = $(document).scrollTop()
+      window.location.hash = $(e.target).attr('data-target')
+      setTimeout(function() {
+        $(window).scrollTop(scrollHeight)
+      }, 5)
     })
   })
 </script>

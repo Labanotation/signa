@@ -19,6 +19,7 @@ const { Mailer } = require('./utils/mailer')
 const jwt = require('jsonwebtoken')
 const htmlToText = require('html-to-text')
 const { Validator } = require('./utils/validator')
+const { User } = require('./models/user')
 
 let locales = []
 let localesFiles = fs.readdirSync(fp.join(__dirname, 'locales'))
@@ -92,6 +93,14 @@ app.engine('hbs', hbs.express4({
 }))
 app.set('view engine', 'hbs')
 app.set('views', fp.join(__dirname, 'views'))
+
+hbs.registerHelper('iseq', function (entity, value) {
+  return entity == value
+})
+
+hbs.registerHelper('isseq', function (entity, value) {
+  return entity === value
+})
 
 app.get('/', function (req, res) {
   let userForTemplate = null
@@ -337,24 +346,7 @@ app.post('/forgotpassword', async (req, res, next) => {
     }
   } catch (ignore) { }
   if (req.body.fullname === '' && invalid === false && existingUserByLogin) {
-    const accessToken = jwt.sign({ login: existingUserByLogin.login, email: existingUserByLogin.email, id: existingUserByLogin.id, action: 'reset' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
-    fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
-      const link = process.env.BASE_URL + '/resetpassword/' + accessToken
-      const template = hbs.compile(data.toString())
-      const html = template({
-        title: i18n.__('forgotpassword.mail_title', existingUserByLogin.login),
-        body: i18n.__('forgotpassword.validation_link', existingUserByLogin.login, link)
-      })
-      await Mailer.getInstance().send(existingUserByLogin.email, i18n.__('forgotpassword.mail_title', existingUserByLogin.login), htmlToText.fromString(html), html)
-      existingUserByLogin.signuptoken = accessToken
-      await DatastoreUtils.Save(existingUserByLogin)
-      res.render('forgotpassword', {
-        title: 'Signa > ' + i18n.__('forgotpassword.title'),
-        lang: req.getLocale(),
-        isAuthenticated: req.isAuthenticated(),
-        pending: existingUserByLogin.email
-      })
-    })
+    await resetPassword(req, res, existingUserByLogin)
   } else {
     res.render('forgotpassword', {
       title: 'Signa > ' + i18n.__('forgotpassword.title'),
@@ -365,6 +357,28 @@ app.post('/forgotpassword', async (req, res, next) => {
     })
   }
 })
+
+// @TODO MOVE ELSEWHERE
+async function resetPassword(req, res, user) {
+  const accessToken = jwt.sign({ login: user.login, email: user.email, id: user.id, action: 'reset' }, process.env.JWT_SECRET, { expiresIn: '3600s' })
+  fs.readFile(fp.join(__dirname, 'views', 'layout', 'email-struct.hbs'), async (err, data) => {
+    const link = process.env.BASE_URL + '/resetpassword/' + accessToken
+    const template = hbs.compile(data.toString())
+    const html = template({
+      title: i18n.__('forgotpassword.mail_title', user.login),
+      body: i18n.__('forgotpassword.validation_link', user.login, link)
+    })
+    await Mailer.getInstance().send(user.email, i18n.__('forgotpassword.mail_title', user.login), htmlToText.fromString(html), html)
+    user.signuptoken = accessToken
+    await DatastoreUtils.Save(user)
+    res.render('forgotpassword', {
+      title: 'Signa > ' + i18n.__('forgotpassword.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      pending: user.email
+    })
+  })
+}
 
 app.get('/resetpassword/:token', async (req, res) => {
   jwt.verify(req.params.token, process.env.JWT_SECRET, async (err, userData) => {
@@ -544,11 +558,74 @@ app.get('/dashboard', (req, res) => {
       isAuthenticated: req.isAuthenticated(),
       user: userForTemplate,
       active_dashboard: true,
-      dataCompletionRequired: dataCompletionRequired
+      dataCompletionRequired: dataCompletionRequired,
+      countries: User.getCountries(req.getLocale()),
+      occupations: User.getOccupations(req.getLocale())
     })
   } else {
     res.redirect('/login')
   }
+})
+
+app.post('/dashboard', async (req, res, next) => {
+  console.log(req.body)
+  if (req.isAuthenticated()) {
+    let userForTemplate = req.user.dehydrate()
+    let dataCompletionRequired = false
+    if (userForTemplate.name) {
+      userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+    } else {
+      userForTemplate.shortName = userForTemplate.login
+      dataCompletionRequired = true
+    }
+    res.render('dashboard', {
+      title: 'Signa > Dashboard',
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      user: userForTemplate,
+      active_dashboard: true,
+      dataCompletionRequired: dataCompletionRequired,
+      countries: User.getCountries(req.getLocale()),
+      occupations: User.getOccupations(req.getLocale())
+    })
+  } else {
+    res.redirect('/login')
+  }
+  /*
+  {
+    from: 'profile',
+    fullname: '',
+    priv: 'on',
+    indexable: 'on',
+    login: 'LePhasme',
+    name: 'Sébastien Courvoisier',
+    email: 'sebastien.courvoisier@gmail.com',
+    description: '',
+    url: 'www.bpifrance.fr',
+    occupation: '1',
+    lang: 'fr',
+    country: 'FR',
+    delete: '1' // reset: 1 // save: 1
+  }
+  try {
+    Validator.Login(req.body.login.trim())
+    existingUserByLogin = await DatastoreUtils.LoadOne(Requests.UsersByLogin, req.body.login.trim())
+    if (existingUserByLogin) {
+      invalid = false
+    }
+  } catch (ignore) { }
+  if (req.body.fullname === '' && invalid === false && existingUserByLogin) {
+    await resetPassword(req, res, existingUserByLogin)
+  } else {
+    res.render('forgotpassword', {
+      title: 'Signa > ' + i18n.__('forgotpassword.title'),
+      lang: req.getLocale(),
+      isAuthenticated: req.isAuthenticated(),
+      login_value: req.body.login.trim(),
+      invalid: true
+    })
+  }
+  */
 })
 
 // KEEP THOSE TWO AT THE BOTTOM OF THE STACK:

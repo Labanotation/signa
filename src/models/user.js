@@ -77,7 +77,7 @@ class User extends BaseObject {
     }
   }
 
-    // @TODO GDPR
+  // @TODO GDPR
   get email() {
     return this.savedState.email
   }
@@ -133,6 +133,17 @@ class User extends BaseObject {
     this.saved = false
   }
 
+  static getOccupations(lang) {
+    const occupations = []
+    for (const key in Occupation) {
+      occupations.push({
+        key: Occupation[key],
+        value: key
+      })
+    }
+    return occupations
+  }
+
   // @TODO GDPR?
   get lang() {
     return this.savedState.lang
@@ -152,9 +163,13 @@ class User extends BaseObject {
   set country(country) {
     country = country.trim()
     if (Validator.Country(country)) {
-      this.savedState.country = countries.toAlpha3(country)
+      this.savedState.country = countries.toAlpha2(country)
       this.saved = false
     }
+  }
+
+  static getCountries(lang) {
+    return countries.getNames(lang)
   }
 
   get watched() { // --> [Project]
