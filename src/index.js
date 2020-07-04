@@ -568,26 +568,106 @@ app.get('/dashboard', (req, res) => {
 })
 
 app.post('/dashboard', async (req, res, next) => {
-  console.log(req.body)
-  if (req.isAuthenticated()) {
-    let userForTemplate = req.user.dehydrate()
-    let dataCompletionRequired = false
-    if (userForTemplate.name) {
-      userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
-    } else {
-      userForTemplate.shortName = userForTemplate.login
-      dataCompletionRequired = true
+  if (req.body && req.isAuthenticated()) {
+    if (req.body.delete === '1') {
+      // @TODO DELETE ACCOUNT
+    } else if (req.body.reset === '1') {
+      // @TODO RESET PASSWORD
+    } else if (req.body.save === '1') {
+      // @TODO PICTURE
+      let dataSaved = false
+      let name_invalid = false
+      let mail_invalid = false
+      let url_invalid = false
+      try {
+        req.user.name = req.body.name
+      } catch (ignore) {
+        name_invalid = true
+      }
+      try {
+        req.user.email = req.body.email
+      } catch (ignore) {
+        mail_invalid = true
+      }
+      if (req.body.url) {
+        try {
+          req.user.url = req.body.url
+        } catch (ignore) {
+          url_invalid = true
+        }
+      }
+      if (req.body.description) {
+        req.user.description = req.body.description
+      }
+      if (req.body.occupation) {
+        if (req.body.occupation !== 'null') {
+          req.user.occupation = req.body.occupation
+        } else {
+          req.user.occupation = undefined
+        }
+      }
+      if (req.body.lang) {
+        req.user.lang = req.body.lang
+        res.cookie(process.env.I18N_COOKIE, req.user.lang, { maxAge: 900000, httpOnly: true })
+        req.setLocale(req.user.lang)
+      }
+      if (req.body.country) {
+        if (req.body.country !== 'null') {
+          req.user.country = req.body.country
+        } else {
+          req.user.country = undefined
+        }
+      }
+      if (req.body.priv && req.body.priv === 'on') {
+        req.user.priv = true
+      } else {
+        req.user.priv = false
+      }
+      if (req.body.indexable && req.body.indexable === 'on') {
+        req.user.indexable = true
+      } else {
+        req.user.indexable = false
+      }
+      if (name_invalid === false && mail_invalid === false && url_invalid === false) {
+        const savedUser = await DatastoreUtils.Save(req.user)
+        if (savedUser && savedUser[0] && savedUser[0].ok) {
+          dataSaved = true
+        }
+      }
+      let userForTemplate = req.user.dehydrate()
+      if (name_invalid === true || mail_invalid === true || url_invalid === true) {
+        userForTemplate.name = req.body.name
+        userForTemplate.email = req.body.email
+        userForTemplate.url = req.body.url
+        userForTemplate.description = req.body.description
+        userForTemplate.occupation = req.body.occupation
+        userForTemplate.lang = req.body.lang
+        userForTemplate.country = req.body.country
+        userForTemplate.priv = (req.body.priv === 'on')
+        userForTemplate.indexable = (req.body.indexable === 'on')
+      }
+      let dataCompletionRequired = false
+      if (userForTemplate.name) {
+        userForTemplate.shortName = userForTemplate.name.split(/\s/)[0]
+      } else {
+        userForTemplate.shortName = userForTemplate.login
+        dataCompletionRequired = true
+      }
+      res.render('dashboard', {
+        title: 'Signa > Dashboard',
+        lang: req.getLocale(),
+        isAuthenticated: req.isAuthenticated(),
+        user: userForTemplate,
+        active_dashboard: true,
+        dataCompletionRequired: dataCompletionRequired,
+        countries: User.getCountries(req.getLocale()),
+        occupations: User.getOccupations(req.getLocale()),
+        name_invalid: name_invalid,
+        mail_invalid: mail_invalid,
+        url_invalid: url_invalid,
+        dataSaved: dataSaved
+      })
     }
-    res.render('dashboard', {
-      title: 'Signa > Dashboard',
-      lang: req.getLocale(),
-      isAuthenticated: req.isAuthenticated(),
-      user: userForTemplate,
-      active_dashboard: true,
-      dataCompletionRequired: dataCompletionRequired,
-      countries: User.getCountries(req.getLocale()),
-      occupations: User.getOccupations(req.getLocale())
-    })
   } else {
     res.redirect('/login')
   }

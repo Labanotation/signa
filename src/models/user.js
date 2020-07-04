@@ -64,7 +64,6 @@ class User extends BaseObject {
     */
   }
 
-  // @TODO GDPR
   get name() {
     return this.savedState.name
   }
@@ -77,7 +76,6 @@ class User extends BaseObject {
     }
   }
 
-  // @TODO GDPR
   get email() {
     return this.savedState.email
   }
@@ -99,7 +97,6 @@ class User extends BaseObject {
     this.saved = false
   }
 
-  // @TODO GDPR
   get picture() {
     return this.savedState.picture
   }
@@ -122,14 +119,12 @@ class User extends BaseObject {
     }
   }
 
-  // @TODO GDPR?
   get occupation() {
     return this.savedState.occupation
   }
 
   set occupation(occupation) {
-    // @TODO
-    this.savedState.occupation = occupation
+    this.savedState.occupation = occupation === undefined ? undefined : parseInt(occupation, 10)
     this.saved = false
   }
 
@@ -144,27 +139,29 @@ class User extends BaseObject {
     return occupations
   }
 
-  // @TODO GDPR?
   get lang() {
     return this.savedState.lang
   }
 
   set lang(lang) {
-    // @TODO
     this.savedState.lang = lang
     this.saved = false
   }
 
-  // @TODO GDPR?
   get country() {
     return this.savedState.country
   }
 
   set country(country) {
-    country = country.trim()
-    if (Validator.Country(country)) {
-      this.savedState.country = countries.toAlpha2(country)
+    if (country === undefined) {
+      this.savedState.country = undefined
       this.saved = false
+    } else {
+      country = country.trim()
+      if (Validator.Country(country)) {
+        this.savedState.country = countries.toAlpha2(country)
+        this.saved = false
+      }
     }
   }
 
