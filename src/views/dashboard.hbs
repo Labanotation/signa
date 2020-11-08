@@ -1,15 +1,15 @@
 <ul class="nav nav-tabs mx-3 mt-3" id="dashboardTab" role="tablist">
   <li class="nav-item">
     <a class="nav-link" id="home-tab" data-toggle="tab" data-target="#home" role="tab" aria-controls="home"
-      aria-selected="true">Home</a>
+      aria-selected="true">{{{__ "dashboard.home" }}}</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="projects-tab" data-toggle="tab" data-target="#projects" role="tab" aria-controls="projects"
-      aria-selected="false">Projects</a>
+      aria-selected="false">{{{__ "dashboard.projects" }}}</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="profile-tab" data-toggle="tab" data-target="#profile" role="tab" aria-controls="profile"
-      aria-selected="false">Profile{{#if dataCompletionRequired}}&nbsp;<span
+      aria-selected="false">{{{__ "dashboard.profile" }}}{{#if dataCompletionRequired}}&nbsp;<span
         class="ml-2 badge badge-pill badge-warning">!</span>{{/if}}</a>
   </li>
 </ul>
@@ -128,7 +128,7 @@
               <div class="form-group row">
                 <label for="url" class="col-sm-2 col-form-label">Site Web</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control {{#if url_invalid}}is-invalid{{/if}}" id="url" name="url" placeholder="Adresse de votre site Web...">
+                  <input type="text" class="form-control {{#if url_invalid}}is-invalid{{/if}}" id="url" name="url" placeholder="Adresse de votre site Web..." value="{{user.url}}">
                   <div class="invalid-feedback">
                     {{{__ "dashboard.url_invalid" }}}
                   </div>
@@ -211,10 +211,9 @@
     }, 5)
 
     var text_max = 280
-    $('#count_message').html('0 / ' + text_max)
+    $('#count_message').html($('#description').val().length + ' / ' + text_max)
     $('#description').keyup(function() {
-      var text_length = $('#description').val().length
-      $('#count_message').html(text_length + ' / ' + text_max)
+      $('#count_message').html($('#description').val().length + ' / ' + text_max)
     })
 
     $('#dashboardTab a').on('shown.bs.tab', function (e) {

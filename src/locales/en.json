@@ -1,93 +1,107 @@
 {
-	"Home": "Home",
-	"About": "About",
-	"Features": "Features",
-	"Introduction": "Introduction",
-	"Documentation": "Documentation",
-	"Explore": "Exploration",
-	"Search": "Search",
-	"Login": "Login",
-	"Logout": "Logout",
-	"Profile": "Profile",
-	"Resources": "Resources",
-	"Help": "Help",
-	"Error404": "404 error",
-	"NotFound": "The page you are looking for cannot be reached or no longer exists...",
-	"Error500": "500 Error",
-	"ServerError": "The server encountered an internal error...",
-	"index": {
-		"welcome": "Signa",
-		"tagline": "A Web platform for writing and publishing Laban scores.",
-		"comingsoon": "Coming soon"
-	},
-	"login": {
-		"title": "Login to Signa",
-		"login": "Login",
-		"password": "Password",
-		"submit": "Login",
-		"signup": "Signup",
-		"signup_tooltip": "Click on the « Signup » button to create a new user account.",
-		"forgot": "Forgot your password?",
-		"invalid": "Invalid login or password."
-	},
-	"signup": {
-		"email": "Email address",
-		"title": "Signup to Signa",
-		"submit": "Signup",
-		"confirm_password": "Confirm password",
-		"mail_invalid": "Invalid email.",
-		"login_invalid": "Invalid login.",
-		"password_invalid": "Invalid password.",
-		"password_different": "Passwords do not match.",
-		"mail_help": "The email address will be used for account validation and as a recipient of authorized messages.",
-		"login_help": "The login will only be used for the connection to Signa.",
-		"password_help": "The password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter <u>and</u> one number, without spaces or special characters.",
-		"mail_title": "Signa for %s: confirm signup.",
-		"validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to confirm your signup at Signa, or copy/paste it into your browser."
-	},
-	"forgotpassword": {
-		"title": "Forgotten password",
-		"invalid": "Invalid login.",
-		"login_help": "An email allowing you to reset the password will be sent to the address related to your login.",
-		"forgotlogin": "Forgot your login?",
-		"submit": "Reset password",
-		"mail_title": "Signa for %s : reset password.",
-		"validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to reset your password for Signa, or copy/paste it into your browser."
-	},
-	"resetpassword": {
-		"password": "New password",
-		"confirm_password": "Confirm new password",
-		"title": "Reset password",
-		"submit": "Save"
-	},
-	"forgotlogin": {
-		"title": "Forgotten login",
-		"invalid": "Invalid email.",
-		"email_help": "An email allowing you to retrieve your login will be sent to the given address.",
-		"submit": "Retrieve login",
-		"email": "Email address for retrieval",
-		"mail_title": "Signa: login retrieval.",
-		"mail_content_single": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here is your login : <span style=\"font-family: monospace;\">%s</span>",
-		"mail_content_many": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here are the logins related to your email address: <ul style=\"font-family: monospace;\">%s</ul>"
-	},
-	"footer": {
-		"supportCND": "With the support of",
-		"writing": "Writing",
-		"publishing": "Publishing",
-		"teaching": "Teaching",
-		"teams": "Collaborating",
-		"developers": "Coding",
-		"blog": "Blog",
-		"api": "API",
-		"kinetography": "Kinetography Laban",
-		"team": "Team",
-		"support": "Support",
-		"privacy": "Privacy",
-		"terms": "Terms of use"
-	},
-	"dashboard": {
-		"name_invalid": "dashboard.name_invalid",
-		"mail_invalid": "dashboard.mail_invalid",
-		"url_invalid": "dashboard.url_invalid"
-	}
+    "Home": "Home",
+    "About": "About",
+    "Features": "Features",
+    "Introduction": "Introduction",
+    "Documentation": "Documentation",
+    "Explore": "Exploration",
+    "Search": "Search",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Profile": "Profile",
+    "Resources": "Resources",
+    "Help": "Help",
+    "Error404": "404 error",
+    "NotFound": "The page you are looking for cannot be reached or no longer exists...",
+    "Error500": "500 Error",
+    "ServerError": "The server encountered an internal error...",
+    "index": {
+        "welcome": "Signa",
+        "tagline": "A Web platform for writing and publishing Laban scores.",
+        "comingsoon": "Coming soon"
+    },
+    "login": {
+        "title": "Login to Signa",
+        "login": "Login",
+        "password": "Password",
+        "submit": "Login",
+        "signup": "Signup",
+        "signup_tooltip": "Click on the « Signup » button to create a new user account.",
+        "forgot": "Forgot your password?",
+        "invalid": "Invalid login or password."
+    },
+    "signup": {
+        "email": "Email address",
+        "title": "Signup to Signa",
+        "submit": "Signup",
+        "confirm_password": "Confirm password",
+        "mail_invalid": "Invalid email.",
+        "login_invalid": "Invalid login.",
+        "password_invalid": "Invalid password.",
+        "password_different": "Passwords do not match.",
+        "mail_help": "The email address will be used for account validation and as a recipient of authorized messages.",
+        "login_help": "The login will only be used for the connection to Signa.",
+        "password_help": "The password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter <u>and</u> one number, without spaces or special characters.",
+        "mail_title": "Signa for %s: confirm signup.",
+        "validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to confirm your signup at Signa, or copy/paste it into your browser."
+    },
+    "forgotpassword": {
+        "title": "Forgotten password",
+        "invalid": "Invalid login.",
+        "login_help": "An email allowing you to reset the password will be sent to the address related to your login.",
+        "forgotlogin": "Forgot your login?",
+        "submit": "Reset password",
+        "mail_title": "Signa for %s : reset password.",
+        "validation_link": "Dear %s,<br/>&nbsp;<br/>Please <a href=\"%s\">click on this link</a> to reset your password for Signa, or copy/paste it into your browser."
+    },
+    "resetpassword": {
+        "password": "New password",
+        "confirm_password": "Confirm new password",
+        "title": "Reset password",
+        "submit": "Save"
+    },
+    "forgotlogin": {
+        "title": "Forgotten login",
+        "invalid": "Invalid email.",
+        "email_help": "An email allowing you to retrieve your login will be sent to the given address.",
+        "submit": "Retrieve login",
+        "email": "Email address for retrieval",
+        "mail_title": "Signa: login retrieval.",
+        "mail_content_single": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here is your login : <span style=\"font-family: monospace;\">%s</span>",
+        "mail_content_many": "You asked for the Signa login related to your email address in order to reset the password.<br/>&nbsp;<br/>Here are the logins related to your email address: <ul style=\"font-family: monospace;\">%s</ul>"
+    },
+    "footer": {
+        "supportCND": "With the support of",
+        "writing": "Writing",
+        "publishing": "Publishing",
+        "teaching": "Teaching",
+        "teams": "Collaborating",
+        "developers": "Coding",
+        "blog": "Blog",
+        "api": "API",
+        "kinetography": "Kinetography Laban",
+        "team": "Team",
+        "support": "Support",
+        "privacy": "Privacy",
+        "terms": "Terms of use"
+    },
+    "dashboard": {
+        "home": "Home",
+        "projects": "Projects",
+        "profile": "Profile",
+        "name_invalid": "dashboard.name_invalid",
+        "mail_invalid": "dashboard.mail_invalid",
+        "url_invalid": "dashboard.url_invalid"
+    },
+    "occupation": {
+        "Notator": "Notator",
+        "Choreographer": "Choreographer",
+        "Dancer": "Dancer",
+        "Student": "Student",
+        "Researcher": "Researcher",
+        "Teacher": "Teacher",
+        "Developer": "Developer",
+        "Musician": "Musician",
+        "Other": "Other"
+    }
 }
