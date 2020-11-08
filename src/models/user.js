@@ -133,7 +133,7 @@ class User extends BaseObject {
         for (const key in Occupation) {
             occupations.push({
                 key: Occupation[key],
-                value: i18n.__({ phrase: 'occupation.Notator', locale: lang })
+                value: i18n.__({ phrase: 'occupation.' + key, locale: lang })
             });
         }
         return occupations;
